@@ -10,3 +10,7 @@ export const HEADER_LABELS = {
   LOGIN: "Login",
   LOGO: "Logo",
 };
+
+export const HOME_PAGE = {
+  CAROUSEL_IMAGES: [],
+};

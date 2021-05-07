@@ -13,7 +13,6 @@ function AppThemeProvider({ children }) {
       },
       background: {
         default: "#333",
-        paper: "#444",
       },
       text: {
         primary: "#cecece",

@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "inline-block",
     borderRadius: "3px",
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.primary.light,
     border: `1px solid ${theme.palette.primary.main}`,
   },
 }));

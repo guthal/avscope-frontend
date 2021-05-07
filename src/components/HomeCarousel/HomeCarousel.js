@@ -23,8 +23,12 @@ function HomeCarousel() {
   return (
     <Box p={2} className={classes.slidercontainer}>
       <Slider {...settings}>
-        {images.map((image) => (
-          <Box p={1} className={classes.imageContainer}>
+        {images.map((image, index) => (
+          <Box
+            p={1}
+            className={classes.imageContainer}
+            key={`carousel-${index}`}
+          >
             <img src={image} alt="No Carousel" />
           </Box>
         ))}

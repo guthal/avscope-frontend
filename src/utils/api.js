@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getContents = () => {
+export const getContents = (a, b) => {
   // TODO: Delete statement below post API implementation
   return Promise.resolve([
     {
@@ -23,5 +23,6 @@ export const getContents = () => {
     },
   ]);
 
-  return axios.get("/").then((res) => res.data);
+  // eslint-disable-next-line
+  return axios.get("/cdacdaved").then((res) => res.data);
 };

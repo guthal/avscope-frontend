@@ -1,38 +1,33 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Typography,
-  Container,
-  Grid,
-  Button,
-  CircularProgress,
-} from "@material-ui/core";
+import React, { useEffect, useState, useMemo } from "react";
+import { Box, Typography, Container, Grid, Button } from "@material-ui/core";
 import ContentCard from "../../components/ContentCard";
 import HomeCarousel from "../../components/HomeCarousel";
-import useGetContents from "../../hooks/useGetApi";
+import useGetApi from "../../hooks/useGetApi";
 import { getContents } from "../../utils/api";
+import PageLoader from "../../components/PageLoader";
+import PageError from "../../components/PageError";
 
 function HomePage() {
   const [clickCount, setClickCount] = useState(0);
 
   const handleClick = () => setClickCount((count) => count + 1);
 
+  const getContentsParams = useMemo(() => ["param1", "param2"], []);
+
   const {
     data: contentsData,
     loading: contentsLoading,
     error: contentsError,
     triggerApi: contentsTriggerApi,
-  } = useGetContents(getContents());
+  } = useGetApi(getContents, getContentsParams);
 
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
 
-  if (contentsLoading)
+  if (contentsLoading) return <PageLoader />;
+
+  if (contentsError)
     return (
-      <Container>
-        <Box component="span" m="auto">
-          <CircularProgress />
-        </Box>
-      </Container>
+      <PageError message="Opps.. Something went wrong while fetching contents." />
     );
 
   return (
@@ -54,9 +49,7 @@ function HomePage() {
                   </Typography>
                 </Box>
                 <Box my={1}>
-                  <Typography variant="body">
-                    - "{contentCard.contentDescription}
-                  </Typography>
+                  <Typography>- "{contentCard.contentDescription}</Typography>
                 </Box>
 
                 <Box>

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-function useGetContents(apiCallback) {
+function useGetApi(apiCallback, apiCallbackParams) {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
@@ -21,18 +21,21 @@ function useGetContents(apiCallback) {
       setLoading(true);
 
       apiCallback
+        .apply(null, apiCallbackParams)
         .then((data) => {
           setData(data);
         })
-        .catch((err) => setError(err))
+        .catch((err) => {
+          setError(err);
+        })
         .finally(() => {
-          // setLoading(false);
+          setLoading(false);
           setToggle(false);
         });
     }
-  }, [toggle, apiCallback]);
+  }, [toggle, apiCallback, apiCallbackParams]);
 
   return { data, loading, error, triggerApi };
 }
 
-export default useGetContents;
+export default useGetApi;

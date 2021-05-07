@@ -10,7 +10,8 @@ function Pages() {
     <Router>
       <Header />
       <Switch>
-        <Route exact path={APP_ROUTES.HOME_PAGE.url} component={HomePage} />
+        <Route exact path={APP_ROUTES.HOME_PAGE.path} component={HomePage} />
+        <Route exact path={`${APP_ROUTES.CONTENT.path}/:contentID`} />
         <Route path="/*" component={PageNotFound} />
       </Switch>
     </Router>

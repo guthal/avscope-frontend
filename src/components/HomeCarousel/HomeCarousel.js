@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import useStyles from "./HomeCarousel.Styles";
+import { HOME_PAGE } from "../../configs/app";
 
 const settings = {
   dots: true,
@@ -15,15 +16,11 @@ const settings = {
 
 function HomeCarousel() {
   const classes = useStyles();
-  const images = [
-    "https://townsquare.media/site/442/files/2020/08/the-batman-logo.jpg?w=980&q=75",
-    "https://variety.com/wp-content/uploads/2020/08/batman-first-look.png",
-    "https://cdna.artstation.com/p/assets/images/images/020/539/304/large/tyr-s-studio-joker2.jpg?1568171432",
-  ];
+
   return (
     <Box p={2} className={classes.slidercontainer}>
       <Slider {...settings}>
-        {images.map((image, index) => (
+        {HOME_PAGE.CAROUSEL_IMAGES.map((image, index) => (
           <Box
             p={1}
             className={classes.imageContainer}

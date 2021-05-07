@@ -1,15 +1,12 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import useStyles from "./ContentCart.Styles";
+import useStyles from "./ContentCard.Styles";
 
-function ContentCard({ children }) {
+// To be used only within a MUI Grid item
+function ContentCard({ children, styles }) {
   const classes = useStyles();
 
-  return (
-    <Box p={2} className={classes.root}>
-      {children}
-    </Box>
-  );
+  return <Box className={classes.root}>{children}</Box>;
 }
 
 export default ContentCard;

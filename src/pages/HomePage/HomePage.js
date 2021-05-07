@@ -1,17 +1,21 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { Box, Typography, Container, Grid, Button } from "@material-ui/core";
+import React, { useEffect, useMemo } from "react";
+import { Box, Typography, Container, Grid } from "@material-ui/core";
 import ContentCard from "../../components/ContentCard";
 import HomeCarousel from "../../components/HomeCarousel";
 import useGetApi from "../../hooks/useGetApi";
 import { getContents } from "../../utils/api";
+import { getEllipsedText } from "../../utils/generic";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
+import useStyles from "./HomePage.Styles";
+import MoviePosterCard from "../../components/MoviePosterCard/MoviePosterCard";
+import { useHistory } from "react-router";
+import { transformGetContents } from "../../utils/api-transforms";
+import { APP_ROUTES } from "../../configs/app";
 
 function HomePage() {
-  const [clickCount, setClickCount] = useState(0);
-
-  const handleClick = () => setClickCount((count) => count + 1);
-
+  const classes = useStyles();
+  const history = useHistory();
   const getContentsParams = useMemo(() => ["param1", "param2"], []);
 
   const {
@@ -19,7 +23,10 @@ function HomePage() {
     loading: contentsLoading,
     error: contentsError,
     triggerApi: contentsTriggerApi,
-  } = useGetApi(getContents, getContentsParams);
+  } = useGetApi(getContents, getContentsParams, transformGetContents);
+
+  const handleCardClick = (contentID) =>
+    history.push(`${APP_ROUTES.CONTENT.path}/${contentID}`);
 
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
 
@@ -35,42 +42,41 @@ function HomePage() {
       <Box>
         <HomeCarousel />
       </Box>
-      <Box py={2}>
-        <Typography variant="h5">{`Cards have been clicked ${clickCount} time(s)`}</Typography>
-      </Box>
-      <Grid container spacing={4}>
-        {contentsData?.map((contentCard, index) => (
-          <Grid lg={3} md={3} sm={6} xs={12} item key={`content-card-${index}`}>
-            <Box m="auto">
-              <ContentCard>
-                <Box mx="auto">
-                  <Typography variant="h3">
-                    {contentCard.contentName}
-                  </Typography>
-                </Box>
-                <Box my={1}>
-                  <Typography>- "{contentCard.contentDescription}</Typography>
-                </Box>
 
-                <Box>
-                  <Typography align="right" variant="subtitle2">
-                    - {contentCard.contentStar}
-                  </Typography>
-                </Box>
-                <Box my={3}>
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    onClick={handleClick}
-                  >
-                    Click me
-                  </Button>
-                </Box>
-              </ContentCard>
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
+      <Box py={5}>
+        <Grid container spacing={4}>
+          {contentsData?.map((contentCard, index) => (
+            <Grid
+              lg={3}
+              md={3}
+              sm={6}
+              xs={12}
+              item
+              key={`content-card-${index}`}
+            >
+              <Box
+                className={classes.contentCardContainer}
+                onClick={() => handleCardClick(contentCard.id)}
+              >
+                <ContentCard>
+                  <MoviePosterCard url={contentCard.posterUrl} />
+
+                  <Box p={2}>
+                    <Box>
+                      <Typography variant="h5">{contentCard.name}</Typography>
+                    </Box>
+                    <Box my={1}>
+                      <Typography variant="subtitle2">
+                        {getEllipsedText(contentCard.description, 100)}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </ContentCard>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </Container>
   );
 }

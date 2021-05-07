@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 
-function useGetApi(apiCallback, apiCallbackParams) {
+function useGetApi(
+  apiCallback,
+  apiCallbackParams = undefined,
+  apiTransformFn = undefined
+) {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
@@ -23,7 +27,7 @@ function useGetApi(apiCallback, apiCallbackParams) {
       apiCallback
         .apply(null, apiCallbackParams)
         .then((data) => {
-          setData(data);
+          setData(apiTransformFn(data));
         })
         .catch((err) => {
           setError(err);
@@ -33,7 +37,7 @@ function useGetApi(apiCallback, apiCallbackParams) {
           setToggle(false);
         });
     }
-  }, [toggle, apiCallback, apiCallbackParams]);
+  }, [toggle, apiCallback, apiCallbackParams, apiTransformFn]);
 
   return { data, loading, error, triggerApi };
 }

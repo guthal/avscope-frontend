@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Header } from "../components";
 import HomePage from "./HomePage";
+import HistoryPage from "./HistoryPage";
 import PageNotFound from "./PageNotFound";
 import { APP_ROUTES } from "../configs/app";
 
@@ -19,8 +20,12 @@ function Pages() {
                     exact
                     path={`${APP_ROUTES.CONTENT_PAGE.path}/:contentID`}
                 />
-                <Route exact path={`${APP_ROUTES.HISTORY_PAGE.path}/:userID`} />
-                <Route exact path={`${APP_ROUTES.HISTORY_PAGE.path}/:userID`} />
+                <Route
+                    exact
+                    path={`${APP_ROUTES.HISTORY_PAGE.path}/:userID`}
+                    component={HistoryPage}
+                />
+                <Route exact path={`${APP_ROUTES.TICKETS_PAGE.path}/:userID`} />
                 <Route path="/*" component={PageNotFound} />
             </Switch>
         </Router>

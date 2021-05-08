@@ -13,7 +13,9 @@ function Header() {
           <Typography variant="h4" className={classes.title}>
             {HEADER_LABELS.LOGO}
           </Typography>
-          <Button color="inherit">{HEADER_LABELS.LOGIN}</Button>
+          <Button color="secondary" variant="contained">
+            {HEADER_LABELS.LOGIN}
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>

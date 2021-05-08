@@ -4,7 +4,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import useStyles from "./HomeCarousel.Styles";
-import { HOME_PAGE } from "../../configs/app";
 
 const settings = {
   dots: true,
@@ -14,19 +13,21 @@ const settings = {
   slidesToScroll: 1,
 };
 
-function HomeCarousel() {
+function HomeCarousel({ contents }) {
   const classes = useStyles();
 
   return (
     <Container maxWidth="lg" className={classes.sliderContainer}>
       <Slider {...settings}>
-        {HOME_PAGE.CAROUSEL_IMAGES.map((image, index) => (
-          <Box
-            p={1}
-            className={classes.imageContainer}
-            key={`carousel-${index}`}
-          >
-            <img src={image} alt="No Carousel" />
+        {contents.map((content, index) => (
+          <Box style={{ position: "relative" }}>
+            <Box
+              p={1}
+              className={classes.imageContainer}
+              key={`carousel-${index}`}
+            >
+              <img src={content.posterUrl} alt="No Carousel" />
+            </Box>
           </Box>
         ))}
       </Slider>

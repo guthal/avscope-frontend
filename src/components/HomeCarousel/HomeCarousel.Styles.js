@@ -1,7 +1,48 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  slidercontainer: {},
+  sliderContainer: {
+    "& .slick-slider": {
+      position: "relative",
+    },
+
+    "& .slick-prev": {
+      position: "absolute",
+      zIndex: 1,
+      display: "block",
+      left: "25px",
+    },
+
+    "& .slick-next": {
+      right: "25px",
+    },
+
+    "& .slick-next:before, .slick-prev:before": {
+      borderRadius: "10px",
+      position: "absolute",
+      color: theme.palette.secondary.main,
+      backgroundColor: theme.palette.background.default,
+      opacity: 0.7,
+      fontWeight: "bolder",
+      fontSize: "2rem",
+      padding: "16px",
+      [theme.breakpoints.down("sm")]: {
+        display: "none",
+      },
+    },
+    "& .slick-next:before": {
+      content: "'>'",
+      right: "10px",
+    },
+    "& .slick-prev:before": {
+      left: "10px",
+      content: "'<'",
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      padding: "24px 0",
+    },
+  },
   imageContainer: {
     height: "500px",
     backgroundColor: theme.palette.primary.main,
@@ -17,10 +58,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     [theme.breakpoints.down("sm")]: {
-      "& >img": {
-        // width: "100%",
-        height: "100%",
-      },
+      height: "250px",
     },
   },
 }));

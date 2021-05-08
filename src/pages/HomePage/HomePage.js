@@ -26,7 +26,7 @@ function HomePage() {
   } = useGetApi(getContents, getContentsParams, transformGetContents);
 
   const handleCardClick = (contentID) =>
-    history.push(`${APP_ROUTES.CONTENT.path}/${contentID}`);
+    history.push(`${APP_ROUTES.CONTENT_PAGE.path}/${contentID}`);
 
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
 
@@ -38,46 +38,48 @@ function HomePage() {
     );
 
   return (
-    <Container maxWidth="lg">
+    <Box>
       <Box>
         <HomeCarousel />
       </Box>
 
-      <Box py={5}>
-        <Grid container spacing={4}>
-          {contentsData?.map((contentCard, index) => (
-            <Grid
-              lg={3}
-              md={3}
-              sm={6}
-              xs={12}
-              item
-              key={`content-card-${index}`}
-            >
-              <Box
-                className={classes.contentCardContainer}
-                onClick={() => handleCardClick(contentCard.id)}
+      <Container maxWidth="lg">
+        <Box py={5}>
+          <Grid container spacing={4}>
+            {contentsData?.map((contentCard, index) => (
+              <Grid
+                lg={3}
+                md={3}
+                sm={6}
+                xs={12}
+                item
+                key={`content-card-${index}`}
               >
-                <ContentCard>
-                  <MoviePosterCard url={contentCard.posterUrl} />
+                <Box
+                  className={classes.contentCardContainer}
+                  onClick={() => handleCardClick(contentCard.id)}
+                >
+                  <ContentCard>
+                    <MoviePosterCard url={contentCard.posterUrl} />
 
-                  <Box p={2}>
-                    <Box>
-                      <Typography variant="h5">{contentCard.name}</Typography>
+                    <Box p={2}>
+                      <Box>
+                        <Typography variant="h5">{contentCard.name}</Typography>
+                      </Box>
+                      <Box my={1}>
+                        <Typography variant="subtitle2">
+                          {getEllipsedText(contentCard.description, 100)}
+                        </Typography>
+                      </Box>
                     </Box>
-                    <Box my={1}>
-                      <Typography variant="subtitle2">
-                        {getEllipsedText(contentCard.description, 100)}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </ContentCard>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    </Container>
+                  </ContentCard>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Container>
+    </Box>
   );
 }
 

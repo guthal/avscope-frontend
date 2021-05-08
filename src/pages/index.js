@@ -11,7 +11,7 @@ function Pages() {
       <Header />
       <Switch>
         <Route exact path={APP_ROUTES.HOME_PAGE.path} component={HomePage} />
-        <Route exact path={`${APP_ROUTES.CONTENT.path}/:contentID`} />
+        <Route exact path={`${APP_ROUTES.CONTENT_PAGE.path}/:contentID`} />
         <Route path="/*" component={PageNotFound} />
       </Switch>
     </Router>

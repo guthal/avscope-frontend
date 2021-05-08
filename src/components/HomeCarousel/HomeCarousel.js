@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, Container } from "@material-ui/core";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -18,7 +18,7 @@ function HomeCarousel() {
   const classes = useStyles();
 
   return (
-    <Box p={2} className={classes.slidercontainer}>
+    <Container maxWidth="lg" className={classes.sliderContainer}>
       <Slider {...settings}>
         {HOME_PAGE.CAROUSEL_IMAGES.map((image, index) => (
           <Box
@@ -30,7 +30,7 @@ function HomeCarousel() {
           </Box>
         ))}
       </Slider>
-    </Box>
+    </Container>
   );
 }
 

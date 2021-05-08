@@ -1,35 +1,51 @@
 import React, { useEffect, useMemo } from "react";
-import { Box, Container, Grid } from "@material-ui/core";
+import { useRouteMatch } from "react-router-dom";
+import { Box, Container, Grid, Typography } from "@material-ui/core";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
-import ContentCard from "../../components/ContentCard";
 import useGetApi from "../../hooks/useGetApi";
-import { getContents } from "../../utils/api";
-import { transformGetContents } from "../../utils/api-transforms";
+import { transformGetHistoryData } from "../../utils/api-transforms";
 import HistoryCard from "../../components/HistoryCard";
+import useStyles from "./HistoryPage.Styles";
+import { getHistoryData } from "../../utils/api";
 
 function HistoryPage() {
-    const getContentsParams = useMemo(() => ["param1", "param2"], []);
+    const classes = useStyles();
+    const routeMatch = useRouteMatch();
+    const { params } = routeMatch;
+
+    const getHistoryDataParams = useMemo(() => [params.userID], []);
 
     const {
         data: historyData,
-        loading: contentsLoading,
-        error: contentsError,
-        triggerApi: contentsTriggerApi,
-    } = useGetApi(getContents, getContentsParams, transformGetContents);
+        loading: historyLoading,
+        error: historyError,
+        triggerApi: historyTriggerApi,
+    } = useGetApi(
+        getHistoryData,
+        getHistoryDataParams,
+        transformGetHistoryData
+    );
 
-    useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
+    useEffect(() => historyTriggerApi(), [historyTriggerApi]);
 
-    if (contentsLoading) return <PageLoader />;
+    if (historyLoading) return <PageLoader />;
 
-    if (contentsError)
+    if (historyError)
         return (
-            <PageError message="Opps.. Something went wrong while fetching contents." />
+            <PageError message="Oops.. Something went wrong while fetching contents." />
         );
 
     return (
         <Container maxWidth="lg">
-            <Box py={5}>
+            <Box py={2}>
+                <Typography
+                    variant="h3"
+                    className={classes.heading}
+                    style={{ padding: "1rem" }}
+                >
+                    Purchase History
+                </Typography>
                 <Grid container spacing={4}>
                     {historyData?.map((historyCard, index) => (
                         <Grid
@@ -40,9 +56,7 @@ function HistoryPage() {
                             item
                             key={`content-card-${index}`}
                         >
-                            <ContentCard>
-                                <HistoryCard historyCard={historyCard} />
-                            </ContentCard>
+                            <HistoryCard historyCard={historyCard} />
                         </Grid>
                     ))}
                 </Grid>

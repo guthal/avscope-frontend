@@ -39,9 +39,11 @@ function HomePage() {
 
   return (
     <Box>
-      <Box>
-        <HomeCarousel />
-      </Box>
+      {contentsData && (
+        <Box>
+          <HomeCarousel contents={contentsData.slice(0, 2)} />
+        </Box>
+      )}
 
       <Container maxWidth="lg">
         <Box py={5}>
@@ -64,7 +66,9 @@ function HomePage() {
 
                     <Box p={2}>
                       <Box>
-                        <Typography variant="h5">{contentCard.name}</Typography>
+                        <Typography variant="h6" color="secondary">
+                          {contentCard.name}
+                        </Typography>
                       </Box>
                       <Box my={1}>
                         <Typography variant="subtitle2">

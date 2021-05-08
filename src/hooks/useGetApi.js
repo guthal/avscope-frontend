@@ -27,7 +27,7 @@ function useGetApi(
       apiCallback
         .apply(null, apiCallbackParams)
         .then((data) => {
-          setData(apiTransformFn(data));
+          setData(apiTransformFn?.(data) || data);
         })
         .catch((err) => {
           setError(err);

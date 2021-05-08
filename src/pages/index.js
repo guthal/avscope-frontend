@@ -6,16 +6,22 @@ import PageNotFound from "./PageNotFound";
 import { APP_ROUTES } from "../configs/app";
 
 function Pages() {
-  return (
-    <Router>
-      <Header />
-      <Switch>
-        <Route exact path={APP_ROUTES.HOME_PAGE.path} component={HomePage} />
-        <Route exact path={`${APP_ROUTES.CONTENT.path}/:contentID`} />
-        <Route path="/*" component={PageNotFound} />
-      </Switch>
-    </Router>
-  );
+    return (
+        <Router>
+            <Header />
+            <Switch>
+                <Route
+                    exact
+                    path={APP_ROUTES.HOME_PAGE.path}
+                    component={HomePage}
+                />
+                {/* <Route exact path={`${APP_ROUTES.CONTENT_PAGE.path}/:contentId`} /> */}
+                {/* <Route exact path={`${APP_ROUTES.HISTORY_PAGE.path}/:userId`} /> */}
+                {/* <Route exact path={`${APP_ROUTES.TICKETS_PAGE.path}/:userId`} /> */}
+                <Route path="/*" component={PageNotFound} />
+            </Switch>
+        </Router>
+    );
 }
 
 export default Pages;

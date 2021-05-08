@@ -7,31 +7,32 @@ import useStyles from "./HomeCarousel.Styles";
 import { HOME_PAGE } from "../../configs/app";
 
 const settings = {
-  dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
 };
 
 function HomeCarousel() {
-  const classes = useStyles();
+    const classes = useStyles();
 
-  return (
-    <Box p={2} className={classes.slidercontainer}>
-      <Slider {...settings}>
-        {HOME_PAGE.CAROUSEL_IMAGES.map((image, index) => (
-          <Box
-            p={1}
-            className={classes.imageContainer}
-            key={`carousel-${index}`}
-          >
-            <img src={image} alt="No Carousel" />
-          </Box>
-        ))}
-      </Slider>
-    </Box>
-  );
+    return (
+        <Box p={2} className={classes.slidercontainer}>
+            <Slider {...settings}>
+                {HOME_PAGE.CAROUSEL_IMAGES.map((image, index) => (
+                    <Box
+                        p={1}
+                        className={classes.imageContainer}
+                        key={`carousel-${index}`}
+                    >
+                        <img src={image} alt="No Carousel" />
+                    </Box>
+                ))}
+            </Slider>
+        </Box>
+    );
 }
 
 export default HomeCarousel;

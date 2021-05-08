@@ -12,15 +12,15 @@ export const APP_ROUTES = {
     },
 
     HISTORY_PAGE: {
-        path: "/history",
+        path: "/booking-history",
         key: "",
-        label: "History Page",
+        label: "Booking History Page",
     },
 
     TICKETS_PAGE: {
-        path: "/ticket",
+        path: "/booked-tickets",
         key: "",
-        label: "Tickets Page",
+        label: "Booked Tickets Page",
     },
 };
 
@@ -30,17 +30,9 @@ export const HEADER_LABELS = {
 };
 
 export const HOME_PAGE = {
-<<<<<<< HEAD
     CAROUSEL_IMAGES: [
-        "https://townsquare.media/site/442/files/2020/08/the-batman-logo.jpg?w=980&q=75",
+        "https://static1.srcdn.com/wordpress/wp-content/uploads/2021/01/The-Batman-Lee-Bermejo.jpg",
         "https://variety.com/wp-content/uploads/2020/08/batman-first-look.png",
         "https://cdna.artstation.com/p/assets/images/images/020/539/304/large/tyr-s-studio-joker2.jpg?1568171432",
     ],
-=======
-  CAROUSEL_IMAGES: [
-    "https://static1.srcdn.com/wordpress/wp-content/uploads/2021/01/The-Batman-Lee-Bermejo.jpg",
-    "https://variety.com/wp-content/uploads/2020/08/batman-first-look.png",
-    "https://cdna.artstation.com/p/assets/images/images/020/539/304/large/tyr-s-studio-joker2.jpg?1568171432",
-  ],
->>>>>>> origin/main
 };

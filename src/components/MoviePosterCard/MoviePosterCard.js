@@ -26,7 +26,7 @@ function MoviePosterCard({ url, onPosterClick }) {
           onClick={handlePosterClick}
           onMouseLeave={handleMouseHover}
         >
-          <PlayCircleFilledRounded />
+          <PlayCircleFilledRounded color="secondary" fontSize="large" />
         </Box>
       )}
     </Box>

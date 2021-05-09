@@ -8,7 +8,7 @@ import { getEllipsedText } from "../../utils/generic";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import useStyles from "./HomePage.Styles";
-import MoviePosterCard from "../../components/MoviePosterCard/MoviePosterCard";
+import MoviePosterCard from "../../components/MoviePosterCard";
 import { useHistory } from "react-router";
 import { transformGetContents } from "../../utils/api-transforms";
 import { APP_ROUTES } from "../../configs/app";

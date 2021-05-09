@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ENDPOINTS } from "../configs/api";
-// import { HOME_PAGE } from "../configs/app";
+import { HOME_PAGE } from "../configs/app";
 
 export const getContents = () => {
   // TODO: Delete statement below post API implementation
@@ -37,3 +37,35 @@ export const getContents = () => {
 
 export const getContent = (contentID) =>
   axios.get(ENDPOINTS.GET_CONTENT(contentID)).then((res) => res.data);
+
+export const postDummyApi = (reqBody, contentID) =>
+  axios.post(`/${contentID}`, reqBody).then((res) => res.data);
+
+export const getHistoryData = () => {
+  return Promise.resolve([
+    {
+      ticketId: "100",
+      startDate: new Date("May 17, 2021 03:24:00"),
+      endDate: new Date("May 17, 2021 10:24:00"),
+      name: "Batman",
+      posterUrl: HOME_PAGE.CAROUSEL_IMAGES[0] || "",
+    },
+    {
+      ticketId: "102",
+      endDate: new Date(),
+      startDate: new Date("December 17, 1995 03:24:00"),
+      name: "Joker",
+      posterUrl: HOME_PAGE.CAROUSEL_IMAGES[1] || "",
+    },
+    {
+      ticketId: "1003",
+      startDate: new Date(),
+      endDate: new Date("December 17, 2021 03:24:00"),
+      name: "Dark Knight",
+      posterUrl: HOME_PAGE.CAROUSEL_IMAGES[2] || "",
+    },
+  ]);
+
+  // eslint-disable-next-line
+  return axios.get(ENDPOINTS.GET_HISTORY).then((res) => res.data);
+};

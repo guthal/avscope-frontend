@@ -4,22 +4,22 @@ import { HEADER_LABELS } from "../../configs/app";
 import useStyles from "./Header.Styles";
 
 function Header() {
-  const classes = useStyles();
+    const classes = useStyles();
 
-  return (
-    <Box mb={2}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h4" className={classes.title}>
-            {HEADER_LABELS.LOGO}
-          </Typography>
-          <Button color="secondary" variant="contained">
-            {HEADER_LABELS.LOGIN}
-          </Button>
-        </Toolbar>
-      </AppBar>
-    </Box>
-  );
+    return (
+        <Box mb={2}>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h4" className={classes.title}>
+                        {HEADER_LABELS.LOGO}
+                    </Typography>
+                    <Button color="secondary" variant="contained">
+                        {HEADER_LABELS.LOGIN}
+                    </Button>
+                </Toolbar>
+            </AppBar>
+        </Box>
+    );
 }
 
 export default Header;

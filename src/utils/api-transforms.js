@@ -35,3 +35,16 @@ export const transformGetContent = (data) => ({
   rating: data.rating || "8.4",
   duration: data.duration || "2h 35m",
 });
+
+export const transformGetHistoryData = (data) => {
+  return data.map((history) => {
+    const isTicketValid = new Date() <= history.endDate;
+    return {
+      purchaseDate: history.startDate,
+      ticketId: history.ticketId,
+      name: history.name,
+      posterUrl: history.posterUrl,
+      isTicketValid: isTicketValid,
+    };
+  });
+};

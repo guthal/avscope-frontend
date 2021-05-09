@@ -36,7 +36,7 @@ function TicketsPage() {
   return (
     <Container maxWidth="lg">
       <Grid container spacing={8}>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Box py={2}>
             <Typography
               color="secondary"
@@ -64,7 +64,7 @@ function TicketsPage() {
             )}
           </Grid>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Box mt={2}>
             <ContentCard>
               <Box p={2}>

@@ -39,13 +39,11 @@ function HistoryPage() {
     return (
         <Container maxWidth="lg">
             <Box py={2}>
-                <Typography
-                    variant="h3"
-                    className={classes.heading}
-                    style={{ padding: "1rem" }}
-                >
-                    Purchase History
-                </Typography>
+                <Box p={3}>
+                    <Typography variant="h3" className={classes.heading}>
+                        Purchase History
+                    </Typography>
+                </Box>
                 <Grid container spacing={4}>
                     {historyData?.map((historyCard, index) => (
                         <Grid

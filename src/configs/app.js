@@ -12,9 +12,9 @@ export const APP_ROUTES = {
     },
 
     HISTORY_PAGE: {
-        path: "/booking-history",
+        path: "/booked-history",
         key: "",
-        label: "Booking History Page",
+        label: "Booked History Page",
     },
 
     TICKETS_PAGE: {

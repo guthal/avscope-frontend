@@ -4,6 +4,7 @@ import useStyles from "./HistoryCard.Styles";
 import expired from "../../assets/expired.png";
 import valid from "../../assets/valid.png";
 import { trimDatetoHumanReadable } from "../../utils/generic";
+import CountdownTimer from "../CountdownTimer";
 
 function HistoryCard({ historyCard }) {
     const classes = useStyles();
@@ -28,16 +29,19 @@ function HistoryCard({ historyCard }) {
                     <Grid item xs container direction="column" spacing={2}>
                         <Grid item xs>
                             <Box p={2} style={{ position: "absolute" }}>
-                                <Typography gutterBottom variant="h4">
+                                <Typography gutterBottom variant="h5">
                                     {historyCard.name}
                                 </Typography>
-                                <Typography variant="h5" gutterBottom>
+                                <Typography variant="h6" gutterBottom>
                                     {trimDatetoHumanReadable(
                                         historyCard.purchaseDate.toString()
                                     )}
                                 </Typography>
                                 <Typography variant="subtitle2">
-                                    $19.00
+                                    $19.00{" "}
+                                    {historyCard.isTicketValid && (
+                                        <CountdownTimer />
+                                    )}
                                 </Typography>
                             </Box>
                         </Grid>

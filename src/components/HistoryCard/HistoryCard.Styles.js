@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
         boxShadow: `1px 1px 5px 1px ${theme.palette.primary.main}`,
     },
     imageGrid: {
-        padding: 0,
+        padding: "0 !important",
     },
     imageContainer: {
         backgroundColor: theme.palette.primary.main,
@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
         width: "150px",
         zIndex: 2,
         overflow: "hidden",
+        opacity: 0.4,
     },
     validImg: {
         position: "absolute",

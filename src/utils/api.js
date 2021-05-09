@@ -45,8 +45,8 @@ export const getHistoryData = () => {
     return Promise.resolve([
         {
             ticketId: "100",
-            startDate: new Date(),
-            endDate: new Date("December 17, 1995 03:24:00"),
+            startDate: new Date("May 17, 2021 03:24:00"),
+            endDate: new Date("May 17, 2021 10:24:00"),
             name: "Batman",
             posterUrl: HOME_PAGE.CAROUSEL_IMAGES[0] || "",
         },

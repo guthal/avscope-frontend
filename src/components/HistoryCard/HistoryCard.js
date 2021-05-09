@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Typography, Box } from "@material-ui/core";
 import useStyles from "./HistoryCard.Styles";
 import expired from "../../assets/expired.png";
@@ -8,6 +8,13 @@ import CountdownTimer from "../CountdownTimer";
 
 function HistoryCard({ historyCard }) {
     const classes = useStyles();
+    const [cardData, setCardData] = useState(historyCard);
+
+    const handleComplete = () =>
+        setCardData(prev => ({
+            ...prev,
+            isTicketValid: false,
+        }));
 
     return (
         <div className={classes.root}>
@@ -20,7 +27,7 @@ function HistoryCard({ historyCard }) {
                     <Box className={classes.imageContainer}>
                         <img
                             className={classes.img}
-                            src={historyCard.posterUrl}
+                            src={cardData.posterUrl}
                             alt="variant"
                         />
                     </Box>
@@ -30,17 +37,20 @@ function HistoryCard({ historyCard }) {
                         <Grid item xs>
                             <Box p={2} style={{ position: "absolute" }}>
                                 <Typography gutterBottom variant="h5">
-                                    {historyCard.name}
+                                    {cardData.name}
                                 </Typography>
                                 <Typography variant="h6" gutterBottom>
                                     {trimDatetoHumanReadable(
-                                        historyCard.purchaseDate.toString()
+                                        cardData.purchaseDate.toString()
                                     )}
                                 </Typography>
                                 <Typography variant="subtitle2">
                                     $19.00{" "}
-                                    {historyCard.isTicketValid && (
-                                        <CountdownTimer />
+                                    {cardData.isTicketValid && (
+                                        <CountdownTimer
+                                            onComplete={handleComplete}
+                                            purchaseDate={cardData.purchaseDate}
+                                        />
                                     )}
                                 </Typography>
                             </Box>
@@ -49,7 +59,7 @@ function HistoryCard({ historyCard }) {
                 </Grid>
                 <Grid item>
                     <Box className={classes.validityContainer}>
-                        {historyCard.isTicketValid ? (
+                        {cardData.isTicketValid ? (
                             <img
                                 className={classes.validImg}
                                 src={valid}

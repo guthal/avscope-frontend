@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { useRouteMatch } from "react-router-dom";
 import { Box, Container, Grid, Typography } from "@material-ui/core";
+import ContentCard from "../../components/ContentCard";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import useGetApi from "../../hooks/useGetApi";
@@ -39,14 +40,12 @@ function TicketsPage() {
     return (
         <Container maxWidth="lg">
             <Grid container spacing={8}>
-                <Grid item xs={6} spacing={4}>
-                    <Typography
-                        variant="h3"
-                        className={classes.heading}
-                        style={{ padding: "1rem" }}
-                    >
-                        Your Valid Tickets
-                    </Typography>
+                <Grid item xs={6}>
+                    <Box py={2}>
+                        <Typography variant="h3" className={classes.heading}>
+                            Your Valid Tickets
+                        </Typography>
+                    </Box>
                     <Grid item xs={12}>
                         {ticketsData?.map(
                             (validTickets, index) =>
@@ -67,38 +66,36 @@ function TicketsPage() {
                         )}
                     </Grid>
                 </Grid>
-                <Grid
-                    item
-                    xs={6}
-                    spacing={4}
-                    style={{
-                        margin: "18px 0px",
-                        borderLeft: "4px solid yellow",
-                    }}
-                >
-                    <Typography
-                        variant="h5"
-                        className={classes.heading}
-                        style={{
-                            padding: "1rem",
-                        }}
-                    >
-                        Purchase History
-                    </Typography>
-                    <Grid item xs={12}>
-                        {ticketsData?.map((historyCard, index) => (
-                            <Grid
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                xs={12}
-                                item
-                                key={`content-card-${index}`}
-                            >
-                                <HistoryCard historyCard={historyCard} />
+                <Grid item xs={6}>
+                    <ContentCard>
+                        <Box p={2}>
+                            <Box py={2}>
+                                <Typography
+                                    variant="h4"
+                                    className={classes.heading}
+                                    color="secondary"
+                                >
+                                    Purchase History
+                                </Typography>
+                            </Box>
+                            <Grid item xs={12}>
+                                {ticketsData?.map((historyCard, index) => (
+                                    <Grid
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        xs={12}
+                                        item
+                                        key={`content-card-${index}`}
+                                    >
+                                        <HistoryCard
+                                            historyCard={historyCard}
+                                        />
+                                    </Grid>
+                                ))}
                             </Grid>
-                        ))}
-                    </Grid>
+                        </Box>
+                    </ContentCard>
                 </Grid>
             </Grid>
         </Container>

@@ -20,14 +20,12 @@ function HomeCarousel({ contents }) {
     <Container maxWidth="lg" className={classes.sliderContainer}>
       <Slider {...settings}>
         {contents.map((content, index) => (
-          <Box style={{ position: "relative" }}>
-            <Box
-              p={1}
-              className={classes.imageContainer}
-              key={`carousel-${index}`}
-            >
-              <img src={content.carouselUrl} alt="No Carousel" />
-            </Box>
+          <Box
+            p={1}
+            className={classes.imageContainer}
+            key={`carousel-${index}`}
+          >
+            <img src={content.carouselUrl} alt="No Carousel" />
           </Box>
         ))}
       </Slider>

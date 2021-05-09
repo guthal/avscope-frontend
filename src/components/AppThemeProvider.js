@@ -6,13 +6,13 @@ function AppThemeProvider({ children }) {
   const theme = createMuiTheme({
     palette: {
       primary: {
-        main: "#222",
+        main: "#232323",
       },
       secondary: {
         main: "#e6dd00",
       },
       background: {
-        default: "#333",
+        default: "#292929",
       },
       text: {
         primary: "#cecece",

@@ -62,7 +62,7 @@ function HomePage() {
                   onClick={() => handleCardClick(contentCard.id)}
                 >
                   <ContentCard>
-                    <MoviePosterCard url={contentCard.posterUrl} />
+                    <MoviePosterCard url={contentCard.imageUrl} />
 
                     <Box p={2}>
                       <Box>

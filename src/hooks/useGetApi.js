@@ -21,20 +21,23 @@ function useGetApi(
   }, [error]);
 
   useEffect(() => {
+    if (!loading) setToggle(false);
+  }, [loading]);
+
+  useEffect(() => {
     if (toggle) {
       setLoading(true);
 
       apiCallback
         .apply(null, apiCallbackParams)
-        .then((data) => {
-          setData(apiTransformFn?.(data) || data);
+        .then((resData) => {
+          setData(apiTransformFn?.(resData) || resData);
         })
         .catch((err) => {
           setError(err);
         })
         .finally(() => {
           setLoading(false);
-          setToggle(false);
         });
     }
   }, [toggle, apiCallback, apiCallbackParams, apiTransformFn]);

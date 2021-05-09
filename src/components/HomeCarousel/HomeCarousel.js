@@ -26,7 +26,7 @@ function HomeCarousel({ contents }) {
               className={classes.imageContainer}
               key={`carousel-${index}`}
             >
-              <img src={content.posterUrl} alt="No Carousel" />
+              <img src={content.carouselUrl} alt="No Carousel" />
             </Box>
           </Box>
         ))}

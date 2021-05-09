@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   imageContainer: {
+    border: `2px solid ${theme.palette.primary.main}`,
     height: "500px",
     backgroundColor: theme.palette.primary.main,
     position: "relative",

@@ -4,6 +4,7 @@ import { Header } from "../components";
 import HomePage from "./HomePage";
 import PageNotFound from "./PageNotFound";
 import { APP_ROUTES } from "../configs/app";
+import ContentPage from "./ContentPage";
 
 function Pages() {
   return (
@@ -11,7 +12,11 @@ function Pages() {
       <Header />
       <Switch>
         <Route exact path={APP_ROUTES.HOME_PAGE.path} component={HomePage} />
-        <Route exact path={`${APP_ROUTES.CONTENT_PAGE.path}/:contentID`} />
+        <Route
+          exact
+          path={`${APP_ROUTES.CONTENT_PAGE.path}/:contentID`}
+          component={ContentPage}
+        />
         <Route path="/*" component={PageNotFound} />
       </Switch>
     </Router>

@@ -46,11 +46,11 @@ function HistoryCard({ historyCard }) {
                 </Typography>
                 {!cardData.isTicketValid &&
                   (cardData.purchaseType === "r" ? (
-                    <Button variant="contained" color="secondary">
+                    <Button variant="contained" color="primary">
                       Rent Again
                     </Button>
                   ) : (
-                    <Button variant="contained" color="secondary">
+                    <Button variant="contained" color="primary">
                       Buy Weekly Again
                     </Button>
                   ))}

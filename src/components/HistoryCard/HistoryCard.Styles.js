@@ -24,17 +24,20 @@ const useStyles = makeStyles(theme => ({
     overflow: "hidden",
 
     "& >img": {
-      width: "250px",
-      height: "100%",
+      width: "100%",
+      maxHeight: "230px",
       [theme.breakpoints.down("sm")]: {
         width: "100%",
       },
     },
+    [theme.breakpoints.down("md")]: {
+      height: "150px",
+    },
     [theme.breakpoints.down("sm")]: {
-      height: "200px",
+      height: "150px",
     },
     [theme.breakpoints.down("xs")]: {
-      height: "250px",
+      height: "150px",
     },
   },
   validityContainer: {

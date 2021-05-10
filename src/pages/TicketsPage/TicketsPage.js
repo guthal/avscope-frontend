@@ -36,17 +36,17 @@ function TicketsPage() {
   return (
     <Container maxWidth="lg">
       <Grid container spacing={8}>
-        <Grid item lg={6} md={6} sm={12} xs={12}>
+        <Grid item lg={6} md={12} sm={12} xs={12}>
           <Box py={2}>
             <Typography
               color="secondary"
               variant="h3"
               className={classes.heading}
             >
-              Your Valid Tickets
+              Weekly Valid Tickets
             </Typography>
           </Box>
-          <Grid item xs={12}>
+          <Grid item md={12} sm={6} xs={12}>
             {ticketsData?.map(
               (validTickets, index) =>
                 validTickets.isTicketValid && (
@@ -64,36 +64,34 @@ function TicketsPage() {
             )}
           </Grid>
         </Grid>
-        <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Box mt={2}>
-            <ContentCard>
-              <Box p={2}>
-                <Box py={2}>
-                  <Typography
-                    variant="h4"
-                    className={classes.heading}
-                    color="secondary"
-                  >
-                    Purchase History
-                  </Typography>
-                </Box>
-                <Grid item xs={12}>
-                  {ticketsData?.map((historyCard, index) => (
-                    <Grid
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      item
-                      key={`content-card-${index}`}
-                    >
-                      <HistoryCard historyCard={historyCard} />
-                    </Grid>
-                  ))}
+        <Grid item lg={6} md={12} sm={12} xs={12}>
+          <ContentCard>
+            <Box p={2}>
+              <Typography
+                variant="h4"
+                className={classes.heading}
+                color="secondary"
+              >
+                All Purchased Tickets
+              </Typography>
+            </Box>
+            <Grid container>
+              {ticketsData?.map((historyCard, index) => (
+                <Grid
+                  lg={12}
+                  md={6}
+                  sm={6}
+                  xs={12}
+                  item
+                  key={`content-card-${index}`}
+                >
+                  <Box px={2}>
+                    <HistoryCard historyCard={historyCard} />
+                  </Box>
                 </Grid>
-              </Box>
-            </ContentCard>
-          </Box>
+              ))}
+            </Grid>
+          </ContentCard>
         </Grid>
       </Grid>
     </Container>

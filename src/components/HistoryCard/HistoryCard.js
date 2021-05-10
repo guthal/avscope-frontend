@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Typography, Box } from "@material-ui/core";
+import { Grid, Typography, Box, Button } from "@material-ui/core";
 import useStyles from "./HistoryCard.Styles";
 import expired from "../../assets/expired.png";
 import valid from "../../assets/valid.png";
@@ -19,7 +19,7 @@ function HistoryCard({ historyCard }) {
   return (
     <div className={classes.root}>
       <Grid container spacing={2} className={classes.historyCardContainer}>
-        <Grid item className={classes.imageGrid}>
+        <Grid item lg={6} md={6} sm={12} xs={12} className={classes.imageGrid}>
           <Box className={classes.imageContainer}>
             <img src={cardData.posterUrl} alt="variant" />
           </Box>
@@ -34,8 +34,9 @@ function HistoryCard({ historyCard }) {
                 <Typography variant="h6" gutterBottom>
                   {trimDatetoHumanReadable(cardData.purchaseDate.toString())}
                 </Typography>
-                <Typography variant="subtitle2">
-                  $19.00{" "}
+                <Typography variant="h6">₹ {cardData.purchasePrice}</Typography>
+                <Typography variant="button">
+                  <b>{cardData.isTicketValid && " Expires in: "}</b>
                   {cardData.isTicketValid && (
                     <CountdownTimer
                       onComplete={handleComplete}
@@ -44,6 +45,16 @@ function HistoryCard({ historyCard }) {
                   )}
                 </Typography>
               </Box>
+              {!cardData.isTicketValid &&
+                (cardData.purchaseType === "r" ? (
+                  <Button variant="contained" color="secondary">
+                    Rent Again
+                  </Button>
+                ) : (
+                  <Button variant="contained" color="secondary">
+                    Buy Weekly Again
+                  </Button>
+                ))}
             </Grid>
           </Grid>
         </Grid>

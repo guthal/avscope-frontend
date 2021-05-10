@@ -1,7 +1,8 @@
 import { HOME_PAGE } from "../configs/app";
+import { ENDPOINTS } from "../configs/api";
 
-export const transformGetContents = (data) =>
-  data.map((content) => ({
+export const transformGetContents = data =>
+  data.map(content => ({
     id: content.id,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." ||
@@ -18,7 +19,7 @@ export const transformGetContents = (data) =>
     genres: content.genres || [],
   }));
 
-export const transformGetContent = (data) => ({
+export const transformGetContent = data => ({
   id: data.id,
   description:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." ||
@@ -36,15 +37,31 @@ export const transformGetContent = (data) => ({
   duration: data.duration || "2h 35m",
 });
 
-export const transformGetHistoryData = (data) => {
-  return data.map((history) => {
-    const isTicketValid = new Date() <= history.endDate;
+export const transformGetHistoryData = data => {
+  const currentDate = new Date();
+  const returnData = data.map(historyData => {
+    var isTicketValid;
+    const expiryDate = new Date(historyData.purchaseDate);
+    const purchaseDate = new Date(historyData.purchaseDate);
+    if (historyData.purchaseType === "r") {
+      expiryDate.setDate(purchaseDate.getDate() + ENDPOINTS.RENT_EXPIRY_DAYS);
+      isTicketValid = currentDate <= expiryDate;
+    }
+    if (historyData.purchaseType === "w") {
+      expiryDate.setHours(
+        purchaseDate.getHours() + ENDPOINTS.WEEKLY_EXPIRY_HOURS
+      );
+      isTicketValid = currentDate <= expiryDate;
+    }
     return {
-      purchaseDate: history.startDate,
-      ticketId: history.ticketId,
-      name: history.name,
-      posterUrl: history.posterUrl,
+      purchaseDate: purchaseDate,
+      purchasePrice: historyData.purchasePrice,
+      purchaseType: historyData.purchaseType,
+      ticketId: historyData.purchaseId,
+      name: historyData.contentTitle,
+      posterUrl: historyData.thumbnail.picsq,
       isTicketValid: isTicketValid,
     };
   });
+  return returnData;
 };

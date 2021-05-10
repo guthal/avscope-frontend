@@ -34,10 +34,10 @@ function useGetApi(
 
       apiCallback
         .apply(null, apiCallbackParams)
-        .then((resData) => {
+        .then(resData => {
           setData(apiTransformFn?.(resData) || resData);
         })
-        .catch((err) => {
+        .catch(err => {
           setError(err);
         })
         .finally(() => {

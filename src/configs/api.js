@@ -1,4 +1,4 @@
-const DOMAIN = "http://localhost:3001";
+const DOMAIN = "http://localhost:8000";
 
 const ENDPOINTS = {
   GET_CONTENT: (contentID) => `${DOMAIN}/contents/${contentID}`,
@@ -7,6 +7,11 @@ const ENDPOINTS = {
   GET_HISTORY: (userID) => `${DOMAIN}/history/${userID}`,
   GET_USER_CONTENT_PURCHASES: (userID, contentID) =>
     `${DOMAIN}/user-purchase/${userID}/contents/${contentID}`,
+  GET_USER_PURCHASE: (userID) => `${DOMAIN}/user-purchase/${userID}`,
+
+  // Content Expiry Consts
+  RENT_EXPIRY_DAYS: 30,
+  WEEKLY_EXPIRY_HOURS: 6,
 };
 
 export { ENDPOINTS };

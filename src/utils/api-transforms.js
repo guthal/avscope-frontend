@@ -1,3 +1,5 @@
+import { ENDPOINTS } from "../configs/api";
+
 export const transformGetContents = (data) => {
   const contentData = [];
   const seriesData = [];
@@ -60,16 +62,32 @@ export const transformGetContent = (data) => ({
 });
 
 export const transformGetHistoryData = (data) => {
-  return data.map((history) => {
-    const isTicketValid = new Date() <= history.endDate;
+  const currentDate = new Date();
+  const returnData = data.map((historyData) => {
+    var isTicketValid;
+    const expiryDate = new Date(historyData.purchaseDate);
+    const purchaseDate = new Date(historyData.purchaseDate);
+    if (historyData.purchaseType === "r") {
+      expiryDate.setDate(purchaseDate.getDate() + ENDPOINTS.RENT_EXPIRY_DAYS);
+      isTicketValid = currentDate <= expiryDate;
+    }
+    if (historyData.purchaseType === "w") {
+      expiryDate.setHours(
+        purchaseDate.getHours() + ENDPOINTS.WEEKLY_EXPIRY_HOURS
+      );
+      isTicketValid = currentDate <= expiryDate;
+    }
     return {
-      purchaseDate: history.startDate,
-      ticketId: history.ticketId,
-      name: history.name,
-      posterUrl: history.posterUrl,
+      purchaseDate: purchaseDate,
+      purchasePrice: historyData.purchasePrice,
+      purchaseType: historyData.purchaseType,
+      ticketId: historyData.purchaseId,
+      name: historyData.contentTitle,
+      posterUrl: historyData.thumbnail.picsq,
       isTicketValid: isTicketValid,
     };
   });
+  return returnData;
 };
 
 export const transformGetUserContentPurchases = (data) =>

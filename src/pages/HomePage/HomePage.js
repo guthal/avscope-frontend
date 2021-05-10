@@ -1,20 +1,16 @@
 import React, { useEffect, useMemo } from "react";
 import { Box, Typography, Container, Grid } from "@material-ui/core";
-import ContentCard from "../../components/ContentCard";
 import HomeCarousel from "../../components/HomeCarousel";
+import MovieCard from "../../components/MovieCard";
 import useGetApi from "../../hooks/useGetApi";
 import { getContents } from "../../utils/api";
-import { getEllipsedText } from "../../utils/generic";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
-import useStyles from "./HomePage.Styles";
-import MoviePosterCard from "../../components/MoviePosterCard";
 import { useHistory } from "react-router";
 import { transformGetContents } from "../../utils/api-transforms";
 import { APP_ROUTES } from "../../configs/app";
 
 function HomePage() {
-  const classes = useStyles();
   const history = useHistory();
   const getContentsParams = useMemo(() => ["param1", "param2"], []);
 
@@ -26,7 +22,7 @@ function HomePage() {
   } = useGetApi(getContents, getContentsParams, transformGetContents);
 
   const handleCardClick = (contentID) =>
-    history.push(`${APP_ROUTES.CONTENT_PAGE.path}/${contentID}`);
+    history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
 
@@ -37,53 +33,67 @@ function HomePage() {
       <PageError message="Opps.. Something went wrong while fetching contents." />
     );
 
+  if (!contentsData) return <></>;
+
   return (
-    <Box>
-      {contentsData && (
-        <Box>
-          <HomeCarousel contents={contentsData.slice(0, 2)} />
-        </Box>
-      )}
+    <>
+      <Box>
+        <HomeCarousel
+          contents={[
+            ...contentsData?.contents?.slice(0, 2),
+            ...contentsData?.series?.slice(0, 2),
+          ]}
+        />
+      </Box>
 
       <Container maxWidth="lg">
-        <Box py={5}>
-          <Grid container spacing={4}>
-            {contentsData?.map((contentCard, index) => (
-              <Grid
-                lg={3}
-                md={3}
-                sm={6}
-                xs={12}
-                item
-                key={`content-card-${index}`}
-              >
-                <Box
-                  className={classes.contentCardContainer}
-                  onClick={() => handleCardClick(contentCard.id)}
+        <Box py={4}>
+          <Box py={1}>
+            <Box py={2}>
+              <Typography variant="h4">Recommended</Typography>
+            </Box>
+            <Grid container spacing={4}>
+              {contentsData?.contents?.slice(0, 4).map((contentCard, index) => (
+                <Grid
+                  lg={3}
+                  md={3}
+                  sm={6}
+                  xs={12}
+                  item
+                  key={`content-card-${index}`}
                 >
-                  <ContentCard>
-                    <MoviePosterCard url={contentCard.imageUrl} />
-
-                    <Box p={2}>
-                      <Box>
-                        <Typography variant="h6" color="secondary">
-                          {contentCard.name}
-                        </Typography>
-                      </Box>
-                      <Box my={1}>
-                        <Typography variant="subtitle2">
-                          {getEllipsedText(contentCard.description, 100)}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </ContentCard>
-                </Box>
+                  <MovieCard cardData={contentCard} onClick={handleCardClick} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+          {contentsData?.series.length > 0 && (
+            <Box py={1}>
+              <Box py={2}>
+                <Typography variant="h4">Series</Typography>
+              </Box>
+              <Grid container spacing={4}>
+                {contentsData?.series?.slice(0, 4).map((contentCard, index) => (
+                  <Grid
+                    lg={3}
+                    md={3}
+                    sm={6}
+                    xs={12}
+                    item
+                    key={`content-card-${index}`}
+                  >
+                    <MovieCard
+                      cardData={contentCard}
+                      onClick={handleCardClick}
+                    />
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
+            </Box>
+          )}
         </Box>
       </Container>
-    </Box>
+    </>
   );
 }
 

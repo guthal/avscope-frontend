@@ -13,6 +13,10 @@ function useGetApi(
   const triggerApi = useCallback(() => setToggle(true), []);
 
   useEffect(() => {
+    setData(undefined);
+  }, [apiCallbackParams]);
+
+  useEffect(() => {
     if (data) setError(undefined);
   }, [data]);
 

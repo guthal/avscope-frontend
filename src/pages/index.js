@@ -6,7 +6,7 @@ import HistoryPage from "./HistoryPage";
 import TicketsPage from "./TicketsPage";
 import PageNotFound from "./PageNotFound";
 import { APP_ROUTES } from "../configs/app";
-import ContentPage from "./ContentPage";
+import VideoDetailPage from "./VideoDetailPage";
 
 function Pages() {
   return (
@@ -17,8 +17,8 @@ function Pages() {
 
         <Route
           exact
-          path={`${APP_ROUTES.CONTENT_PAGE.path}/:contentID`}
-          component={ContentPage}
+          path={`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/:contentID`}
+          component={VideoDetailPage}
         />
         <Route
           exact

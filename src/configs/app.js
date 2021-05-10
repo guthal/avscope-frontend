@@ -1,38 +1,38 @@
 export const APP_ROUTES = {
-    HOME_PAGE: {
-        path: "/",
-        key: "",
-        label: "Home Page",
-    },
+  HOME_PAGE: {
+    path: "/",
+    key: "",
+    label: "Home Page",
+  },
 
-    CONTENT_PAGE: {
-        path: "/contents",
-        key: "",
-        label: "Content Page",
-    },
+  VIDEO_DETAIL_PAGE: {
+    path: "/video-detail",
+    key: "",
+    label: "Video Detail Page",
+  },
 
-    HISTORY_PAGE: {
-        path: "/booked-history",
-        key: "",
-        label: "Booked History Page",
-    },
+  HISTORY_PAGE: {
+    path: "/booked-history",
+    key: "",
+    label: "Booked History Page",
+  },
 
-    TICKETS_PAGE: {
-        path: "/booked-tickets",
-        key: "",
-        label: "Booked Tickets Page",
-    },
+  TICKETS_PAGE: {
+    path: "/booked-tickets",
+    key: "",
+    label: "Booked Tickets Page",
+  },
 };
 
 export const HEADER_LABELS = {
-    LOGIN: "Login",
-    LOGO: "Logo",
+  LOGIN: "Login",
+  LOGO: "Logo",
 };
 
 export const HOME_PAGE = {
-    CAROUSEL_IMAGES: [
-        "https://static1.srcdn.com/wordpress/wp-content/uploads/2021/01/The-Batman-Lee-Bermejo.jpg",
-        "https://variety.com/wp-content/uploads/2020/08/batman-first-look.png",
-        "https://cdna.artstation.com/p/assets/images/images/020/539/304/large/tyr-s-studio-joker2.jpg?1568171432",
-    ],
+  CAROUSEL_IMAGES: [
+    "https://static1.srcdn.com/wordpress/wp-content/uploads/2021/01/The-Batman-Lee-Bermejo.jpg",
+    "https://variety.com/wp-content/uploads/2020/08/batman-first-look.png",
+    "https://cdna.artstation.com/p/assets/images/images/020/539/304/large/tyr-s-studio-joker2.jpg?1568171432",
+  ],
 };

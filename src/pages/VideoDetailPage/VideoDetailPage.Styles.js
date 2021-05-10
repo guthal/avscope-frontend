@@ -6,8 +6,7 @@ const useStyles = makeStyles((theme) => ({
   },
   posterContainer: {
     position: "relative",
-    width: "100%",
-    height: "60vh",
+    minHeight: "60vh",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -24,6 +23,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 
+  seasonSelectorContainer: { position: "relative" },
+
+  seasonSelectorDropdown: {
+    position: "absolute",
+    zIndex: 1,
+    top: "0px",
+  },
+  seasonSelectorItem: {
+    width: "130px",
+    borderRadius: "0",
+    textAlign: "left",
+    paddingLeft: "0px",
+  },
   genreBtn: {
     fontSize: "8px",
     padding: "2px 4px",

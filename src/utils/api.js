@@ -38,6 +38,9 @@ export const getContents = () => {
 export const getContent = (contentID) =>
   axios.get(ENDPOINTS.GET_CONTENT(contentID)).then((res) => res.data);
 
+export const getSeries = (seriesID) =>
+  axios.get(ENDPOINTS.GET_SERIES(seriesID)).then((res) => res.data);
+
 export const postDummyApi = (reqBody, contentID) =>
   axios.post(`/${contentID}`, reqBody).then((res) => res.data);
 
@@ -69,3 +72,8 @@ export const getHistoryData = () => {
   // eslint-disable-next-line
   return axios.get(ENDPOINTS.GET_HISTORY).then((res) => res.data);
 };
+
+export const getUserContentPurchases = (userID, contentID) =>
+  axios
+    .get(ENDPOINTS.GET_USER_CONTENT_PURCHASES(userID, contentID))
+    .then((res) => res.data);

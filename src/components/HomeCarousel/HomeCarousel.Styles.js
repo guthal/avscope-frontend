@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   sliderContainer: {
-    padding: "24px",
+    padding: "8px 0",
 
     "& .slick-slider": {
       position: "relative",
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     [theme.breakpoints.down("sm")]: {
-      padding: "8px 0",
+      padding: "0",
     },
   },
 
@@ -59,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
       transform: "translate(-50%, -50%)",
       width: "100%",
       height: "auto",
+      "-webkit-mask-image":
+        "radial-gradient(at 50% 50%, black, transparent 80%)",
+      maskImage: "radial-gradient(at 50% 50%, black, transparent 80%)",
     },
 
     [theme.breakpoints.down("sm")]: {

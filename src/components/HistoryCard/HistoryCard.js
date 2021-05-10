@@ -27,11 +27,11 @@ function HistoryCard({ historyCard }) {
         <Grid item xs={12} md container>
           <Grid item xs container direction="column" spacing={2}>
             <Grid item xs>
-              <Box p={2}>
+              <Box px={2}>
                 <Typography gutterBottom variant="h5">
                   {cardData.name}
                 </Typography>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="subtitle2" gutterBottom>
                   {trimDatetoHumanReadable(cardData.purchaseDate.toString())}
                 </Typography>
                 <Typography variant="h6">₹ {cardData.purchasePrice}</Typography>
@@ -44,17 +44,17 @@ function HistoryCard({ historyCard }) {
                     />
                   )}
                 </Typography>
+                {!cardData.isTicketValid &&
+                  (cardData.purchaseType === "r" ? (
+                    <Button variant="contained" color="primary">
+                      Rent Again
+                    </Button>
+                  ) : (
+                    <Button variant="contained" color="primary">
+                      Buy Weekly Again
+                    </Button>
+                  ))}
               </Box>
-              {!cardData.isTicketValid &&
-                (cardData.purchaseType === "r" ? (
-                  <Button variant="contained" color="secondary">
-                    Rent Again
-                  </Button>
-                ) : (
-                  <Button variant="contained" color="secondary">
-                    Buy Weekly Again
-                  </Button>
-                ))}
             </Grid>
           </Grid>
         </Grid>

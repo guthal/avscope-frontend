@@ -25,19 +25,19 @@ const useStyles = makeStyles(theme => ({
 
     "& >img": {
       width: "100%",
-      maxHeight: "230px",
+      maxHeight: "150px",
       [theme.breakpoints.down("sm")]: {
         width: "100%",
       },
     },
     [theme.breakpoints.down("md")]: {
-      height: "150px",
+      height: "100%",
     },
     [theme.breakpoints.down("sm")]: {
-      height: "150px",
+      height: "100%",
     },
     [theme.breakpoints.down("xs")]: {
-      height: "150px",
+      height: "100%",
     },
   },
   validityContainer: {

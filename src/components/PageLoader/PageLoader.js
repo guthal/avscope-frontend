@@ -14,7 +14,7 @@ function PageLoader() {
         className={classes.root}
       >
         <Grid item>
-          <CircularProgress size={100} />
+          <CircularProgress color="secondary" size={100} />
         </Grid>
       </Grid>
     </Container>

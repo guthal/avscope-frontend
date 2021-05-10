@@ -38,8 +38,8 @@ export const getContents = () => {
 export const getContent = (contentID) =>
   axios.get(ENDPOINTS.GET_CONTENT(contentID)).then((res) => res.data);
 
-export const getSeries = (seriesID) =>
-  axios.get(ENDPOINTS.GET_SERIES(seriesID)).then((res) => res.data);
+export const getSeriesContents = (seriesID) =>
+  axios.get(ENDPOINTS.GET_SERIES_CONTENTS(seriesID)).then((res) => res.data);
 
 export const postDummyApi = (reqBody, contentID) =>
   axios.post(`/${contentID}`, reqBody).then((res) => res.data);

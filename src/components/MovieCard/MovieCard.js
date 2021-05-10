@@ -13,7 +13,7 @@ function MovieCard({ cardData, onClick }) {
   return (
     <Box
       className={classes.contentCardContainer}
-      onClick={() => handleCardClick(cardData.seriesID || cardData.id)}
+      onClick={() => handleCardClick(cardData.id)}
     >
       <ContentCard>
         <MoviePosterCard url={cardData.imageUrl} />

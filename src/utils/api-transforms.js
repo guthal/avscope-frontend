@@ -13,10 +13,10 @@ export const transformGetContents = (data) => {
         datum.thumbnail.picsq ||
         "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
       genres: datum.genres || [],
-      seriesID: datum.seriesID,
+      seriesID: datum.seriesId,
     };
 
-    if (datum.seriesID) seriesData.push(content);
+    if (datum.seriesId) seriesData.push(content);
     else contentData.push(content);
   });
 
@@ -26,7 +26,7 @@ export const transformGetContents = (data) => {
   };
 };
 
-export const transformGetSeries = (data) =>
+export const transformGetSeriesContents = (data) =>
   data.map((datum) => ({
     id: datum.id,
     description: datum.description,
@@ -38,8 +38,8 @@ export const transformGetSeries = (data) =>
       datum.thumbnail.picsq ||
       "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
     genres: datum.genres || [],
-    seriesID: datum?.seriesID,
-    seriesInfo: data.contentSeriesInfo,
+    seriesID: datum.seriesId,
+    seriesInfo: datum.contentSeriesInfo,
   }));
 
 export const transformGetContent = (data) => ({
@@ -55,7 +55,7 @@ export const transformGetContent = (data) => ({
   cast: data.cast || [],
   rating: data.rating,
   duration: data.duration,
-  seriesID: data.seriesID,
+  seriesID: data.seriesId,
   seriesInfo: data.contentSeriesInfo,
 });
 

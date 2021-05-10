@@ -14,13 +14,13 @@ import useGetApi from "../../hooks/useGetApi";
 import {
   getContent,
   getContents,
-  getSeries,
+  getSeriesContents,
   getUserContentPurchases,
 } from "../../utils/api";
 import {
   transformGetContent,
   transformGetContents,
-  transformGetSeries,
+  transformGetSeriesContents,
   transformGetUserContentPurchases,
 } from "../../utils/api-transforms";
 import { APP_ROUTES } from "../../configs/app";
@@ -77,8 +77,8 @@ function VideoDetailPage() {
   } = useGetApi(getContents, getContentsParams, transformGetContents);
 
   const getUserContentPurchasesParams = useMemo(
-    () => [userID, contentData?.id],
-    [contentData]
+    () => (contentData?.id ? [userID, contentData.id] : []),
+    [contentData?.id]
   );
   const {
     data: userContentPurchasesData,
@@ -91,14 +91,19 @@ function VideoDetailPage() {
     transformGetUserContentPurchases
   );
 
-  const getSeriesParams = useMemo(() => [contentData?.seriesID], [
-    contentData?.seriesID,
-  ]);
+  const getSeriesContentsParams = useMemo(
+    () => (contentData?.seriesID ? [contentData.seriesID] : []),
+    [contentData?.seriesID]
+  );
   const {
     data: seriesData,
     loading: seriesLoading,
     triggerApi: seriesTriggerApi,
-  } = useGetApi(getSeries, getSeriesParams, transformGetSeries);
+  } = useGetApi(
+    getSeriesContents,
+    getSeriesContentsParams,
+    transformGetSeriesContents
+  );
 
   const handleCardClick = (contentID) =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
@@ -158,23 +163,10 @@ function VideoDetailPage() {
   }, [contentData, seriesTriggerApi]);
 
   useEffect(() => {
-    if (userID) userContentPurchasesTriggerApi();
+    if (userID && contentData?.id) userContentPurchasesTriggerApi();
   }, [userID, contentData, userContentPurchasesTriggerApi]);
 
   useEffect(() => contentTriggerApi(), [contentTriggerApi, params.contentID]);
-
-  if (
-    contentLoading ||
-    contentsLoading ||
-    seriesLoading ||
-    userContentPurchasesLoading
-  )
-    return <PageLoader />;
-
-  if (contentError || userContentPurchasesError)
-    return (
-      <PageError message="Opps.. Something went wrong while fetching contents." />
-    );
 
   const PurchaseTypeElements = () => {
     if (contentData?.purchase_type === "weekly")
@@ -200,6 +192,19 @@ function VideoDetailPage() {
       );
     return <></>;
   };
+
+  if (
+    contentLoading ||
+    contentsLoading ||
+    seriesLoading ||
+    userContentPurchasesLoading
+  )
+    return <PageLoader />;
+
+  if (contentError || userContentPurchasesError)
+    return (
+      <PageError message="Opps.. Something went wrong while fetching contents." />
+    );
 
   return (
     <Container maxWidth="xl" className={classes.root}>
@@ -227,7 +232,7 @@ function VideoDetailPage() {
                     </Box>
                   ))}
                 </Box>
-                {contentData?.seriesInfo && seriesData && (
+                {contentData?.seriesInfo.seasonNo && seriesData && (
                   <Box py={2}>
                     <ClickAwayListener
                       onClickAway={handleSeasonSelectorClickAway}
@@ -248,9 +253,7 @@ function VideoDetailPage() {
                           <Box className={classes.seasonSelectorDropdown}>
                             {Array(
                               Math.max(
-                                ...seriesData?.map(
-                                  (o) => o.seriesInfo.seasonNo
-                                ),
+                                ...seriesData.map((o) => o.seriesInfo.seasonNo),
                                 0
                               )
                             )

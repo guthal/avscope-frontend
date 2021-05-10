@@ -5,6 +5,10 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     cursor: "pointer",
   },
+  seasonBtn: {
+    padding: "2px",
+    fontSize: "8px",
+  },
 }));
 
 export default useStyles;

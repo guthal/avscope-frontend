@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, Button } from "@material-ui/core";
 import { getEllipsedText } from "../../utils/generic";
 import MoviePosterCard from "./MoviePosterCard";
 import useStyles from "./MovieCard.Styles";
@@ -24,6 +24,17 @@ function MovieCard({ cardData, onClick }) {
               {cardData.name}
             </Typography>
           </Box>
+          {cardData.seasonNo && (
+            <Box>
+              <Button
+                className={classes.seasonBtn}
+                color="secondary"
+                variant="outlined"
+              >
+                {`Season ${cardData.seasonNo}`}
+              </Button>
+            </Box>
+          )}
           <Box my={1}>
             <Typography variant="subtitle2">
               {getEllipsedText(cardData.description, 100)}

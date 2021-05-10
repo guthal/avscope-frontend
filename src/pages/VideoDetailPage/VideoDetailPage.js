@@ -116,6 +116,7 @@ function VideoDetailPage() {
     setSeasonSelectorOpen((prev) => !prev);
 
   const handleSeasonClick = (seasonNo) => {
+    setSeriesContents();
     handleSeasonSelectorClickAway();
     const episodeData = seriesData.find(
       (episode) =>
@@ -139,20 +140,21 @@ function VideoDetailPage() {
           ?.filter((content) => content.id !== params.contentID)
           .slice(0, 4)
       );
-  }, [contentsData, params.contentID]);
+  }, [contentsData, contentData, params.contentID]);
 
   // Set Watch next to next episodes in series
   useEffect(() => {
-    if (seriesData) {
-      const currentSeriesIndex = seriesData.findIndex(
-        (episode) => episode.id === params.contentID
+    if (contentData && seriesData) {
+      const nextInSeries = seriesData.filter(
+        (episode) =>
+          episode.seriesInfo.seasonNo === contentData.seriesInfo.seasonNo &&
+          episode.id !== contentData.id &&
+          episode.seriesInfo.episodeNo > contentData.seriesInfo.episodeNo
       );
-      setSeriesContents([
-        // ...seriesData.slice(currentSeriesIndex - 1, currentSeriesIndex),
-        ...seriesData.slice(currentSeriesIndex + 1, currentSeriesIndex + 4),
-      ]);
+
+      setSeriesContents(nextInSeries);
     }
-  }, [seriesData, params.contentID]);
+  }, [seriesData, contentData, params.contentID]);
 
   useEffect(() => {
     if (contentData && !contentData.seriesID) contentsTriggerApi();

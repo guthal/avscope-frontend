@@ -28,6 +28,22 @@ export const transformGetContents = (data) => {
   };
 };
 
+export const transformGetSeriesSeasons = (data) => {
+  const seasons = data.seasons.map((season) => ({
+    id: season.startContentId,
+    name: data.seriesName,
+    carouselUrl:
+      season.thumbnail.pic2030 ||
+      "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
+    imageUrl:
+      season.thumbnail.picsq ||
+      "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
+    description: season.description,
+    seasonNo: season.seasonNo,
+  }));
+  return seasons;
+};
+
 export const transformGetSeriesContents = (data) =>
   data.map((datum) => ({
     id: datum.id,
@@ -43,6 +59,13 @@ export const transformGetSeriesContents = (data) =>
     seriesID: datum.seriesId,
     seriesInfo: datum.contentSeriesInfo,
   }));
+
+export const transformGetSeries = (data) => ({
+  title: data.seriesName,
+  seasons: data.seasons,
+  id: data.seriesId,
+  rating: data.rating,
+});
 
 export const transformGetContent = (data) => ({
   id: data.id,

@@ -52,8 +52,6 @@ function HomePage() {
 
   if (!contentsData) return <></>;
 
-  console.log(seriesSeasonsData);
-
   return (
     <>
       <Box>

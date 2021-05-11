@@ -12,6 +12,10 @@ function Header() {
     history.push(APP_ROUTES.HOME_PAGE.path);
   };
 
+  const handleAdminClick = () => {
+    history.push(APP_ROUTES.ADMIN_DASHBOARD.path);
+  };
+
   return (
     <Box mb={2}>
       <AppBar position="static">
@@ -24,6 +28,15 @@ function Header() {
             <Typography variant="h4" className={classes.title}>
               {HEADER_LABELS.LOGO}
             </Typography>
+          </Box>
+          <Box mx={2}>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={handleAdminClick}
+            >
+              {HEADER_LABELS.ADMIN}
+            </Button>
           </Box>
           <Button color="secondary" variant="contained">
             {HEADER_LABELS.LOGIN}

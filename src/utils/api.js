@@ -24,5 +24,8 @@ export const getUserContentPurchases = (userID, contentID) =>
     .get(ENDPOINTS.GET_USER_CONTENT_PURCHASES(userID, contentID))
     .then((res) => res.data);
 
+export const getCreators = () =>
+  axios.get(ENDPOINTS.GET_CREATORS).then((res) => res.data);
+
 export const postDummyApi = (reqBody, contentID) =>
   axios.post(`/${contentID}`, reqBody).then((res) => res.data);

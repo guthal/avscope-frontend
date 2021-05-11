@@ -12,7 +12,7 @@ function AppThemeProvider({ children }) {
         main: "#e6dd00",
       },
       background: {
-        default: "#292929",
+        default: "#313131",
         paper: "#dbd295",
       },
       text: {

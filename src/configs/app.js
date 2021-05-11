@@ -22,11 +22,24 @@ export const APP_ROUTES = {
     key: "",
     label: "Booked Tickets Page",
   },
+
+  ADMIN_DASHBOARD: {
+    path: "/admin",
+    key: "",
+    label: "Admin Dashboard",
+  },
+
+  CREATORS_PAGE: {
+    path: "/admin/creators",
+    key: "",
+    label: "Creators Page",
+  },
 };
 
 export const HEADER_LABELS = {
   LOGIN: "Login",
   LOGO: "Logo",
+  ADMIN: "Admin",
 };
 
 export const HOME_PAGE = {

@@ -10,6 +10,7 @@ const ENDPOINTS = {
   GET_USER_CONTENT_PURCHASES: (userID, contentID) =>
     `${DOMAIN}/user-purchase/${userID}/contents/${contentID}`,
   GET_USER_PURCHASE: (userID) => `${DOMAIN}/user-purchase/${userID}`,
+  GET_CREATORS: `${DOMAIN}/creators`,
 };
 
 export { ENDPOINTS };

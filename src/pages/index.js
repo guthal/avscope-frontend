@@ -7,6 +7,8 @@ import TicketsPage from "./TicketsPage";
 import PageNotFound from "./PageNotFound";
 import { APP_ROUTES } from "../configs/app";
 import VideoDetailPage from "./VideoDetailPage";
+import CreatorsPage from "./CreatorsPage";
+import AdminPage from "./AdminPage";
 
 function Pages() {
   return (
@@ -30,6 +32,18 @@ function Pages() {
           path={`${APP_ROUTES.TICKETS_PAGE.path}/:userID`}
           component={TicketsPage}
         />
+
+        <Route
+          exact
+          path={APP_ROUTES.CREATORS_PAGE.path}
+          component={CreatorsPage}
+        />
+        <Route
+          exact
+          path={APP_ROUTES.ADMIN_DASHBOARD.path}
+          component={AdminPage}
+        />
+
         <Route path="/*" component={PageNotFound} />
       </Switch>
     </Router>

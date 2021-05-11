@@ -124,3 +124,16 @@ export const transformGetUserContentPurchases = (data) =>
     contentTitle: datum.contentTitle,
     thumbnail: datum.thumbnail,
   }));
+
+export const transformGetCreators = (data) =>
+  data.map((creator) => ({
+    id: creator.userId,
+    email: creator.email,
+    name: creator.user,
+    phone: creator.phone,
+    address: creator.address,
+    office: creator.office,
+    zip: creator.zip,
+    city: creator.city,
+    state: creator.state,
+  }));

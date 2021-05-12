@@ -65,3 +65,9 @@ export const transformGetHistoryData = data => {
   });
   return returnData;
 };
+
+export const transformPostLoginResponse = data => {
+  /**
+   * Will add response from POST ENDPOINT here
+   */
+};

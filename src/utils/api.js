@@ -68,3 +68,12 @@ export const getHistoryData = userId => {
   // eslint-disable-next-line
   return axios.get(ENDPOINTS.GET_USER_PURCHASE(userId)).then(res => res.data);
 };
+
+export const postLogin = (email, password) => {
+  return axios
+    .post("/login", {
+      email,
+      password,
+    })
+    .then(res => res.data);
+};

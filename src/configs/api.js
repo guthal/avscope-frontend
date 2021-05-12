@@ -11,6 +11,7 @@ const ENDPOINTS = {
     `${DOMAIN}/user-purchase/${userID}/contents/${contentID}`,
   GET_USER_PURCHASE: (userID) => `${DOMAIN}/user-purchase/${userID}`,
   GET_CREATORS: `${DOMAIN}/creators`,
+  POST_CONTENT_UPLOAD: `${DOMAIN}/content-upload`,
 };
 
 export { ENDPOINTS };

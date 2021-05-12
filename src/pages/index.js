@@ -9,6 +9,7 @@ import { APP_ROUTES } from "../configs/app";
 import VideoDetailPage from "./VideoDetailPage";
 import CreatorsPage from "./CreatorsPage";
 import AdminPage from "./AdminPage";
+import ContentUploadPage from "./ContentUploadPage/ContentUploadPage";
 
 function Pages() {
   return (
@@ -42,6 +43,10 @@ function Pages() {
           exact
           path={APP_ROUTES.ADMIN_DASHBOARD.path}
           component={AdminPage}
+        />
+        <Route
+          path={`${APP_ROUTES.CONTENT_UPLOAD.path}/:userID`}
+          component={ContentUploadPage}
         />
 
         <Route path="/*" component={PageNotFound} />

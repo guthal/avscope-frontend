@@ -1,3 +1,17 @@
+export const CONTENT_GENRES = [
+  "action",
+  "spy",
+  "thriller",
+  "mystery",
+  "horror",
+  "sci-fi",
+  "romance",
+  "drama",
+  "period",
+  "biography",
+  "sports",
+];
+
 export const APP_ROUTES = {
   HOME_PAGE: {
     path: "/",
@@ -33,6 +47,11 @@ export const APP_ROUTES = {
     path: "/admin/creators",
     key: "",
     label: "Creators Page",
+  },
+  CONTENT_UPLOAD: {
+    path: "/admin/content-upload",
+    key: "",
+    label: "Content Upload",
   },
 };
 

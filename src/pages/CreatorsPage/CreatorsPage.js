@@ -9,6 +9,7 @@ import { getCreators } from "../../utils/api";
 import { transformGetCreators } from "../../utils/api-transforms";
 import ContentCard from "../../components/ContentCard";
 import useStyles from "./CreatorsPage.Styles";
+import { APP_ROUTES } from "../../configs/app";
 
 function CreatorsPage() {
   const history = useHistory();
@@ -24,7 +25,7 @@ function CreatorsPage() {
   } = useGetApi(getCreators, getCreatorsParams, transformGetCreators);
 
   const handleUserClick = (userID) => {
-    history.push(`/upload/${userID}`);
+    history.push(`${APP_ROUTES.CONTENT_UPLOAD.path}/${userID}`);
   };
 
   useEffect(() => creatorsTriggerApi(), [creatorsTriggerApi]);

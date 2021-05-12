@@ -29,3 +29,6 @@ export const getCreators = () =>
 
 export const postDummyApi = (reqBody, contentID) =>
   axios.post(`/${contentID}`, reqBody).then((res) => res.data);
+
+export const postContentUpload = (reqBody) =>
+  axios.post(ENDPOINTS.POST_CONTENT_UPLOAD, reqBody).then((res) => res.data);

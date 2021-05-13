@@ -59,9 +59,10 @@ function VideoDetailPage() {
   const [seriesContents, setSeriesContents] = useState();
   const [seasonSelectorOpen, setSeasonSelectorOpen] = useState(false);
 
-  const getContentParams = useMemo(() => [params.contentID], [
-    params.contentID,
-  ]);
+  const getContentParams = useMemo(
+    () => [params.contentID],
+    [params.contentID]
+  );
   const {
     data: contentData,
     loading: contentLoading,

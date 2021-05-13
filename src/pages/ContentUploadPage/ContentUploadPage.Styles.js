@@ -26,6 +26,18 @@ const useStyles = makeStyles((theme) => ({
     padding: "16px",
   },
 
+  selectField: {
+    width: "100px",
+
+    "& .MuiSelect-selectMenu": {
+      color: theme.palette.primary.main,
+    },
+  },
+
+  selectItem: {
+    color: theme.palette.primary.main,
+  },
+
   textField: {
     width: "100%",
 

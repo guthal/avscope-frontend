@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Button,
   TextField,
@@ -8,6 +8,8 @@ import {
   Typography,
   IconButton,
   Switch,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import {
   CloseSharp as CloseIcon,
@@ -18,7 +20,7 @@ import { useRouteMatch } from "react-router";
 import useStyles from "./ContentUploadPage.Styles";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
-import { CONTENT_GENRES } from "../../configs/app";
+import { CONTENT_GENRES, CONTENT_RESOLUTIONS } from "../../configs/app";
 import usePostApi from "../../hooks/usePostApi";
 import { postContentUpload } from "../../utils/api";
 
@@ -44,6 +46,8 @@ function StandAloneUpload() {
   const { params } = routeMatch;
   const [selectedGenreList, setSelectedGenreList] = useState([]);
   const [availableGenreList, setAvailableGenreList] = useState(CONTENT_GENRES);
+  const [availableContentResolutions, setAvailableContentResolution] =
+    useState(CONTENT_RESOLUTIONS);
   const [purchaseTypeSwitches, setPurchaseTypeSwitches] = useState({
     "buy-switch": true,
     "rent-switch": false,
@@ -53,16 +57,21 @@ function StandAloneUpload() {
     "buy-field": "",
     "rent-field": "",
     "weekly-field": "",
+    "weekly-num-field": "",
   });
   const [formFields, setFormFields] = useState({
     title: "",
     creatorId: params.userID,
-    contentURL: "",
     description: "",
     thumbnailURL: "",
+    transactionID: "",
+    comments: "",
   });
   const [castTextFields, setCastTextFields] = useState([
     { fieldID: 0, role: "", name: "" },
+  ]);
+  const [contentURLFields, setContentURLFields] = useState([
+    { fieldID: 0, URL: "", resolution: "" },
   ]);
 
   const postContentUploadParams = useMemo(() => [], []);
@@ -81,6 +90,44 @@ function StandAloneUpload() {
       [event.target.name]: event.target.value,
     }));
   };
+
+  const handleContentURLFieldsChange = (event) => {
+    setContentURLFields((prev) => {
+      const fieldIndex = prev.findIndex(
+        (contentField) =>
+          event.target.name === `content-url-${contentField.fieldID}`
+      );
+      return [
+        ...prev.slice(0, fieldIndex),
+        { ...prev[fieldIndex], URL: event.target.value },
+        ...prev.slice(fieldIndex + 1),
+      ];
+    });
+  };
+
+  const handleContentURLResolutionChange = (event) => {
+    setContentURLFields((prev) => {
+      const fieldIndex = prev.findIndex(
+        (contentField) =>
+          event.target.name === `content-resolution-${contentField.fieldID}`
+      );
+      return [
+        ...prev.slice(0, fieldIndex),
+        { ...prev[fieldIndex], resolution: event.target.value },
+        ...prev.slice(fieldIndex + 1),
+      ];
+    });
+  };
+
+  useEffect(() => {
+    const selectedResolutions = contentURLFields.map(
+      (content) => content.resolution
+    );
+    const updatedContentResolutions = CONTENT_RESOLUTIONS.filter(
+      (resolution) => !selectedResolutions.includes(resolution)
+    );
+    setAvailableContentResolution(() => updatedContentResolutions);
+  }, [contentURLFields]);
 
   const handleCastFieldsChange = (event) => {
     if (event.target.name.includes("role")) {
@@ -108,33 +155,24 @@ function StandAloneUpload() {
     }
   };
 
-  const handleFormSubmit = () => {
-    const contentUploadReqBody = [
-      {
-        creatorId: formFields.creatorId,
-        title: formFields.title,
-        contentUrl: formFields.contentURL,
-        description: formFields.description,
-        thumbnailUrl: formFields.thumbnailURL,
-        cast: castTextFields.map((cast) => ({
-          role: cast.role,
-          name: cast.name,
-        })),
-        genres: selectedGenreList,
-        purchaseType: {
-          buy: purchaseTypeSwitches["buy-switch"]
-            ? purchaseTypeFields["buy-field"]
-            : -1,
-          rent: purchaseTypeSwitches["rent-switch"]
-            ? purchaseTypeFields["rent-field"]
-            : -1,
-          weekly: purchaseTypeSwitches["weekly-switch"]
-            ? purchaseTypeFields["weekly-field"]
-            : -1,
-        },
-      },
+  const handleAddContentURL = () => {
+    setContentURLFields((prev) => [
+      ...prev,
+      { fieldID: prev.length, role: "", name: "" },
+    ]);
+  };
+
+  const handleRemoveContentURL = (index) => {
+    const updatedContentFields = [
+      ...contentURLFields.slice(0, index),
+      ...contentURLFields.slice(index + 1),
     ];
-    triggerContentUploadPostApi(contentUploadReqBody);
+
+    updatedContentFields.forEach((contentField, index) => {
+      contentField.fieldID = index;
+    });
+
+    setContentURLFields(() => updatedContentFields);
   };
 
   const handleAddCast = () => {
@@ -174,10 +212,19 @@ function StandAloneUpload() {
   };
 
   const handleSwitchChange = (event) => {
-    setPurchaseTypeSwitches((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.checked,
-    }));
+    if (event.target.name === "weekly-switch")
+      setPurchaseTypeSwitches((prev) => ({
+        ...prev,
+        [event.target.name]: event.target.checked,
+        "buy-switch": false,
+        "rent-switch": false,
+      }));
+    else
+      setPurchaseTypeSwitches((prev) => ({
+        ...prev,
+        [event.target.name]: event.target.checked,
+        "weekly-switch": false,
+      }));
   };
 
   const handleSwitchTextChange = (event) => {
@@ -185,6 +232,62 @@ function StandAloneUpload() {
       ...prev,
       [event.target.name]: event.target.value,
     }));
+  };
+
+  const handleFormSubmit = () => {
+    console.log("form submit");
+
+    if (
+      !(formFields.title &&
+      formFields.creatorId &&
+      formFields.description &&
+      formFields.thumbnailURL &&
+      castTextFields.length &&
+      selectedGenreList.length &&
+      contentURLFields.length &&
+      (purchaseTypeFields["buy-field"] > -1 ||
+        purchaseTypeFields["rent-field"] > -1 ||
+        purchaseTypeFields["weekly-field"] > -1) &&
+      purchaseTypeSwitches["weekly-switch"]
+        ? purchaseTypeFields["weekly-num-field"]
+        : true)
+    )
+      return;
+
+    const contentUploadReqBody = [
+      {
+        creatorId: formFields.creatorId,
+        title: formFields.title,
+        contentUrl: contentURLFields.map((content) => ({
+          URL: content.URL,
+          resolution: content.resolution,
+        })),
+        description: formFields.description,
+        thumbnailUrl: formFields.thumbnailURL,
+        cast: castTextFields.map((cast) => ({
+          role: cast.role,
+          name: cast.name,
+        })),
+        genres: selectedGenreList,
+        purchaseType: {
+          buy: purchaseTypeSwitches["buy-switch"]
+            ? purchaseTypeFields["buy-field"]
+            : -1,
+          rent: purchaseTypeSwitches["rent-switch"]
+            ? purchaseTypeFields["rent-field"]
+            : -1,
+          weekly: purchaseTypeSwitches["weekly-switch"]
+            ? purchaseTypeFields["weekly-field"]
+            : -1,
+        },
+        transactionId: formFields.transactionID,
+        comments: formFields.comments,
+        weeks: purchaseTypeSwitches["weekly-switch"]
+          ? purchaseTypeFields["weekly-num-field"]
+          : undefined,
+      },
+    ];
+    triggerContentUploadPostApi(contentUploadReqBody);
   };
 
   if (contentUploadLoading) return <PageLoader />;
@@ -216,37 +319,24 @@ function StandAloneUpload() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                name="contentURL"
-                label="Content URL"
-                variant="outlined"
-                value={formFields.contentURL}
-                onChange={handleFormFieldsChange}
-                className={classes.textField}
-                color="primary"
-                required
-              />
+              <Box pb={2}>
+                <TextField
+                  name="thumbnailURL"
+                  label="Thumbnail URL"
+                  variant="outlined"
+                  value={formFields.thumbnailURL}
+                  onChange={handleFormFieldsChange}
+                  className={classes.textField}
+                  color="primary"
+                  required
+                />
+              </Box>
             </Grid>
           </Grid>
 
           <Grid container spacing={4}>
             <Grid item xs={12} sm={6}>
-              <Grid container>
-                <Grid item xs={12}>
-                  <Box pb={2}>
-                    <TextField
-                      name="thumbnailURL"
-                      label="Thumbnail URL"
-                      variant="outlined"
-                      value={formFields.thumbnailURL}
-                      onChange={handleFormFieldsChange}
-                      className={classes.textField}
-                      color="primary"
-                      required
-                    />
-                  </Box>
-                </Grid>
-              </Grid>
+              <Grid container></Grid>
               <Grid
                 container
                 className={classes.contentTitleWithDescriptionContainer}
@@ -275,7 +365,7 @@ function StandAloneUpload() {
                       onChange={handleFormFieldsChange}
                       className={classes.textField}
                       multiline
-                      rows={3}
+                      rows={5}
                       rowsMax={8}
                       color="primary"
                       required
@@ -382,7 +472,7 @@ function StandAloneUpload() {
                         </Box>
                       </Box>
                     </Grid>
-                    <Grid item xs={8} md={5}>
+                    <Grid item xs={5} md={5}>
                       <Box mt={1}>
                         {purchaseTypeSwitches["weekly-switch"] && (
                           <TextField
@@ -399,9 +489,101 @@ function StandAloneUpload() {
                         )}
                       </Box>
                     </Grid>
+
+                    <Grid item xs={4} md={4}>
+                      <Box mt={1}>
+                        {purchaseTypeSwitches["weekly-switch"] && (
+                          <TextField
+                            label="Weeks"
+                            name="weekly-num-field"
+                            value={purchaseTypeFields["weekly-num-field"]}
+                            color="primary"
+                            variant="outlined"
+                            onChange={handleSwitchTextChange}
+                            className={classes.textField}
+                            placeholder="In Rupees"
+                            required
+                          />
+                        )}
+                      </Box>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={4}>
+            <Grid item xs={12}>
+              <Box mb={-4}>
+                <Typography color="primary" variant="h5">
+                  Content URLs
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              {contentURLFields.map((content, index) => (
+                <Box mt={3} p={2} key={`content-url-fields-${index}`}>
+                  <Grid container spacing={4} className={classes.castContainer}>
+                    <Box className={classes.castRemoveBtnContainer}>
+                      <IconButton
+                        className={classes.castRemoveBtn}
+                        onClick={() => handleRemoveContentURL(content.fieldID)}
+                      >
+                        <CloseSharp
+                          className={classes.castRemoveIcon}
+                          fontSize="small"
+                        />
+                      </IconButton>
+                    </Box>
+                    <Grid item xs={12} md={6}>
+                      <TextField
+                        name={`content-url-${content.fieldID}`}
+                        label="URL"
+                        variant="outlined"
+                        value={content.URL}
+                        onChange={handleContentURLFieldsChange}
+                        className={classes.textField}
+                        color="primary"
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Select
+                        name={`content-resolution-${content.fieldID}`}
+                        value={content.resolution || ""}
+                        onChange={handleContentURLResolutionChange}
+                        className={classes.selectField}
+                        variant="outlined"
+                        color="primary"
+                      >
+                        {[
+                          ...availableContentResolutions,
+                          content.resolution,
+                        ].map((resolution) => (
+                          <MenuItem
+                            className={classes.selectItem}
+                            value={resolution}
+                          >
+                            {resolution}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </Grid>
+                  </Grid>
+                </Box>
+              ))}
+            </Grid>
+            <Grid item xs={12}>
+              <Box mt={-2}>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  className={classes.castAddBtn}
+                  onClick={handleAddContentURL}
+                >
+                  Add <AddIcon />
+                </Button>
+              </Box>
             </Grid>
           </Grid>
 
@@ -503,6 +685,45 @@ function StandAloneUpload() {
                     />
                   ))}
                 </Box>
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={4}>
+            <Grid item xs={12}>
+              <Box mt={2} mb={-1}>
+                <Typography variant="h5" color="primary">
+                  Additional Info
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box py={1}>
+                <TextField
+                  name="transactionID"
+                  label="Transaction ID"
+                  variant="outlined"
+                  value={formFields.transactionID}
+                  onChange={handleFormFieldsChange}
+                  className={classes.textField}
+                  color="primary"
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box py={1}>
+                <TextField
+                  name="comments"
+                  label="Comments"
+                  variant="outlined"
+                  value={formFields.comments}
+                  onChange={handleFormFieldsChange}
+                  className={classes.textField}
+                  multiline
+                  rows={3}
+                  rowsMax={5}
+                  color="primary"
+                />
               </Box>
             </Grid>
           </Grid>

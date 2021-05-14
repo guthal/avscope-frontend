@@ -18,8 +18,11 @@ import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import useStyles from "./SignupPage.Styles";
 import { transformPostSignupResponse } from "../../utils/api-transforms";
+import { useHistory } from "react-router";
+import { APP_ROUTES } from "../../configs/app";
 
 function SignupPage() {
+  const history = useHistory();
   const classes = useStyles();
   const [textFields, setTextFields] = useState({
     firstName: "",
@@ -31,6 +34,8 @@ function SignupPage() {
   });
 
   const postContentsParams = useMemo(() => [], []);
+
+  const handleLoginClick = () => history.push(`${APP_ROUTES.LOGIN_PAGE.path}`);
 
   const {
     data: contentsData,
@@ -182,7 +187,11 @@ function SignupPage() {
           </Button>
           <Grid container justify="center">
             <Grid item>
-              <Link href="/login" variant="body2">
+              <Link
+                onClick={handleLoginClick}
+                variant="body2"
+                style={{ cursor: "pointer" }}
+              >
                 Already have an account? Log in
               </Link>
             </Grid>

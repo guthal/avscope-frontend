@@ -18,9 +18,11 @@ import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import useStyles from "./LoginPage.Styles";
 import { transformPostLoginResponse } from "../../utils/api-transforms";
-// import { APP_ROUTES } from "../../configs/app";
+import { useHistory } from "react-router";
+import { APP_ROUTES } from "../../configs/app";
 
 function LoginPage() {
+  const history = useHistory();
   const classes = useStyles();
   const [textFields, setTextFields] = useState({
     email: "",
@@ -41,6 +43,9 @@ function LoginPage() {
       [event.target.name]: event.target.value,
     }));
   };
+
+  const handleSignupClick = () =>
+    history.push(`${APP_ROUTES.SIGNUP_PAGE.path}`);
 
   const handleFormSubmit = () => {
     loginTriggerPostApi(textFields);
@@ -122,7 +127,11 @@ function LoginPage() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/signup" variant="body2">
+              <Link
+                onClick={handleSignupClick}
+                variant="body2"
+                style={{ cursor: "pointer" }}
+              >
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

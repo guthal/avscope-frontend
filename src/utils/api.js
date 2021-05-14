@@ -77,3 +77,15 @@ export const postLogin = (email, password) => {
     })
     .then(res => res.data);
 };
+
+export const postSignup = (firstName, lastName, email, phone, password) => {
+  return axios
+    .post("/signup", {
+      firstName,
+      lastName,
+      email,
+      phone,
+      password,
+    })
+    .then(res => res.data);
+};

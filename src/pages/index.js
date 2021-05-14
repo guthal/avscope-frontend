@@ -7,6 +7,7 @@ import HistoryPage from "./HistoryPage";
 import TicketsPage from "./TicketsPage";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
+import CheckoutPage from "./CheckoutPage";
 import PageNotFound from "./PageNotFound";
 import ContentPage from "./ContentPage";
 
@@ -41,6 +42,11 @@ function Pages() {
           exact
           path={`${APP_ROUTES.SIGNUP_PAGE.path}`}
           component={SignupPage}
+        />
+        <Route
+          exact
+          path={`${APP_ROUTES.CHECKOUT_PAGE.path}`}
+          component={CheckoutPage}
         />
         <Route path="/*" component={PageNotFound} />
       </Switch>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Box,
   Typography,
@@ -8,36 +8,47 @@ import {
   CssBaseline,
   Avatar,
   TextField,
-  FormControlLabel,
   Checkbox,
   Button,
 } from "@material-ui/core";
 import PersonAddOutlinedIcon from "@material-ui/icons/PersonAddOutlined";
-import useGetApi from "../../hooks/useGetApi";
-import { getContents } from "../../utils/api";
+import usePostApi from "../../hooks/usePostApi";
+import { postSignup } from "../../utils/api";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import useStyles from "./SignupPage.Styles";
-import { useHistory } from "react-router";
-import { transformGetContents } from "../../utils/api-transforms";
-import { APP_ROUTES } from "../../configs/app";
+import { transformPostSignupResponse } from "../../utils/api-transforms";
 
 function SignupPage() {
   const classes = useStyles();
-  const history = useHistory();
-  const getContentsParams = useMemo(() => ["param1", "param2"], []);
+  const [textFields, setTextFields] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    password: "",
+    retypePassword: "",
+  });
+
+  const postContentsParams = useMemo(() => [], []);
 
   const {
     data: contentsData,
     loading: contentsLoading,
     error: contentsError,
-    triggerApi: contentsTriggerApi,
-  } = useGetApi(getContents, getContentsParams, transformGetContents);
+    triggerPostApi: signupTriggerPostApi,
+  } = usePostApi(postSignup, postContentsParams, transformPostSignupResponse);
 
-  const handleCardClick = contentID =>
-    history.push(`${APP_ROUTES.CONTENT_PAGE.path}/${contentID}`);
+  const handleTextFieldChange = event => {
+    setTextFields(prev => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+  };
 
-  useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
+  const handleFormSubmit = () => {
+    signupTriggerPostApi(textFields);
+  };
 
   if (contentsLoading) return <PageLoader />;
 
@@ -69,7 +80,7 @@ function SignupPage() {
         <Typography component="h1" variant="h5" color="primary">
           Sign up
         </Typography>
-        <form className={classes.form}>
+        <Box className={classes.form}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -80,6 +91,7 @@ function SignupPage() {
                 fullWidth
                 id="firstName"
                 className={classes.textField}
+                onChange={handleTextFieldChange}
                 label="First Name"
                 autoFocus
               />
@@ -91,6 +103,7 @@ function SignupPage() {
                 fullWidth
                 id="lastName"
                 className={classes.textField}
+                onChange={handleTextFieldChange}
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
@@ -103,23 +116,12 @@ function SignupPage() {
                 fullWidth
                 id="email"
                 className={classes.textField}
+                onChange={handleTextFieldChange}
                 label="Email Address"
                 name="email"
                 autoComplete="email"
               />
             </Grid>
-            {/* <Grid item xs={4}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="otp"
-                    label="Enter OTP"
-                    name="otp"
-                    color="secondary"
-                    type="number"
-                  />
-                </Grid> */}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -127,22 +129,11 @@ function SignupPage() {
                 fullWidth
                 id="phone"
                 className={classes.textField}
+                onChange={handleTextFieldChange}
                 label="Phone Number"
                 name="phone"
               />
             </Grid>
-            {/* <Grid item xs={4}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="otp"
-                    label="Enter OTP"
-                    name="otp"
-                    color="secondary"
-                    type="number"
-                  />
-                </Grid> */}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -151,6 +142,7 @@ function SignupPage() {
                 name="password"
                 label="Password"
                 className={classes.textField}
+                onChange={handleTextFieldChange}
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -161,9 +153,10 @@ function SignupPage() {
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
+                name="retypePassword"
                 label="Retype Password"
                 className={classes.textField}
+                onChange={handleTextFieldChange}
                 color="primary"
                 type="password"
                 id="password"
@@ -183,6 +176,7 @@ function SignupPage() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={handleFormSubmit}
           >
             Sign Up
           </Button>
@@ -193,7 +187,7 @@ function SignupPage() {
               </Link>
             </Grid>
           </Grid>
-        </form>
+        </Box>
       </Box>
       <Box mt={2}>
         <Copyright />

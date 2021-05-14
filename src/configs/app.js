@@ -34,6 +34,12 @@ export const APP_ROUTES = {
     key: "",
     label: "Signup New User Page",
   },
+
+  CHECKOUT_PAGE: {
+    path: "/checkout",
+    key: "",
+    label: "Checkout for Payment",
+  },
 };
 
 export const HEADER_LABELS = {

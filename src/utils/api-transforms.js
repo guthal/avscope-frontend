@@ -68,6 +68,12 @@ export const transformGetHistoryData = data => {
 
 export const transformPostLoginResponse = data => {
   /**
-   * Will add response from POST ENDPOINT here
+   * Will add response from POST login ENDPOINT here
+   */
+};
+
+export const transformPostSignupResponse = data => {
+  /**
+   * Will add response from POST signup ENDPOINT here
    */
 };

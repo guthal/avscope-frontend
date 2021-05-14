@@ -7,12 +7,15 @@ const AuthContext = createContext({
   setUsername: () => {},
   setUserId: () => {},
   setIsLoggedIn: () => {},
+  utype: 2,
+  setUtype: () => {},
 });
 
 function AuthContextProvider({ children }) {
   const [isUserLoggedIn, setUserLoggedIn] = useState(true);
   const [userId, setUserId] = useState();
   const [username, setUsername] = useState();
+  const [utype, setUtype] = useState(2);
 
   return (
     <AuthContext.Provider
@@ -20,9 +23,11 @@ function AuthContextProvider({ children }) {
         isUserLoggedIn,
         userId,
         username,
+        utype,
         setUsername,
         setUserLoggedIn,
         setUserId,
+        setUtype,
       }}
     >
       {children}

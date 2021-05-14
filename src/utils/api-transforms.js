@@ -138,3 +138,14 @@ export const transformGetCreators = (data) =>
     city: creator.city,
     state: creator.state,
   }));
+export const transformPostLoginResponse = (data) => {
+  /**
+   * Will add response from POST login ENDPOINT here
+   */
+};
+
+export const transformPostSignupResponse = (data) => {
+  /**
+   * Will add response from POST signup ENDPOINT here
+   */
+};

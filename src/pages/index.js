@@ -1,15 +1,18 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Header } from "../components";
+import { APP_ROUTES } from "../configs/app";
 import HomePage from "./HomePage";
 import HistoryPage from "./HistoryPage";
 import TicketsPage from "./TicketsPage";
+import LoginPage from "./LoginPage";
+import SignupPage from "./SignupPage";
+import CheckoutPage from "./CheckoutPage";
 import PageNotFound from "./PageNotFound";
-import { APP_ROUTES } from "../configs/app";
 import VideoDetailPage from "./VideoDetailPage";
 import CreatorsPage from "./CreatorsPage";
 import AdminPage from "./AdminPage";
-import ContentUploadPage from "./ContentUploadPage/ContentUploadPage";
+import ContentUploadPage from "./ContentUploadPage";
 
 function Pages() {
   return (
@@ -49,6 +52,21 @@ function Pages() {
           component={ContentUploadPage}
         />
 
+        <Route
+          exact
+          path={`${APP_ROUTES.LOGIN_PAGE.path}`}
+          component={LoginPage}
+        />
+        <Route
+          exact
+          path={`${APP_ROUTES.SIGNUP_PAGE.path}`}
+          component={SignupPage}
+        />
+        <Route
+          exact
+          path={`${APP_ROUTES.CHECKOUT_PAGE.path}`}
+          component={CheckoutPage}
+        />
         <Route path="/*" component={PageNotFound} />
       </Switch>
     </Router>

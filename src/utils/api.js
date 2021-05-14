@@ -32,3 +32,24 @@ export const postDummyApi = (reqBody, contentID) =>
 
 export const postContentUpload = (reqBody) =>
   axios.post(ENDPOINTS.POST_CONTENT_UPLOAD, reqBody).then((res) => res.data);
+
+export const postLogin = (email, password) => {
+  return axios
+    .post("/login", {
+      email,
+      password,
+    })
+    .then((res) => res.data);
+};
+
+export const postSignup = (firstName, lastName, email, phone, password) => {
+  return axios
+    .post("/signup", {
+      firstName,
+      lastName,
+      email,
+      phone,
+      password,
+    })
+    .then((res) => res.data);
+};

@@ -26,6 +26,11 @@ export const APP_ROUTES = {
     key: "",
     label: "Video Detail Page",
   },
+  CONTENT_PAGE: {
+    path: "/contents",
+    key: "",
+    label: "Content Page",
+  },
 
   HISTORY_PAGE: {
     path: "/booked-history",
@@ -54,6 +59,23 @@ export const APP_ROUTES = {
     path: "/admin/content-upload",
     key: "",
     label: "Content Upload",
+  },
+  LOGIN_PAGE: {
+    path: "/login",
+    key: "",
+    label: "Login User Page",
+  },
+
+  SIGNUP_PAGE: {
+    path: "/signup",
+    key: "",
+    label: "Signup New User Page",
+  },
+
+  CHECKOUT_PAGE: {
+    path: "/checkout",
+    key: "",
+    label: "Checkout for Payment",
   },
 };
 

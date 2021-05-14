@@ -1,15 +1,15 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { Box, Typography, Container, Grid } from "@material-ui/core";
 import HomeCarousel from "../../components/HomeCarousel";
 import MovieCard from "../../components/MovieCard";
 import useGetApi from "../../hooks/useGetApi";
-import { getContents, getSeriesSeasons } from "../../utils/api";
+import { getContents, getAllSeries } from "../../utils/api";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import { useHistory } from "react-router";
 import {
   transformGetContents,
-  transformGetSeriesSeasons,
+  transformGetAllSeries,
 } from "../../utils/api-transforms";
 import { APP_ROUTES } from "../../configs/app";
 
@@ -24,17 +24,13 @@ function HomePage() {
     triggerApi: contentsTriggerApi,
   } = useGetApi(getContents, getContentsParams, transformGetContents);
 
-  const getSeriesSeasonsParams = useMemo(() => [], []);
+  const getAllSeriesParams = useMemo(() => [], []);
   const {
     data: seriesSeasonsData,
     loading: seriesSeasonsLoading,
     error: seriesSeasonsError,
     triggerApi: seriesSeasonsTriggerApi,
-  } = useGetApi(
-    getSeriesSeasons,
-    getSeriesSeasonsParams,
-    transformGetSeriesSeasons
-  );
+  } = useGetApi(getAllSeries, getAllSeriesParams, transformGetAllSeries);
 
   const handleCardClick = (contentID) =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
@@ -89,23 +85,27 @@ function HomePage() {
               <Box py={2}>
                 <Typography variant="h4">Series</Typography>
               </Box>
-              <Grid container spacing={4}>
-                {seriesSeasonsData?.slice(0, 4).map((contentCard, index) => (
-                  <Grid
-                    lg={3}
-                    md={3}
-                    sm={6}
-                    xs={12}
-                    item
-                    key={`content-card-${index}`}
-                  >
-                    <MovieCard
-                      cardData={contentCard}
-                      onClick={handleCardClick}
-                    />
+              {seriesSeasonsData
+                .map((series) => series.seasons)
+                .map((season) => (
+                  <Grid container spacing={4}>
+                    {season?.slice(0, 4).map((contentCard, index) => (
+                      <Grid
+                        lg={3}
+                        md={3}
+                        sm={6}
+                        xs={12}
+                        item
+                        key={`content-card-${index}`}
+                      >
+                        <MovieCard
+                          cardData={contentCard}
+                          onClick={handleCardClick}
+                        />
+                      </Grid>
+                    ))}
                   </Grid>
                 ))}
-              </Grid>
             </Box>
           )}
         </Box>

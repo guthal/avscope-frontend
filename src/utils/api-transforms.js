@@ -28,21 +28,22 @@ export const transformGetContents = (data) => {
   };
 };
 
-export const transformGetSeriesSeasons = (data) => {
-  const seasons = data.seasons.map((season) => ({
-    id: season.startContentId,
-    name: data.seriesName,
-    carouselUrl:
-      season.thumbnail.pic2030 ||
-      "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
-    imageUrl:
-      season.thumbnail.picsq ||
-      "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
-    description: season.description,
-    seasonNo: season.seasonNo,
-  }));
-  return seasons;
-};
+export const transformGetAllSeries = (data) =>
+  data.map((datum) => {
+    const seasons = datum.seasons.map((season) => ({
+      id: season.startContentId,
+      name: data.seriesName,
+      carouselUrl:
+        season.thumbnail.pic2030 ||
+        "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
+      imageUrl:
+        season.thumbnail.picsq ||
+        "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
+      description: season.description,
+      seasonNo: season.seasonNo,
+    }));
+    return { seriesName: datum.seriesName, seriesID: datum.seriesId, seasons };
+  });
 
 export const transformGetSeriesContents = (data) =>
   data.map((datum) => ({

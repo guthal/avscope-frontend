@@ -13,8 +13,8 @@ export const getSeriesContents = (seriesID) =>
 export const getSeries = (seriesID) =>
   axios.get(ENDPOINTS.GET_SERIES_INFO(seriesID)).then((res) => res.data);
 
-export const getSeriesSeasons = () =>
-  axios.get(ENDPOINTS.GET_SERIES_SEASONS).then((res) => res.data);
+export const getAllSeries = () =>
+  axios.get(ENDPOINTS.GET_ALL_SERIES).then((res) => res.data);
 
 export const getHistoryData = (userId) =>
   axios.get(ENDPOINTS.GET_USER_PURCHASE(userId)).then((res) => res.data);

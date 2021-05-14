@@ -21,8 +21,10 @@ import useStyles from "./ContentUploadPage.Styles";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import { CONTENT_GENRES, CONTENT_RESOLUTIONS } from "../../configs/app";
+import useGetApi from "../../hooks/useGetApi";
 import usePostApi from "../../hooks/usePostApi";
-import { postContentUpload } from "../../utils/api";
+import { getAllSeries, postContentUpload } from "../../utils/api";
+import { transformGetAllSeries } from "../../utils/api-transforms";
 
 function GenreButton({ genre, onClick, remove = false }) {
   const classes = useStyles();
@@ -44,6 +46,16 @@ function StandAloneUpload() {
   const classes = useStyles();
   const routeMatch = useRouteMatch();
   const { params } = routeMatch;
+
+  const contentList = ["Movie/Documentary", "Series"];
+  const [seriesList, setSeriesList] = useState(["New Series"]);
+  const [seasonsList, setSeasonsList] = useState(["New Season"]);
+  const [episodeNo, setEpisodeNo] = useState(0);
+  const [contentTypeSelections, setContentTypeSelections] = useState({
+    content: contentList[0],
+    series: "",
+    season: "",
+  });
   const [selectedGenreList, setSelectedGenreList] = useState([]);
   const [availableGenreList, setAvailableGenreList] = useState(CONTENT_GENRES);
   const [availableContentResolutions, setAvailableContentResolution] =
@@ -84,12 +96,42 @@ function StandAloneUpload() {
     triggerPostApi: triggerContentUploadPostApi,
   } = usePostApi(postContentUpload, postContentUploadParams, undefined);
 
+  const handleContentTypeSelectionsChange = (event) => {
+    setContentTypeSelections((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const getAllSeriesParams = useMemo(() => [], []);
+  const {
+    data: seriesData,
+    loading: seriesLoading,
+    error: seriesError,
+    triggerApi: triggetGetAllSeriesApi,
+  } = useGetApi(getAllSeries, getAllSeriesParams, transformGetAllSeries);
   const handleFormFieldsChange = (event) => {
     setFormFields((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
   };
+
+  useEffect(() => {
+    if (contentTypeSelections.content === "Series") triggetGetAllSeriesApi();
+  }, [contentTypeSelections.content, triggetGetAllSeriesApi]);
+
+  useEffect(() => {
+    if (seriesData)
+      setSeriesList((prev) => [
+        ...prev,
+        seriesData.map((series) => series.seriesName),
+      ]);
+  }, [seriesData]);
+
+  useEffect(() => {
+    setContentTypeSelections((prev) => ({ ...prev, series: seriesList[0] }));
+  }, [seriesList]);
 
   const handleContentURLFieldsChange = (event) => {
     setContentURLFields((prev) => {
@@ -118,16 +160,6 @@ function StandAloneUpload() {
       ];
     });
   };
-
-  useEffect(() => {
-    const selectedResolutions = contentURLFields.map(
-      (content) => content.resolution
-    );
-    const updatedContentResolutions = CONTENT_RESOLUTIONS.filter(
-      (resolution) => !selectedResolutions.includes(resolution)
-    );
-    setAvailableContentResolution(() => updatedContentResolutions);
-  }, [contentURLFields]);
 
   const handleCastFieldsChange = (event) => {
     if (event.target.name.includes("role")) {
@@ -290,6 +322,16 @@ function StandAloneUpload() {
     triggerContentUploadPostApi(contentUploadReqBody);
   };
 
+  useEffect(() => {
+    const selectedResolutions = contentURLFields.map(
+      (content) => content.resolution
+    );
+    const updatedContentResolutions = CONTENT_RESOLUTIONS.filter(
+      (resolution) => !selectedResolutions.includes(resolution)
+    );
+    setAvailableContentResolution(() => updatedContentResolutions);
+  }, [contentURLFields]);
+
   if (contentUploadLoading) return <PageLoader />;
 
   if (contentUploadError)
@@ -318,6 +360,63 @@ function StandAloneUpload() {
                 color="primary"
               />
             </Grid>
+            <Grid item xs={12} sm={6}>
+              <Select
+                name="content"
+                value={contentTypeSelections.content}
+                onChange={handleContentTypeSelectionsChange}
+                className={`${classes.selectField} ${classes.textField}`}
+                variant="outlined"
+                color="primary"
+              >
+                {contentList.map((content) => (
+                  <MenuItem className={classes.selectItem} value={content}>
+                    {content}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+            {contentTypeSelections.content !== contentList[0] && (
+              <Grid item xs={12} sm={6}>
+                <Select
+                  name="series"
+                  value={contentTypeSelections.series}
+                  onChange={handleContentTypeSelectionsChange}
+                  className={`${classes.selectField} ${classes.textField}`}
+                  variant="outlined"
+                  color="primary"
+                >
+                  {seriesList.map((series) => (
+                    <MenuItem className={classes.selectItem} value={series}>
+                      {series}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+            )}
+            {/* {contentTypeSelections.series !== "New Series" && (
+              <Grid item xs={12} sm={6}>
+                <Select
+                  name="season"
+                  value={contentTypeSelections.season}
+                  onChange={handleContentTypeSelectionsChange}
+                  className={`${classes.selectField} ${classes.textField}`}
+                  variant="outlined"
+                  color="primary"
+                >
+                  {seriesList
+                    .find(
+                      (series) =>
+                        contentTypeSelections.series === series.seriesName
+                    )
+                    .seasons.map((season) => (
+                      <MenuItem className={classes.selectItem} value={season}>
+                        Season {season.name}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </Grid>
+            )} */}
             <Grid item xs={12} sm={6}>
               <Box pb={2}>
                 <TextField

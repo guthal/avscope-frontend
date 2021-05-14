@@ -4,10 +4,10 @@ const AuthContext = createContext({
   isUserLoggedIn: false,
   userId: "",
   username: "ak@gmail.com",
+  utype: 2,
   setUsername: () => {},
   setUserId: () => {},
   setIsLoggedIn: () => {},
-  utype: 2,
   setUtype: () => {},
 });
 

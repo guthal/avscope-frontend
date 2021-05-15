@@ -96,8 +96,8 @@ function StandAloneUpload() {
     triggerPostApi: triggerContentUploadPostApi,
   } = usePostApi(postContentUpload, postContentUploadParams, undefined);
 
-  const handleContentTypeSelectionsChange = (event) => {
-    setContentTypeSelections((prev) => ({
+  const handleContentTypeSelectionsChange = event => {
+    setContentTypeSelections(prev => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
@@ -110,8 +110,8 @@ function StandAloneUpload() {
     error: seriesError,
     triggerApi: triggetGetAllSeriesApi,
   } = useGetApi(getAllSeries, getAllSeriesParams, transformGetAllSeries);
-  const handleFormFieldsChange = (event) => {
-    setFormFields((prev) => ({
+  const handleFormFieldsChange = event => {
+    setFormFields(prev => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
@@ -123,20 +123,20 @@ function StandAloneUpload() {
 
   useEffect(() => {
     if (seriesData)
-      setSeriesList((prev) => [
+      setSeriesList(prev => [
         ...prev,
-        seriesData.map((series) => series.seriesName),
+        seriesData.map(series => series.seriesName),
       ]);
   }, [seriesData]);
 
   useEffect(() => {
-    setContentTypeSelections((prev) => ({ ...prev, series: seriesList[0] }));
+    setContentTypeSelections(prev => ({ ...prev, series: seriesList[0] }));
   }, [seriesList]);
 
-  const handleContentURLFieldsChange = (event) => {
-    setContentURLFields((prev) => {
+  const handleContentURLFieldsChange = event => {
+    setContentURLFields(prev => {
       const fieldIndex = prev.findIndex(
-        (contentField) =>
+        contentField =>
           event.target.name === `content-url-${contentField.fieldID}`
       );
       return [
@@ -147,10 +147,10 @@ function StandAloneUpload() {
     });
   };
 
-  const handleContentURLResolutionChange = (event) => {
-    setContentURLFields((prev) => {
+  const handleContentURLResolutionChange = event => {
+    setContentURLFields(prev => {
       const fieldIndex = prev.findIndex(
-        (contentField) =>
+        contentField =>
           event.target.name === `content-resolution-${contentField.fieldID}`
       );
       return [
@@ -161,11 +161,11 @@ function StandAloneUpload() {
     });
   };
 
-  const handleCastFieldsChange = (event) => {
+  const handleCastFieldsChange = event => {
     if (event.target.name.includes("role")) {
-      setCastTextFields((prev) => {
+      setCastTextFields(prev => {
         const fieldIndex = prev.findIndex(
-          (castField) => event.target.name === `cast-role-${castField.fieldID}`
+          castField => event.target.name === `cast-role-${castField.fieldID}`
         );
         return [
           ...prev.slice(0, fieldIndex),
@@ -174,9 +174,9 @@ function StandAloneUpload() {
         ];
       });
     } else if (event.target.name.includes("name")) {
-      setCastTextFields((prev) => {
+      setCastTextFields(prev => {
         const fieldIndex = prev.findIndex(
-          (castField) => event.target.name === `cast-name-${castField.fieldID}`
+          castField => event.target.name === `cast-name-${castField.fieldID}`
         );
         return [
           ...prev.slice(0, fieldIndex),
@@ -188,13 +188,13 @@ function StandAloneUpload() {
   };
 
   const handleAddContentURL = () => {
-    setContentURLFields((prev) => [
+    setContentURLFields(prev => [
       ...prev,
       { fieldID: prev.length, role: "", name: "" },
     ]);
   };
 
-  const handleRemoveContentURL = (index) => {
+  const handleRemoveContentURL = index => {
     const updatedContentFields = [
       ...contentURLFields.slice(0, index),
       ...contentURLFields.slice(index + 1),
@@ -208,13 +208,13 @@ function StandAloneUpload() {
   };
 
   const handleAddCast = () => {
-    setCastTextFields((prev) => [
+    setCastTextFields(prev => [
       ...prev,
       { fieldID: prev.length, role: "", name: "" },
     ]);
   };
 
-  const handleRemoveCast = (index) => {
+  const handleRemoveCast = index => {
     const updatedCastFields = [
       ...castTextFields.slice(0, index),
       ...castTextFields.slice(index + 1),
@@ -227,48 +227,46 @@ function StandAloneUpload() {
     setCastTextFields(() => updatedCastFields);
   };
 
-  const handleRemoveGenre = (index) => {
-    setAvailableGenreList((prev) => [...prev, selectedGenreList[index]]);
-    setSelectedGenreList((prev) => [
+  const handleRemoveGenre = index => {
+    setAvailableGenreList(prev => [...prev, selectedGenreList[index]]);
+    setSelectedGenreList(prev => [
       ...prev.slice(0, index),
       ...prev.slice(index + 1),
     ]);
   };
 
-  const handleAddGenre = (index) => {
-    setSelectedGenreList((prev) => [...prev, availableGenreList[index]]);
-    setAvailableGenreList((prev) => [
+  const handleAddGenre = index => {
+    setSelectedGenreList(prev => [...prev, availableGenreList[index]]);
+    setAvailableGenreList(prev => [
       ...prev.slice(0, index),
       ...prev.slice(index + 1),
     ]);
   };
 
-  const handleSwitchChange = (event) => {
+  const handleSwitchChange = event => {
     if (event.target.name === "weekly-switch")
-      setPurchaseTypeSwitches((prev) => ({
+      setPurchaseTypeSwitches(prev => ({
         ...prev,
         [event.target.name]: event.target.checked,
         "buy-switch": false,
         "rent-switch": false,
       }));
     else
-      setPurchaseTypeSwitches((prev) => ({
+      setPurchaseTypeSwitches(prev => ({
         ...prev,
         [event.target.name]: event.target.checked,
         "weekly-switch": false,
       }));
   };
 
-  const handleSwitchTextChange = (event) => {
-    setPurchaseTypeFields((prev) => ({
+  const handleSwitchTextChange = event => {
+    setPurchaseTypeFields(prev => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
   };
 
   const handleFormSubmit = () => {
-    console.log("form submit");
-
     if (
       !(formFields.title &&
       formFields.creatorId &&
@@ -290,13 +288,13 @@ function StandAloneUpload() {
       {
         creatorId: formFields.creatorId,
         title: formFields.title,
-        contentUrl: contentURLFields.map((content) => ({
+        contentUrl: contentURLFields.map(content => ({
           URL: content.URL,
           resolution: content.resolution,
         })),
         description: formFields.description,
         thumbnailUrl: formFields.thumbnailURL,
-        cast: castTextFields.map((cast) => ({
+        cast: castTextFields.map(cast => ({
           role: cast.role,
           name: cast.name,
         })),
@@ -324,10 +322,10 @@ function StandAloneUpload() {
 
   useEffect(() => {
     const selectedResolutions = contentURLFields.map(
-      (content) => content.resolution
+      content => content.resolution
     );
     const updatedContentResolutions = CONTENT_RESOLUTIONS.filter(
-      (resolution) => !selectedResolutions.includes(resolution)
+      resolution => !selectedResolutions.includes(resolution)
     );
     setAvailableContentResolution(() => updatedContentResolutions);
   }, [contentURLFields]);
@@ -369,7 +367,7 @@ function StandAloneUpload() {
                 variant="outlined"
                 color="primary"
               >
-                {contentList.map((content) => (
+                {contentList.map(content => (
                   <MenuItem className={classes.selectItem} value={content}>
                     {content}
                   </MenuItem>
@@ -386,7 +384,7 @@ function StandAloneUpload() {
                   variant="outlined"
                   color="primary"
                 >
-                  {seriesList.map((series) => (
+                  {seriesList.map(series => (
                     <MenuItem className={classes.selectItem} value={series}>
                       {series}
                     </MenuItem>
@@ -658,7 +656,7 @@ function StandAloneUpload() {
                         {[
                           ...availableContentResolutions,
                           content.resolution,
-                        ].map((resolution) => (
+                        ].map(resolution => (
                           <MenuItem
                             className={classes.selectItem}
                             value={resolution}

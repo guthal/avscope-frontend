@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import {
   Box,
   Typography,
@@ -20,15 +20,22 @@ import useStyles from "./LoginPage.Styles";
 import { transformPostLoginResponse } from "../../utils/api-transforms";
 import { useHistory } from "react-router";
 import { APP_ROUTES } from "../../configs/app";
+import AuthContext from "../../contexts/AuthContext";
 
 function LoginPage() {
   const history = useHistory();
   const classes = useStyles();
   const [textFields, setTextFields] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   const postLoginParams = useMemo(() => [], []);
+  const { isUserLoggedIn, setUsername, setUserLoggedIn, setUserId, setUtype } =
+    useContext(AuthContext);
+
+  useEffect(() => {
+    if (isUserLoggedIn) history.push(APP_ROUTES.HOME_PAGE.path);
+  }, [history, isUserLoggedIn]);
 
   const {
     data: loginData,
@@ -43,6 +50,16 @@ function LoginPage() {
       [event.target.name]: event.target.value,
     }));
   };
+
+  useEffect(() => {
+    if (loginData) {
+      setUsername(loginData.username);
+      setUserLoggedIn(true);
+      setUserId(loginData.userId);
+      setUtype(loginData.utype);
+      history.push(APP_ROUTES.HOME_PAGE.path);
+    }
+  }, [history, loginData, setUserId, setUserLoggedIn, setUsername, setUtype]);
 
   const handleSignupClick = () =>
     history.push(`${APP_ROUTES.SIGNUP_PAGE.path}`);
@@ -86,7 +103,7 @@ function LoginPage() {
             variant="outlined"
             margin="normal"
             label="Email Address"
-            name="email"
+            name="username"
             autoComplete="email"
             className={classes.textField}
             onChange={handleTextFieldChange}

@@ -106,21 +106,20 @@ function VideoDetailPage() {
     transformGetSeriesContents
   );
 
-  const handleCardClick = (contentID) =>
+  const handleCardClick = contentID =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   const handleSeasonSelectorClickAway = () => {
     setSeasonSelectorOpen(false);
   };
 
-  const handleSeasonSelectorClick = () =>
-    setSeasonSelectorOpen((prev) => !prev);
+  const handleSeasonSelectorClick = () => setSeasonSelectorOpen(prev => !prev);
 
-  const handleSeasonClick = (seasonNo) => {
+  const handleSeasonClick = seasonNo => {
     setSeriesContents();
     handleSeasonSelectorClickAway();
     const episodeData = seriesData.find(
-      (episode) =>
+      episode =>
         episode.seriesInfo.seasonNo === seasonNo &&
         episode.seriesInfo.episodeNo === 1
     );
@@ -138,7 +137,7 @@ function VideoDetailPage() {
     if (contentsData)
       setRecommendedContents(
         contentsData?.contents
-          ?.filter((content) => content.id !== params.contentID)
+          ?.filter(content => content.id !== params.contentID)
           .slice(0, 4)
       );
   }, [contentsData, contentData, params.contentID]);
@@ -147,7 +146,7 @@ function VideoDetailPage() {
   useEffect(() => {
     if (contentData && seriesData) {
       const nextInSeries = seriesData.filter(
-        (episode) =>
+        episode =>
           episode.seriesInfo.seasonNo === contentData.seriesInfo.seasonNo &&
           episode.id !== contentData.id &&
           episode.seriesInfo.episodeNo > contentData.seriesInfo.episodeNo
@@ -204,7 +203,7 @@ function VideoDetailPage() {
   )
     return <PageLoader />;
 
-  if (contentError || userContentPurchasesError)
+  if (contentError)
     return (
       <PageError message="Opps.. Something went wrong while fetching contents." />
     );
@@ -256,7 +255,7 @@ function VideoDetailPage() {
                           <Box className={classes.seasonSelectorDropdown}>
                             {Array(
                               Math.max(
-                                ...seriesData.map((o) => o.seriesInfo.seasonNo),
+                                ...seriesData.map(o => o.seriesInfo.seasonNo),
                                 0
                               )
                             )

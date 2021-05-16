@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import FaceTwoToneIcon from "@material-ui/icons/FaceTwoTone";
 import { APP_ROUTES, HEADER_LABELS } from "../../configs/app";
+import Banner from "../../assets/avscopeBanner.png";
 import useStyles from "./Header.Styles";
 import { useHistory } from "react-router";
 import useGetApi from "../../hooks/useGetApi";
@@ -106,14 +107,10 @@ function Header() {
     <Box mb={2}>
       <AppBar position="static">
         <Toolbar>
-          <Box component="span" className={classes.logoContainer}>
-            <Typography
-              variant="h4"
-              onClick={handleLogoClick}
-              className={classes.title}
-            >
-              {HEADER_LABELS.LOGO}
-            </Typography>
+          <Box className={classes.logoContainer}>
+            <Box onClick={handleLogoClick} className={classes.title}>
+              <img src={Banner} alt="logo" />
+            </Box>
           </Box>
           {!isUserLoggedIn && (
             <Button

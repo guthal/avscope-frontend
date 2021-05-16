@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { APP_ROUTES } from "../../../configs/app";
 import AuthContext from "../../../contexts/AuthContext";
 
-function PrivateRoute({ component: Component }, ...rest) {
+function PrivateRoute({ component: Component, ...rest }) {
   const { isUserLoggedIn } = useContext(AuthContext);
 
   return (

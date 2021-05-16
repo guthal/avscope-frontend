@@ -85,6 +85,7 @@ function VideoDetailPage() {
   const {
     data: userContentPurchasesData,
     loading: userContentPurchasesLoading,
+    // eslint-disable-next-line no-unused-vars
     error: userContentPurchasesError,
     triggerApi: userContentPurchasesTriggerApi,
   } = useGetApi(
@@ -107,21 +108,20 @@ function VideoDetailPage() {
     transformGetSeriesContents
   );
 
-  const handleCardClick = (contentID) =>
+  const handleCardClick = contentID =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   const handleSeasonSelectorClickAway = () => {
     setSeasonSelectorOpen(false);
   };
 
-  const handleSeasonSelectorClick = () =>
-    setSeasonSelectorOpen((prev) => !prev);
+  const handleSeasonSelectorClick = () => setSeasonSelectorOpen(prev => !prev);
 
-  const handleSeasonClick = (seasonNo) => {
+  const handleSeasonClick = seasonNo => {
     setSeriesContents();
     handleSeasonSelectorClickAway();
     const episodeData = seriesData.find(
-      (episode) =>
+      episode =>
         episode.seriesInfo.seasonNo === seasonNo &&
         episode.seriesInfo.episodeNo === 1
     );
@@ -139,7 +139,7 @@ function VideoDetailPage() {
     if (contentsData)
       setRecommendedContents(
         contentsData?.contents
-          ?.filter((content) => content.id !== params.contentID)
+          ?.filter(content => content.id !== params.contentID)
           .slice(0, 4)
       );
   }, [contentsData, contentData, params.contentID]);
@@ -148,7 +148,7 @@ function VideoDetailPage() {
   useEffect(() => {
     if (contentData && seriesData) {
       const nextInSeries = seriesData.filter(
-        (episode) =>
+        episode =>
           episode.seriesInfo.seasonNo === contentData.seriesInfo.seasonNo &&
           episode.id !== contentData.id &&
           episode.seriesInfo.episodeNo > contentData.seriesInfo.episodeNo
@@ -176,8 +176,8 @@ function VideoDetailPage() {
     if (contentData?.purchase_type === "b")
       return (
         <PurchaseButton
-          btnText={`Buy now @ $${contentData?.price["b"]}`}
-          onClick={(event) => {
+          btnText={`Buy now @ ₹${contentData?.price["b"]}`}
+          onClick={event => {
             loadRazorPay(
               event,
               userId,
@@ -191,8 +191,8 @@ function VideoDetailPage() {
     if (contentData?.purchase_type === "r")
       return (
         <PurchaseButton
-          btnText={`Rent now @ $${contentData?.price["r"]}`}
-          onClick={(event) => {
+          btnText={`Rent now @ ₹${contentData?.price["r"]}`}
+          onClick={event => {
             loadRazorPay(
               event,
               userId,
@@ -206,8 +206,8 @@ function VideoDetailPage() {
     if (contentData?.purchase_type === "w")
       return (
         <PurchaseButton
-          btnText={`Purchase ticket now @ $${contentData?.price["w"]}`}
-          onClick={(event) => {
+          btnText={`Purchase ticket now @ ₹${contentData?.price["w"]}`}
+          onClick={event => {
             loadRazorPay(
               event,
               userId,
@@ -222,8 +222,8 @@ function VideoDetailPage() {
       return (
         <>
           <PurchaseButton
-            btnText={`Buy now @ $${contentData?.price["b"]}`}
-            onClick={(event) => {
+            btnText={`Buy now @ ₹${contentData?.price["b"]}`}
+            onClick={event => {
               loadRazorPay(
                 event,
                 userId,
@@ -234,8 +234,8 @@ function VideoDetailPage() {
             }}
           />
           <PurchaseButton
-            btnText={`Rent now @ $${contentData?.price["r"]}`}
-            onClick={(event) => {
+            btnText={`Rent now @ ₹${contentData?.price["r"]}`}
+            onClick={event => {
               loadRazorPay(
                 event,
                 userId,
@@ -310,7 +310,7 @@ function VideoDetailPage() {
                           <Box className={classes.seasonSelectorDropdown}>
                             {Array(
                               Math.max(
-                                ...seriesData.map((o) => o.seriesInfo.seasonNo),
+                                ...seriesData.map(o => o.seriesInfo.seasonNo),
                                 0
                               )
                             )

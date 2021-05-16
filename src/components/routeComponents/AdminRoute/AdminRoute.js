@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { APP_ROUTES } from "../../../configs/app";
 import AuthContext from "../../../contexts/AuthContext";
 
-function AdminRoute({ component: Component }, ...rest) {
+function AdminRoute({ component: Component, ...rest }) {
   const { isUserLoggedIn, utype } = useContext(AuthContext);
 
   const getRoute = props => {

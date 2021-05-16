@@ -73,7 +73,7 @@ export const transformGetContent = data => ({
   description: data.description,
   name: data.title,
   posterUrl:
-    data.thumbnail.picsq ||
+    data.thumbnail ||
     "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
   purchase_type: data.type,
   price: data.price,

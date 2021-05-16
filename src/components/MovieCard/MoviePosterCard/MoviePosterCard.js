@@ -8,7 +8,7 @@ function MoviePosterCard({ url, onPosterClick }) {
 
   const [isCardHighlighted, setIsCardHighlighted] = useState(false);
 
-  const handleMouseHover = () => setIsCardHighlighted((prev) => !prev);
+  const handleMouseHover = () => setIsCardHighlighted(prev => !prev);
 
   const handlePosterClick = () => onPosterClick?.();
 

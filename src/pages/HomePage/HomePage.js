@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Box, Typography, Container, Grid } from "@material-ui/core";
 import HomeCarousel from "../../components/HomeCarousel";
 import MovieCard from "../../components/MovieCard";
@@ -32,7 +32,7 @@ function HomePage() {
     triggerApi: seriesSeasonsTriggerApi,
   } = useGetApi(getAllSeries, getAllSeriesParams, transformGetAllSeries);
 
-  const handleCardClick = (contentID) =>
+  const handleCardClick = contentID =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
@@ -86,9 +86,9 @@ function HomePage() {
                 <Typography variant="h4">Series</Typography>
               </Box>
               {seriesSeasonsData
-                .map((series) => series.seasons)
-                .map((season) => (
-                  <Grid container spacing={4}>
+                .map(series => series.seasons)
+                .map((season, i) => (
+                  <Grid container spacing={4} key={`season-card-${i}`}>
                     {season?.slice(0, 4).map((contentCard, index) => (
                       <Grid
                         lg={3}

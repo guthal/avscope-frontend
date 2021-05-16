@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     paddingRight: 0,
   },
@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
       zIndex: -1,
       height: "100%",
       "-webkit-mask-image":
-        "radial-gradient(at 65% 50%, black, transparent 70%)",
-      maskImage: "radial-gradient(at 65% 50%, black, transparent 70%)",
+        "radial-gradient(at 65% 50%, black, transparent 72%)",
+      maskImage: "radial-gradient(at 65% 50%, black, transparent 72%)",
     },
   },
 

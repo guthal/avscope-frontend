@@ -1,5 +1,14 @@
-import React, { useContext, useEffect, useMemo } from "react";
-import { Box, AppBar, Toolbar, Typography, Button } from "@material-ui/core";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import {
+  Box,
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  ClickAwayListener,
+  Avatar,
+} from "@material-ui/core";
+import FaceTwoToneIcon from "@material-ui/icons/FaceTwoTone";
 import { APP_ROUTES, HEADER_LABELS } from "../../configs/app";
 import useStyles from "./Header.Styles";
 import { useHistory } from "react-router";
@@ -14,14 +23,18 @@ function Header() {
   const history = useHistory();
   const {
     isUserLoggedIn,
+    userId,
     utype,
     setUsername,
-    setUserLoggedIn,
+    setIsUserLoggedIn,
     setUserId,
     setUtype,
   } = useContext(AuthContext);
+  const [openProfile, setOpenProfile] = useState(false);
 
-  const getLogoutParams = useMemo(() => [], []);
+  // Done to set logoutData to undefined through getLogoutParams
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getLogoutParams = useMemo(() => [], [isUserLoggedIn]);
 
   const {
     data: logoutData,
@@ -46,17 +59,41 @@ function Header() {
     logoutTriggerGetApi();
   };
 
+  const handleToggleMenu = () => {
+    setOpenProfile(prev => !prev);
+  };
+
+  const handleCloseMenu = () => {
+    setOpenProfile(false);
+  };
+
   const handleCheckoutClick = () => {
     history.push(APP_ROUTES.CHECKOUT_PAGE.path);
   };
 
+  const handleHistoryClick = () => {
+    history.push(`${APP_ROUTES.HISTORY_PAGE.path}/${userId}`);
+  };
+
+  const handleTicketsClick = () => {
+    history.push(`${APP_ROUTES.TICKETS_PAGE.path}/${userId}`);
+  };
+
   useEffect(() => {
-    setUsername("");
-    setUserLoggedIn("");
-    setUserId("");
-    setUtype("");
-    history.push(APP_ROUTES.LOGIN_PAGE.path);
-  }, [logoutData, setUserId, setUserLoggedIn, setUsername, setUtype, history]);
+    if (logoutData) {
+      handleCloseMenu();
+      setUsername("");
+      setIsUserLoggedIn(false);
+      setUserId("");
+      setUtype("");
+    }
+  }, [logoutData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
+
+  useEffect(() => {
+    if (!isUserLoggedIn) {
+      history.push(APP_ROUTES.LOGIN_PAGE.path);
+    }
+  }, [isUserLoggedIn, history]);
 
   if (logoutLoading) return <PageLoader />;
 
@@ -69,27 +106,16 @@ function Header() {
     <Box mb={2}>
       <AppBar position="static">
         <Toolbar>
-          <Box
-            component="span"
-            onClick={handleLogoClick}
-            className={classes.logoContainer}
-          >
-            <Typography variant="h4" className={classes.title}>
+          <Box component="span" className={classes.logoContainer}>
+            <Typography
+              variant="h4"
+              onClick={handleLogoClick}
+              className={classes.title}
+            >
               {HEADER_LABELS.LOGO}
             </Typography>
           </Box>
-          {utype === 0 && isUserLoggedIn && (
-            <Box mx={2}>
-              <Button
-                color="secondary"
-                variant="outlined"
-                onClick={handleAdminClick}
-              >
-                {HEADER_LABELS.ADMIN}
-              </Button>
-            </Box>
-          )}
-          {!isUserLoggedIn ? (
+          {!isUserLoggedIn && (
             <Button
               color="secondary"
               variant="contained"
@@ -97,22 +123,67 @@ function Header() {
             >
               {HEADER_LABELS.LOGIN}
             </Button>
-          ) : (
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={handleLogoutClick}
-            >
-              {HEADER_LABELS.LOGOUT}
-            </Button>
           )}
-          <Button
-            color="secondary"
-            variant="outlined"
-            onClick={handleCheckoutClick}
-          >
-            Checkout
-          </Button>
+          {isUserLoggedIn && (
+            <Box px={2}>
+              <ClickAwayListener onClickAway={handleCloseMenu}>
+                <Box className={classes.profileContainer}>
+                  <Avatar onClick={handleToggleMenu}>
+                    <FaceTwoToneIcon />
+                  </Avatar>
+                  {openProfile && (
+                    <Box className={classes.profileMenu}>
+                      {utype === 0 && (
+                        <Box mx={2}>
+                          <Button
+                            color="secondary"
+                            variant="outlined"
+                            className={classes.profileMenuItem}
+                            onClick={handleAdminClick}
+                          >
+                            {HEADER_LABELS.ADMIN}
+                          </Button>
+                        </Box>
+                      )}
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        className={classes.profileMenuItem}
+                        onClick={handleCheckoutClick}
+                      >
+                        <Typography>CHECKOUT</Typography>
+                      </Button>
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        className={classes.profileMenuItem}
+                        onClick={handleHistoryClick}
+                      >
+                        <Typography>HISTORY</Typography>
+                      </Button>
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        className={classes.profileMenuItem}
+                        onClick={handleTicketsClick}
+                      >
+                        <Typography>TICKETS</Typography>
+                      </Button>
+
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        className={classes.profileMenuItem}
+                        onClick={handleLogoutClick}
+                      >
+                        {HEADER_LABELS.LOGOUT}
+                      </Button>
+                    </Box>
+                  )}
+                </Box>
+              </ClickAwayListener>
+            </Box>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

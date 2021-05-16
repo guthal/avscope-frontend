@@ -1,22 +1,23 @@
 import React from "react";
 import { CssBaseline } from "@material-ui/core";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { COLORS } from "../configs/theme";
 
 function AppThemeProvider({ children }) {
   const theme = createMuiTheme({
     palette: {
       primary: {
-        main: "#232323",
+        main: COLORS.PRIMARY_MAIN,
       },
       secondary: {
-        main: "#e6dd00",
+        main: COLORS.SECONDARY_MAIN,
       },
       background: {
-        default: "#313131",
-        paper: "#dbd295",
+        default: COLORS.BACKGROUND_DEFAULT,
+        paper: COLORS.BACKGROUND_PAPER,
       },
       text: {
-        primary: "#cecece",
+        primary: COLORS.TEXT_PRIMARY,
       },
     },
   });

@@ -37,8 +37,13 @@ function SignupPage() {
   const [signupDisabled, setSignupDisabled] = useState(true);
 
   const postSignupParams = useMemo(() => [], []);
-  const { isUserLoggedIn, setUsername, setUserLoggedIn, setUserId, setUtype } =
-    useContext(AuthContext);
+  const {
+    isUserLoggedIn,
+    setUsername,
+    setIsUserLoggedIn,
+    setUserId,
+    setUtype,
+  } = useContext(AuthContext);
 
   useEffect(() => {
     if (isUserLoggedIn) history.push(APP_ROUTES.HOME_PAGE.path);
@@ -56,12 +61,19 @@ function SignupPage() {
   useEffect(() => {
     if (signupData) {
       setUsername(signupData.username);
-      setUserLoggedIn(true);
+      setIsUserLoggedIn(true);
       setUserId(signupData.userId);
       setUtype(signupData.utype);
       history.push(APP_ROUTES.HOME_PAGE.path);
     }
-  }, [history, setUserId, setUserLoggedIn, setUsername, setUtype, signupData]);
+  }, [
+    history,
+    setUserId,
+    setIsUserLoggedIn,
+    setUsername,
+    setUtype,
+    signupData,
+  ]);
 
   const handleTextFieldChange = event => {
     setPasswordsMatch(true);

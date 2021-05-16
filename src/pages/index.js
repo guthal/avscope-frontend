@@ -29,13 +29,13 @@ function Pages() {
           component={VideoDetailPage}
         />
 
-        <Route
+        <PrivateRoute
           exact
           path={`${APP_ROUTES.HISTORY_PAGE.path}/:userID`}
           component={HistoryPage}
         />
 
-        <Route
+        <PrivateRoute
           exact
           path={`${APP_ROUTES.TICKETS_PAGE.path}/:userID`}
           component={TicketsPage}
@@ -66,7 +66,7 @@ function Pages() {
           path={`${APP_ROUTES.SIGNUP_PAGE.path}`}
           component={SignupPage}
         />
-        <Route
+        <PrivateRoute
           exact
           path={`${APP_ROUTES.CHECKOUT_PAGE.path}`}
           component={CheckoutPage}

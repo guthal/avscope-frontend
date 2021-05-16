@@ -1,7 +1,14 @@
 import logo from "../assets/avscope2.jpeg";
 import { postCreateOrder, postOrderSuccess } from "../utils/api";
+import { COLORS } from "../configs/theme";
 
-export const loadRazorPay = async event => {
+export const loadRazorPay = async (
+  event,
+  userId,
+  contentAmount,
+  contentId,
+  contentType
+) => {
   const loadScript = src => {
     return new Promise(resolve => {
       const script = document.createElement("script");
@@ -24,7 +31,7 @@ export const loadRazorPay = async event => {
   }
 
   const result = await postCreateOrder({
-    amount: "50000",
+    amount: contentAmount * 100, // parses as paise, cent
     currency: "INR",
     receipt: "receipt_order_74394",
   });
@@ -55,11 +62,11 @@ export const loadRazorPay = async event => {
       //   razorpaySignature: response.razorpay_signature,
       // };
 
-      // const result = await axios.post(
-      //   "http://localhost:5000/payment/success",
-      //   data
-      // );
       await postOrderSuccess({
+        userId: userId,
+        contentId: contentId,
+        amount: amount,
+        type: contentType,
         orderCreationId: order_id,
         razorpayPaymentId: response.razorpay_payment_id,
         razorpayOrderId: response.razorpay_order_id,
@@ -71,11 +78,8 @@ export const loadRazorPay = async event => {
       email: "average.joe@gmail.com",
       contact: "9999999999",
     },
-    notes: {
-      address: "test_address",
-    },
     theme: {
-      color: "yellow",
+      color: COLORS.SECONDARY_MAIN,
     },
   };
 

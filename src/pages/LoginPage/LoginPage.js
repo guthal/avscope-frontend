@@ -30,8 +30,13 @@ function LoginPage() {
     password: "",
   });
   const postLoginParams = useMemo(() => [], []);
-  const { isUserLoggedIn, setUsername, setUserLoggedIn, setUserId, setUtype } =
-    useContext(AuthContext);
+  const {
+    isUserLoggedIn,
+    setUsername,
+    setIsUserLoggedIn,
+    setUserId,
+    setUtype,
+  } = useContext(AuthContext);
 
   useEffect(() => {
     if (isUserLoggedIn) history.push(APP_ROUTES.HOME_PAGE.path);
@@ -54,12 +59,12 @@ function LoginPage() {
   useEffect(() => {
     if (loginData) {
       setUsername(loginData.username);
-      setUserLoggedIn(true);
+      setIsUserLoggedIn(true);
       setUserId(loginData.userId);
       setUtype(loginData.utype);
       history.push(APP_ROUTES.HOME_PAGE.path);
     }
-  }, [history, loginData, setUserId, setUserLoggedIn, setUsername, setUtype]);
+  }, [history, loginData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
 
   const handleSignupClick = () =>
     history.push(`${APP_ROUTES.SIGNUP_PAGE.path}`);

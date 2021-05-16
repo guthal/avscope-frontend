@@ -9,10 +9,10 @@ export const transformGetContents = (data) => {
       description: datum.description,
       name: datum.title,
       carouselUrl:
-        datum.thumbnail.pic2030 ||
+        datum.thumbnail ||
         "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
       imageUrl:
-        datum.thumbnail.picsq ||
+        datum.thumbnail ||
         "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
       genres: datum.genres || [],
       seriesID: datum.seriesId,
@@ -34,10 +34,10 @@ export const transformGetAllSeries = (data) =>
       id: season.startContentId,
       name: data.seriesName,
       carouselUrl:
-        season.thumbnail.pic2030 ||
+        season.thumbnail ||
         "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
       imageUrl:
-        season.thumbnail.picsq ||
+        season.thumbnail ||
         "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
       description: season.description,
       seasonNo: season.seasonNo,
@@ -51,10 +51,10 @@ export const transformGetSeriesContents = (data) =>
     description: datum.description,
     name: datum.title,
     carouselUrl:
-      datum.thumbnail.pic2030 ||
+      datum.thumbnail ||
       "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
     imageUrl:
-      datum.thumbnail.picsq ||
+      datum.thumbnail ||
       "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
     genres: datum.genres || [],
     seriesID: datum.seriesId,
@@ -107,7 +107,7 @@ export const transformGetHistoryData = (data) => {
       purchaseType: historyData.purchaseType,
       ticketId: historyData.purchaseId,
       name: historyData.contentTitle,
-      posterUrl: historyData.thumbnail.picsq,
+      posterUrl: historyData.thumbnail,
       isTicketValid: isTicketValid,
     };
   });

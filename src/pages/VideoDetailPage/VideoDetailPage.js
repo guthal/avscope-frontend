@@ -172,7 +172,7 @@ function VideoDetailPage() {
   useEffect(() => contentTriggerApi(), [contentTriggerApi, params.contentID]);
 
   const PurchaseTypeElements = () => {
-    if (contentData?.purchase_type === "weekly")
+    if (contentData?.purchase_type === "w")
       return (
         <PurchaseButton btnText={`Buy now @ $${contentData?.price["b"]}`} />
       );
@@ -180,7 +180,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton btnText={`Rent now @ $${contentData?.price["r"]}`} />
       );
-    if (contentData?.purchase_type === "weekly")
+    if (contentData?.purchase_type === "w")
       return (
         <PurchaseButton
           btnText={`Purchase ticket now @ $${contentData?.price["w"]}`}

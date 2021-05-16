@@ -1,4 +1,4 @@
-import logo from "../assets/avscope2.jpeg";
+import logo from "../assets/logo.png";
 import { postCreateOrder, postOrderSuccess } from "../utils/api";
 import { COLORS } from "../configs/theme";
 

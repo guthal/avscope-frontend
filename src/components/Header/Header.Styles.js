@@ -9,7 +9,11 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   title: {
-    textTransform: "uppercase",
+    height: "64px",
+
+    "& img": {
+      height: "100%",
+    },
   },
   profileContainer: {
     position: "relative",

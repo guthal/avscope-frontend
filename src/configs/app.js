@@ -82,7 +82,6 @@ export const APP_ROUTES = {
 export const HEADER_LABELS = {
   LOGIN: "Login",
   LOGOUT: "Logout",
-  LOGO: "Logo",
   ADMIN: "Admin",
 };
 

@@ -140,12 +140,12 @@ export const transformGetCreators = data =>
   }));
 
 export const transformPostLoginResponse = data => {
-  /**
-   * Will add response from POST login ENDPOINT here
-   */
+  const name = data.fname + " " + data.lname;
+
   return {
     userId: data.userId,
     username: data.username,
+    name: name,
     utype: data.utype,
     userDate: data.date,
     userHistory: data.history,
@@ -153,15 +153,27 @@ export const transformPostLoginResponse = data => {
 };
 
 export const transformPostSignupResponse = data => {
-  /**
-   * Will add response from POST signup ENDPOINT here
-   */
+  const name = data.fname + " " + data.lname;
+
   return {
     userId: data.userId,
-    userFName: data.fname,
-    userLName: data.lname,
-    userName: data.username,
-    userDate: data.date,
+    username: data.username,
+    name: name,
     utype: data.utype,
+    userDate: data.date,
+    userHistory: data.history,
+  };
+};
+
+export const transformGetVerifyUser = data => {
+  const name = data.fname + " " + data.lname;
+
+  return {
+    userId: data.userId,
+    username: data.username,
+    name: name,
+    utype: data.utype,
+    userDate: data.date,
+    userHistory: data.history,
   };
 };

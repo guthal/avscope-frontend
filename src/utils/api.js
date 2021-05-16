@@ -79,6 +79,14 @@ export const postLogin = data => {
     });
 };
 
+export const getVerifyUser = () => {
+  return axios
+    .get(ENDPOINTS.GET_VERIFY_LOGIN, {
+      withCredentials: true,
+    })
+    .then(res => res.data);
+};
+
 export const postSignup = data => {
   return axios
     .post(ENDPOINTS.POST_SIGNUP, data, {

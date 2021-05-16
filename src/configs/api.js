@@ -13,6 +13,7 @@ const ENDPOINTS = {
   GET_CREATORS: `${DOMAIN}/creators`,
   POST_CONTENT_UPLOAD: `${DOMAIN}/content-upload`,
   POST_LOGIN: `${DOMAIN}/login`,
+  GET_VERIFY_LOGIN: `${DOMAIN}/login/verify`,
   POST_SIGNUP: `${DOMAIN}/register`,
   GET_LOGOUT: `${DOMAIN}/logout`,
   POST_CREATE_ORDER_RAZORPAY: `${DOMAIN}/orders/create`,

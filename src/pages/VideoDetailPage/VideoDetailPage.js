@@ -229,7 +229,7 @@ function VideoDetailPage() {
                 userId,
                 contentData?.price["b"],
                 contentData?.id,
-                contentData?.purchase_type
+                "b"
               );
             }}
           />
@@ -241,7 +241,7 @@ function VideoDetailPage() {
                 userId,
                 contentData?.price["r"],
                 contentData?.id,
-                contentData?.purchase_type
+                "r"
               );
             }}
           />

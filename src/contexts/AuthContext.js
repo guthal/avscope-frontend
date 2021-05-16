@@ -3,16 +3,28 @@ import React, { createContext, useState } from "react";
 const AuthContext = createContext({
   isUserLoggedIn: false,
   userId: "",
-  username: "ak@gmail.com",
+  username: "",
+  utype: 2,
+  name: "",
   setUsername: () => {},
   setUserId: () => {},
-  setIsLoggedIn: () => {},
+  setIsUserLoggedIn: () => {},
+  setUtype: () => {},
 });
 
 function AuthContextProvider({ children }) {
-  const [isUserLoggedIn, setUserLoggedIn] = useState(true);
+  /**
+   * API call to backend with the cookie
+   *      -> if no cookie then default
+   * GET user info from API and
+   *      -> then set all these state vars
+   */
+
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [userId, setUserId] = useState();
   const [username, setUsername] = useState();
+  const [utype, setUtype] = useState(2);
+  const [name, setName] = useState();
 
   return (
     <AuthContext.Provider
@@ -20,9 +32,13 @@ function AuthContextProvider({ children }) {
         isUserLoggedIn,
         userId,
         username,
+        utype,
+        name,
         setUsername,
-        setUserLoggedIn,
+        setIsUserLoggedIn,
         setUserId,
+        setUtype,
+        setName,
       }}
     >
       {children}

@@ -1,6 +1,14 @@
 import logo from "../assets/avscope2.jpeg";
+import { postCreateOrder, postOrderSuccess } from "../utils/api";
+import { COLORS } from "../configs/theme";
 
-export const loadRazorPay = async event => {
+export const loadRazorPay = async (
+  event,
+  userId,
+  contentAmount,
+  contentId,
+  contentType
+) => {
   const loadScript = src => {
     return new Promise(resolve => {
       const script = document.createElement("script");
@@ -22,17 +30,30 @@ export const loadRazorPay = async event => {
     return;
   }
 
-  const orderId = "order_test"; // Generate an OrderId and pass to loadRazorPay
-  const amount = "50000"; // Pass your Payment in Paisa/ Cents/ etc.
+  const result = await postCreateOrder({
+    amount: contentAmount * 100, // parses as paise, cent
+    currency: "INR",
+    receipt: "receipt_order_74394",
+  });
+
+  if (!result) {
+    alert("Server error. Are you online?");
+    return;
+  }
+
+  // Getting the order details back
+  const { amount, id: order_id, currency } = result;
+
+  const orderAmount = amount; // Pass your Payment in Paisa/ Cents/ etc.
 
   const options = {
-    key: "test_key", // Enter the Key ID generated from the Dashboard
-    amount: amount.toString(),
-    currency: "INR",
-    name: "Soumya Corp.",
+    key: "rzp_test_P4Kxye5deZxmHx", // Enter the Key ID generated from the Dashboard
+    amount: orderAmount.toString(),
+    currency: currency,
+    name: "AVScope Inc.",
     description: "Test Transaction",
     image: { logo },
-    order_id: orderId,
+    order_id: order_id,
     handler: async function (response) {
       // const data = {
       //   orderCreationId: orderId,
@@ -41,22 +62,24 @@ export const loadRazorPay = async event => {
       //   razorpaySignature: response.razorpay_signature,
       // };
 
-      // const result = await axios.post(
-      //   "http://localhost:5000/payment/success",
-      //   data
-      // );
-      console.log("Done");
+      await postOrderSuccess({
+        userId: userId,
+        contentId: contentId,
+        amount: amount,
+        type: contentType,
+        orderCreationId: order_id,
+        razorpayPaymentId: response.razorpay_payment_id,
+        razorpayOrderId: response.razorpay_order_id,
+        razorpaySignature: response.razorpay_signature,
+      });
     },
     prefill: {
       name: "Average Joe",
       email: "average.joe@gmail.com",
       contact: "9999999999",
     },
-    notes: {
-      address: "test_address",
-    },
     theme: {
-      color: "yellow",
+      color: COLORS.SECONDARY_MAIN,
     },
   };
 

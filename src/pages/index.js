@@ -13,6 +13,8 @@ import VideoDetailPage from "./VideoDetailPage";
 import CreatorsPage from "./CreatorsPage";
 import AdminPage from "./AdminPage";
 import ContentUploadPage from "./ContentUploadPage";
+import AdminRoute from "../components/routeComponents/AdminRoute";
+import PrivateRoute from "../components/routeComponents/PrivateRoute";
 
 function Pages() {
   return (
@@ -26,28 +28,30 @@ function Pages() {
           path={`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/:contentID`}
           component={VideoDetailPage}
         />
-        <Route
+
+        <PrivateRoute
           exact
           path={`${APP_ROUTES.HISTORY_PAGE.path}/:userID`}
           component={HistoryPage}
         />
-        <Route
+
+        <PrivateRoute
           exact
           path={`${APP_ROUTES.TICKETS_PAGE.path}/:userID`}
           component={TicketsPage}
         />
 
-        <Route
+        <AdminRoute
           exact
           path={APP_ROUTES.CREATORS_PAGE.path}
           component={CreatorsPage}
         />
-        <Route
+        <AdminRoute
           exact
           path={APP_ROUTES.ADMIN_DASHBOARD.path}
           component={AdminPage}
         />
-        <Route
+        <AdminRoute
           path={`${APP_ROUTES.CONTENT_UPLOAD.path}/:userID`}
           component={ContentUploadPage}
         />
@@ -62,7 +66,7 @@ function Pages() {
           path={`${APP_ROUTES.SIGNUP_PAGE.path}`}
           component={SignupPage}
         />
-        <Route
+        <PrivateRoute
           exact
           path={`${APP_ROUTES.CHECKOUT_PAGE.path}`}
           component={CheckoutPage}

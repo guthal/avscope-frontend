@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import {
   Box,
   Typography,
@@ -18,15 +18,29 @@ import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import useStyles from "./LoginPage.Styles";
 import { transformPostLoginResponse } from "../../utils/api-transforms";
-// import { APP_ROUTES } from "../../configs/app";
+import { useHistory } from "react-router";
+import { APP_ROUTES } from "../../configs/app";
+import AuthContext from "../../contexts/AuthContext";
 
 function LoginPage() {
+  const history = useHistory();
   const classes = useStyles();
   const [textFields, setTextFields] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   const postLoginParams = useMemo(() => [], []);
+  const {
+    isUserLoggedIn,
+    setUsername,
+    setIsUserLoggedIn,
+    setUserId,
+    setUtype,
+  } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (isUserLoggedIn) history.push(APP_ROUTES.HOME_PAGE.path);
+  }, [history, isUserLoggedIn]);
 
   const {
     data: loginData,
@@ -41,6 +55,19 @@ function LoginPage() {
       [event.target.name]: event.target.value,
     }));
   };
+
+  useEffect(() => {
+    if (loginData) {
+      setUsername(loginData.username);
+      setIsUserLoggedIn(true);
+      setUserId(loginData.userId);
+      setUtype(loginData.utype);
+      history.push(APP_ROUTES.HOME_PAGE.path);
+    }
+  }, [history, loginData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
+
+  const handleSignupClick = () =>
+    history.push(`${APP_ROUTES.SIGNUP_PAGE.path}`);
 
   const handleFormSubmit = () => {
     loginTriggerPostApi(textFields);
@@ -81,7 +108,7 @@ function LoginPage() {
             variant="outlined"
             margin="normal"
             label="Email Address"
-            name="email"
+            name="username"
             autoComplete="email"
             className={classes.textField}
             onChange={handleTextFieldChange}
@@ -122,7 +149,11 @@ function LoginPage() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/signup" variant="body2">
+              <Link
+                onClick={handleSignupClick}
+                variant="body2"
+                style={{ cursor: "pointer" }}
+              >
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

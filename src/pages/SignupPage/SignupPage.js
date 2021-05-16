@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import {
   Box,
   Typography,
@@ -18,43 +18,103 @@ import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import useStyles from "./SignupPage.Styles";
 import { transformPostSignupResponse } from "../../utils/api-transforms";
+import { useHistory } from "react-router";
+import { APP_ROUTES } from "../../configs/app";
+import AuthContext from "../../contexts/AuthContext";
 
 function SignupPage() {
+  const history = useHistory();
   const classes = useStyles();
   const [textFields, setTextFields] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    phone: "",
     password: "",
     retypePassword: "",
+    checkbox: false,
   });
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [signupDisabled, setSignupDisabled] = useState(true);
 
-  const postContentsParams = useMemo(() => [], []);
+  const postSignupParams = useMemo(() => [], []);
+  const {
+    isUserLoggedIn,
+    setUsername,
+    setIsUserLoggedIn,
+    setUserId,
+    setUtype,
+  } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (isUserLoggedIn) history.push(APP_ROUTES.HOME_PAGE.path);
+  }, [history, isUserLoggedIn]);
+
+  const handleLoginClick = () => history.push(`${APP_ROUTES.LOGIN_PAGE.path}`);
 
   const {
-    data: contentsData,
-    loading: contentsLoading,
-    error: contentsError,
+    data: signupData,
+    loading: signupLoading,
+    error: signupError,
     triggerPostApi: signupTriggerPostApi,
-  } = usePostApi(postSignup, postContentsParams, transformPostSignupResponse);
+  } = usePostApi(postSignup, postSignupParams, transformPostSignupResponse);
+
+  useEffect(() => {
+    if (signupData) {
+      setUsername(signupData.username);
+      setIsUserLoggedIn(true);
+      setUserId(signupData.userId);
+      setUtype(signupData.utype);
+      history.push(APP_ROUTES.HOME_PAGE.path);
+    }
+  }, [
+    history,
+    setUserId,
+    setIsUserLoggedIn,
+    setUsername,
+    setUtype,
+    signupData,
+  ]);
 
   const handleTextFieldChange = event => {
+    setPasswordsMatch(true);
     setTextFields(prev => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
   };
 
-  const handleFormSubmit = () => {
-    signupTriggerPostApi(textFields);
+  const handleCheckboxChange = () => {
+    setTextFields(prev => ({
+      ...prev,
+      checkbox: !prev.checkbox,
+    }));
   };
 
-  if (contentsLoading) return <PageLoader />;
+  useEffect(() => {
+    setSignupDisabled(!textFields.checkbox);
+  }, [textFields.checkbox]);
 
-  if (contentsError)
+  const handleFormSubmit = () => {
+    if (
+      textFields.password === textFields.retypePassword &&
+      textFields.checkbox
+    ) {
+      signupTriggerPostApi({
+        fname: textFields.firstName,
+        lname: textFields.lastName,
+        username: textFields.email,
+        password: textFields.password,
+      });
+    } else {
+      setPasswordsMatch(false);
+    }
+  };
+
+  if (signupLoading) return <PageLoader />;
+
+  if (signupError)
     return (
-      <PageError message="Opps.. Something went wrong while fetching contents." />
+      <PageError message="Opps.. Something went wrong while Signing Up." />
     );
 
   const Copyright = () => {
@@ -127,18 +187,6 @@ function SignupPage() {
                 variant="outlined"
                 required
                 fullWidth
-                id="phone"
-                className={classes.textField}
-                onChange={handleTextFieldChange}
-                label="Phone Number"
-                name="phone"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
                 name="password"
                 label="Password"
                 className={classes.textField}
@@ -148,6 +196,13 @@ function SignupPage() {
                 autoComplete="current-password"
               />
             </Grid>
+            {!passwordsMatch && (
+              <Box px={2}>
+                <Typography variant="subtitle2" style={{ color: "red" }}>
+                  Passwords do not match
+                </Typography>
+              </Box>
+            )}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -159,12 +214,17 @@ function SignupPage() {
                 onChange={handleTextFieldChange}
                 color="primary"
                 type="password"
-                id="password"
+                id="retypePassword"
                 autoComplete="current-password"
               />
             </Grid>
             <Box style={{ display: "flex", alignItems: "center" }}>
-              <Checkbox value="allowExtraEmails" color="primary" required />
+              <Checkbox
+                name="checkbox"
+                value={textFields.checkbox}
+                color="primary"
+                onChange={handleCheckboxChange}
+              />
               <Typography color="primary">
                 I agree to accept all terms and conditions
               </Typography>
@@ -177,12 +237,17 @@ function SignupPage() {
             color="primary"
             className={classes.submit}
             onClick={handleFormSubmit}
+            disabled={signupDisabled}
           >
             Sign Up
           </Button>
           <Grid container justify="center">
             <Grid item>
-              <Link href="/login" variant="body2">
+              <Link
+                onClick={handleLoginClick}
+                variant="body2"
+                style={{ cursor: "pointer" }}
+              >
                 Already have an account? Log in
               </Link>
             </Grid>

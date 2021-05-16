@@ -8,7 +8,8 @@ import {
 } from "@material-ui/core";
 import { PlayCircleOutlineOutlined, ArrowDropDown } from "@material-ui/icons";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo, useEffect, useState, useContext } from "react";
+import AuthContext from "../../contexts/AuthContext";
 import MovieCard from "../../components/MovieCard";
 import useGetApi from "../../hooks/useGetApi";
 import {
@@ -27,8 +28,9 @@ import { APP_ROUTES } from "../../configs/app";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import useStyles from "./VideoDetailPage.Styles";
+import { loadRazorPay } from "../../utils/auth";
 
-const PurchaseButton = ({ btnText }) => {
+const PurchaseButton = ({ btnText, onClick }) => {
   const classes = useStyles();
 
   return (
@@ -36,6 +38,7 @@ const PurchaseButton = ({ btnText }) => {
       <Button
         color="secondary"
         variant="contained"
+        onClick={onClick}
         className={classes.purchaseBtn}
       >
         {btnText}
@@ -49,9 +52,7 @@ function VideoDetailPage() {
   const history = useHistory();
   const routeMatch = useRouteMatch();
   const { params } = routeMatch;
-
-  // TODO: Get from context when Auth is completed
-  const userID = "f524e638-0c83-42f8-b954-0da734c41fa5";
+  const { userId } = useContext(AuthContext);
 
   // eslint-disable-next-line no-unused-vars
   const [isVideoAvailable, setIsVideoAvailable] = useState(false);
@@ -78,8 +79,8 @@ function VideoDetailPage() {
   } = useGetApi(getContents, getContentsParams, transformGetContents);
 
   const getUserContentPurchasesParams = useMemo(
-    () => (contentData?.id ? [userID, contentData.id] : []),
-    [contentData?.id]
+    () => (contentData?.id ? [userId, contentData.id] : []),
+    [contentData?.id, userId]
   );
   const {
     data: userContentPurchasesData,
@@ -130,7 +131,7 @@ function VideoDetailPage() {
   // Show Play Button if user has made the video purchase
   useEffect(() => {
     // TODO: Write the logic to check if video is available
-    setIsVideoAvailable(true);
+    setIsVideoAvailable(false);
   }, [userContentPurchasesData]);
 
   // Set Watch next to first 4 contents from /contents
@@ -166,31 +167,84 @@ function VideoDetailPage() {
   }, [contentData, seriesTriggerApi]);
 
   useEffect(() => {
-    if (userID && contentData?.id) userContentPurchasesTriggerApi();
-  }, [userID, contentData, userContentPurchasesTriggerApi]);
+    if (userId && contentData?.id) userContentPurchasesTriggerApi();
+  }, [userId, contentData, userContentPurchasesTriggerApi]);
 
   useEffect(() => contentTriggerApi(), [contentTriggerApi, params.contentID]);
 
   const PurchaseTypeElements = () => {
-    if (contentData?.purchase_type === "w")
+    if (contentData?.purchase_type === "b")
       return (
-        <PurchaseButton btnText={`Buy now @ $${contentData?.price["b"]}`} />
+        <PurchaseButton
+          btnText={`Buy now @ $${contentData?.price["b"]}`}
+          onClick={(event) => {
+            loadRazorPay(
+              event,
+              userId,
+              contentData?.price["b"],
+              contentData?.id,
+              contentData?.purchase_type
+            );
+          }}
+        />
       );
     if (contentData?.purchase_type === "r")
       return (
-        <PurchaseButton btnText={`Rent now @ $${contentData?.price["r"]}`} />
+        <PurchaseButton
+          btnText={`Rent now @ $${contentData?.price["r"]}`}
+          onClick={(event) => {
+            loadRazorPay(
+              event,
+              userId,
+              contentData?.price["r"],
+              contentData?.id,
+              contentData?.purchase_type
+            );
+          }}
+        />
       );
     if (contentData?.purchase_type === "w")
       return (
         <PurchaseButton
           btnText={`Purchase ticket now @ $${contentData?.price["w"]}`}
+          onClick={(event) => {
+            loadRazorPay(
+              event,
+              userId,
+              contentData?.price["w"],
+              contentData?.id,
+              contentData?.purchase_type
+            );
+          }}
         />
       );
     if (contentData?.purchase_type === "br")
       return (
         <>
-          <PurchaseButton btnText={`Buy now @ $${contentData?.price["b"]}`} />
-          <PurchaseButton btnText={`Rent now @ $${contentData?.price["r"]}`} />
+          <PurchaseButton
+            btnText={`Buy now @ $${contentData?.price["b"]}`}
+            onClick={(event) => {
+              loadRazorPay(
+                event,
+                userId,
+                contentData?.price["b"],
+                contentData?.id,
+                contentData?.purchase_type
+              );
+            }}
+          />
+          <PurchaseButton
+            btnText={`Rent now @ $${contentData?.price["r"]}`}
+            onClick={(event) => {
+              loadRazorPay(
+                event,
+                userId,
+                contentData?.price["r"],
+                contentData?.id,
+                contentData?.purchase_type
+              );
+            }}
+          />
         </>
       );
     return <></>;
@@ -204,7 +258,7 @@ function VideoDetailPage() {
   )
     return <PageLoader />;
 
-  if (contentError || userContentPurchasesError)
+  if (contentError)
     return (
       <PageError message="Opps.. Something went wrong while fetching contents." />
     );

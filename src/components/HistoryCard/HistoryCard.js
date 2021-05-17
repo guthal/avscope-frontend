@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Grid, Typography, Box, Button } from "@material-ui/core";
 import useStyles from "./HistoryCard.Styles";
 import expired from "../../assets/expired.png";
 import valid from "../../assets/valid.png";
 import { trimDatetoHumanReadable } from "../../utils/generic";
 import CountdownTimer from "../CountdownTimer";
+import { loadRazorPay } from "../../utils/auth";
+import AuthContext from "../../contexts/AuthContext";
+import TimerIcon from "@material-ui/icons/Timer";
 
 function HistoryCard({ historyCard }) {
   const classes = useStyles();
   const [cardData, setCardData] = useState(historyCard);
+
+  const { userId } = useContext(AuthContext);
 
   const handleComplete = () =>
     setCardData(prev => ({
@@ -35,22 +40,48 @@ function HistoryCard({ historyCard }) {
                   {trimDatetoHumanReadable(cardData.purchaseDate.toString())}
                 </Typography>
                 <Typography variant="h6">₹ {cardData.purchasePrice}</Typography>
-                <Typography variant="button">
-                  <b>{cardData.isTicketValid && " Expires in: "}</b>
-                  {cardData.isTicketValid && (
-                    <CountdownTimer
-                      onComplete={handleComplete}
-                      purchaseDate={cardData.purchaseDate}
-                    />
-                  )}
-                </Typography>
+                <Box style={{ display: "flex", alignItems: "center" }}>
+                  {cardData.isTicketValid && <TimerIcon />}
+                  <Box px={1} style={{ fontSize: "15px" }}>
+                    {cardData.isTicketValid && (
+                      <CountdownTimer
+                        onComplete={handleComplete}
+                        expiryDate={cardData.expiryDate}
+                      />
+                    )}
+                  </Box>
+                </Box>
                 {!cardData.isTicketValid &&
                   (cardData.purchaseType === "r" ? (
-                    <Button variant="contained" color="primary">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={event => {
+                        loadRazorPay(
+                          event,
+                          userId,
+                          cardData.purchasePrice,
+                          cardData.contentId,
+                          "r"
+                        );
+                      }}
+                    >
                       Rent Again
                     </Button>
                   ) : (
-                    <Button variant="contained" color="primary">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={event => {
+                        loadRazorPay(
+                          event,
+                          userId,
+                          cardData.purchasePrice,
+                          cardData.contentId,
+                          "w"
+                        );
+                      }}
+                    >
                       Buy Weekly Again
                     </Button>
                   ))}

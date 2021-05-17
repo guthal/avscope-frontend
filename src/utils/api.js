@@ -95,6 +95,14 @@ export const postSignup = data => {
     .then(res => res.data);
 };
 
+export const postAddCreator = data => {
+  return axios
+    .post(ENDPOINTS.POST_ADD_CREATOR, data, {
+      withCredentials: true,
+    })
+    .then(res => res.data);
+};
+
 export const getLogoutUser = () => {
   return axios
     .get(ENDPOINTS.GET_LOGOUT, {

@@ -1,4 +1,4 @@
-import { ENDPOINTS } from "../configs/api";
+import { EXPIRY_TIMING } from "../configs/app";
 
 export const transformGetContents = (data) => {
   const contentData = [];
@@ -92,17 +92,17 @@ export const transformGetHistoryData = (data) => {
     const expiryDate = new Date(historyData.purchaseDate);
     const purchaseDate = new Date(historyData.purchaseDate);
     if (historyData.purchaseType === "r") {
-      expiryDate.setDate(purchaseDate.getDate() + ENDPOINTS.RENT_EXPIRY_DAYS);
+      expiryDate.setDate(purchaseDate.getDate() + EXPIRY_TIMING.RENT_DAYS);
       isTicketValid = currentDate <= expiryDate;
     }
     if (historyData.purchaseType === "w") {
-      expiryDate.setHours(
-        purchaseDate.getHours() + ENDPOINTS.WEEKLY_EXPIRY_HOURS
-      );
+      expiryDate.setHours(purchaseDate.getHours() + EXPIRY_TIMING.WEEKLY_HOURS);
       isTicketValid = currentDate <= expiryDate;
     }
     return {
       purchaseDate: purchaseDate,
+      expiryDate: expiryDate,
+      contentId: historyData.contentId,
       purchasePrice: historyData.purchasePrice,
       purchaseType: historyData.purchaseType,
       ticketId: historyData.purchaseId,

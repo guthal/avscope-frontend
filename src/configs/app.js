@@ -85,6 +85,11 @@ export const HEADER_LABELS = {
   ADMIN: "Admin",
 };
 
+export const EXPIRY_TIMING = {
+  WEEKLY_HOURS: 6,
+  RENT_DAYS: 30,
+};
+
 export const HOME_PAGE = {
   CAROUSEL_IMAGES: [
     "https://static1.srcdn.com/wordpress/wp-content/uploads/2021/01/The-Batman-Lee-Bermejo.jpg",

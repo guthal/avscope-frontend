@@ -32,7 +32,7 @@ function HomePage() {
     triggerApi: seriesSeasonsTriggerApi,
   } = useGetApi(getAllSeries, getAllSeriesParams, transformGetAllSeries);
 
-  const handleCardClick = contentID =>
+  const handleCardClick = (contentID) =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
@@ -66,7 +66,7 @@ function HomePage() {
               <Typography variant="h4">Recommended</Typography>
             </Box>
             <Grid container spacing={4}>
-              {contentsData?.contents?.slice(0, 4).map((contentCard, index) => (
+              {contentsData?.contents?.map((contentCard, index) => (
                 <Grid
                   lg={3}
                   md={3}
@@ -85,27 +85,29 @@ function HomePage() {
               <Box py={2}>
                 <Typography variant="h4">Series</Typography>
               </Box>
-              {seriesSeasonsData
-                .map(series => series.seasons)
-                .map((season, i) => (
-                  <Grid container spacing={4} key={`season-card-${i}`}>
-                    {season?.slice(0, 4).map((contentCard, index) => (
-                      <Grid
-                        lg={3}
-                        md={3}
-                        sm={6}
-                        xs={12}
-                        item
-                        key={`content-card-${index}`}
-                      >
-                        <MovieCard
-                          cardData={contentCard}
-                          onClick={handleCardClick}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
-                ))}
+              <Grid container spacing={4}>
+                {seriesSeasonsData
+                  .map((series) => series.seasons)
+                  .map((season) => (
+                    <>
+                      {season?.map((contentCard, index) => (
+                        <Grid
+                          lg={3}
+                          md={3}
+                          sm={6}
+                          xs={12}
+                          item
+                          key={`content-card-${index}`}
+                        >
+                          <MovieCard
+                            cardData={contentCard}
+                            onClick={handleCardClick}
+                          />
+                        </Grid>
+                      ))}
+                    </>
+                  ))}
+              </Grid>
             </Box>
           )}
         </Box>

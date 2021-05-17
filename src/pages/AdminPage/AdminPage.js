@@ -12,6 +12,9 @@ function AdminPage() {
 
   const handleCreatorCardClick = () =>
     history.push(APP_ROUTES.CREATORS_PAGE.path);
+
+  const handleAddCreatorClick = () =>
+    history.push(APP_ROUTES.ADD_CREATOR_PAGE.path);
   return (
     <Container maxWidth="lg">
       <Box my={5}>
@@ -46,7 +49,7 @@ function AdminPage() {
             <ContentCard>
               <Box
                 p={2}
-                // onClick={handleCreatorCardClick}
+                onClick={handleAddCreatorClick}
                 className={classes.cardContainer}
               >
                 <Box className={classes.cardIconContainer}>

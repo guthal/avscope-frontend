@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useContext } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Box,
   Typography,
@@ -15,10 +15,9 @@ import usePostApi from "../../hooks/usePostApi";
 import { postAddCreator } from "../../utils/api";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
-import useStyles from "./SignupPage.Styles";
+import useStyles from "./AddCreatorPage.Styles";
 import { useHistory } from "react-router";
 import { APP_ROUTES } from "../../configs/app";
-import AuthContext from "../../contexts/AuthContext";
 
 function AddCreatorPage() {
   const history = useHistory();
@@ -35,17 +34,6 @@ function AddCreatorPage() {
   });
 
   const postAddCreatorParams = useMemo(() => [], []);
-  const {
-    isUserLoggedIn,
-    setUsername,
-    setIsUserLoggedIn,
-    setUserId,
-    setUtype,
-  } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (isUserLoggedIn) history.push(APP_ROUTES.HOME_PAGE.path);
-  }, [history, isUserLoggedIn]);
 
   const {
     data: addCreatorData,
@@ -56,20 +44,9 @@ function AddCreatorPage() {
 
   useEffect(() => {
     if (addCreatorData) {
-      setUsername(addCreatorData.username);
-      setIsUserLoggedIn(true);
-      setUserId(addCreatorData.userId);
-      setUtype(addCreatorData.utype);
-      history.push(APP_ROUTES.HOME_PAGE.path);
+      history.push(APP_ROUTES.ADMIN_DASHBOARD.path);
     }
-  }, [
-    history,
-    setUserId,
-    setIsUserLoggedIn,
-    setUsername,
-    setUtype,
-    addCreatorData,
-  ]);
+  }, [addCreatorData, history]);
 
   const handleTextFieldChange = event => {
     setTextFields(prev => ({
@@ -80,19 +57,27 @@ function AddCreatorPage() {
 
   const handleFormSubmit = () => {
     addCreatorTriggerPostApi({
-      fname: textFields.firstName,
-      lname: textFields.lastName,
-      username: textFields.email,
-      password: textFields.password,
+      username: textFields.username,
+      address: textFields.address,
+      office: textFields.office,
+      city: textFields.city,
+      state: textFields.state,
+      zipcode: textFields.zipcode,
+      phone: textFields.phone,
+      bankAccount: textFields.bankAccount,
+      panCard: textFields.panCard,
     });
   };
 
-  if (addCreatorLoading) return <PageLoader />;
+  if (addCreatorLoading) {
+    return <PageLoader />;
+  }
 
-  if (addCreatorError)
+  if (addCreatorError) {
     return (
       <PageError message="Opps.. Something went wrong while adding Creator." />
     );
+  }
 
   const Copyright = () => {
     return (
@@ -121,18 +106,28 @@ function AddCreatorPage() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                autoComplete="address"
-                name="address"
                 variant="outlined"
-                id="outlined-multiline-static"
-                rows={4}
-                label="Address"
+                label="Email"
+                name="username"
+                autoComplete="username"
                 className={classes.textField}
                 onChange={handleTextFieldChange}
                 autoFocus
                 required
                 fullWidth
-                multiline
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                label="Address"
+                name="address"
+                autoComplete="address"
+                className={classes.textField}
+                onChange={handleTextFieldChange}
+                autoFocus
+                required
+                fullWidth
               />
             </Grid>
             <Grid item xs={12}>

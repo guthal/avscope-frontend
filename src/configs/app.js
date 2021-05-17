@@ -55,6 +55,11 @@ export const APP_ROUTES = {
     key: "",
     label: "Creators Page",
   },
+  ADD_CREATOR_PAGE: {
+    path: "/admin/add-creator",
+    key: "",
+    label: "Add Creators",
+  },
   CONTENT_UPLOAD: {
     path: "/admin/content-upload",
     key: "",

@@ -18,6 +18,7 @@ const ENDPOINTS = {
   GET_LOGOUT: `${DOMAIN}/logout`,
   POST_CREATE_ORDER_RAZORPAY: `${DOMAIN}/orders/create`,
   POST_ORDER_SUCCESS: `${DOMAIN}/orders/success`,
+  POST_ADD_CREATOR: `${DOMAIN}/fm-register`,
 };
 
 export { ENDPOINTS };

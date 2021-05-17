@@ -24,6 +24,9 @@ const useStyles = makeStyles(theme => ({
     "& input": {
       color: theme.palette.primary.main,
     },
+    "& input:hover": {
+      border: "none !important",
+    },
   },
   submit: {
     margin: theme.spacing(3, 0, 2),

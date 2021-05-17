@@ -13,6 +13,7 @@ import VideoDetailPage from "./VideoDetailPage";
 import CreatorsPage from "./CreatorsPage";
 import AdminPage from "./AdminPage";
 import ContentUploadPage from "./ContentUploadPage";
+import AddCreatorPage from "./AddCreatorPage";
 import AdminRoute from "../components/routeComponents/AdminRoute";
 import PrivateRoute from "../components/routeComponents/PrivateRoute";
 
@@ -54,6 +55,10 @@ function Pages() {
         <AdminRoute
           path={`${APP_ROUTES.CONTENT_UPLOAD.path}/:userID`}
           component={ContentUploadPage}
+        />
+        <AdminRoute
+          path={`${APP_ROUTES.ADD_CREATOR_PAGE.path}`}
+          component={AddCreatorPage}
         />
 
         <Route

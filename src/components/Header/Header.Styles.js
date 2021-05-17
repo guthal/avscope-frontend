@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -21,13 +21,13 @@ const useStyles = makeStyles(theme => ({
   profileMenu: {
     position: "absolute",
     zIndex: 1,
-    right: 0,
+    right: "-24px",
     width: "150px",
     padding: "8px",
     backgroundColor: theme.palette.primary.main,
   },
   profileMenuItem: {
-    border: "none",
+    border: "none !important",
     width: "100%",
   },
 }));

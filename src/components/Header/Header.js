@@ -61,7 +61,7 @@ function Header() {
   };
 
   const handleToggleMenu = () => {
-    setOpenProfile(prev => !prev);
+    setOpenProfile((prev) => !prev);
   };
 
   const handleCloseMenu = () => {
@@ -82,7 +82,6 @@ function Header() {
 
   useEffect(() => {
     if (logoutData) {
-      handleCloseMenu();
       setUsername("");
       setIsUserLoggedIn(false);
       setUserId("");
@@ -129,24 +128,27 @@ function Header() {
                     <FaceTwoToneIcon />
                   </Avatar>
                   {openProfile && (
-                    <Box className={classes.profileMenu}>
+                    <Box
+                      className={classes.profileMenu}
+                      onClick={handleCloseMenu}
+                    >
                       {utype === 0 && (
-                        <Box mx={2}>
-                          <Button
-                            color="secondary"
-                            variant="outlined"
-                            className={classes.profileMenuItem}
-                            onClick={handleAdminClick}
-                          >
-                            {HEADER_LABELS.ADMIN}
-                          </Button>
-                        </Box>
+                        <Button
+                          color="secondary"
+                          variant="outlined"
+                          className={classes.profileMenuItem}
+                          onClick={handleAdminClick}
+                          disableElevation
+                        >
+                          {HEADER_LABELS.ADMIN}
+                        </Button>
                       )}
                       <Button
                         color="secondary"
                         variant="outlined"
                         className={classes.profileMenuItem}
                         onClick={handleCheckoutClick}
+                        disableElevation
                       >
                         <Typography>CHECKOUT</Typography>
                       </Button>
@@ -155,6 +157,7 @@ function Header() {
                         variant="outlined"
                         className={classes.profileMenuItem}
                         onClick={handleHistoryClick}
+                        disableElevation
                       >
                         <Typography>HISTORY</Typography>
                       </Button>
@@ -163,6 +166,7 @@ function Header() {
                         variant="outlined"
                         className={classes.profileMenuItem}
                         onClick={handleTicketsClick}
+                        disableElevation
                       >
                         <Typography>TICKETS</Typography>
                       </Button>

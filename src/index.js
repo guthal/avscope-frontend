@@ -7,11 +7,11 @@ import Pages from "./pages";
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthContextProvider>
-      <AppThemeProvider>
+    <AppThemeProvider>
+      <AuthContextProvider>
         <Pages />
-      </AppThemeProvider>
-    </AuthContextProvider>
+      </AuthContextProvider>
+    </AppThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

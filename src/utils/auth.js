@@ -9,8 +9,8 @@ export const loadRazorPay = async (
   contentId,
   contentType
 ) => {
-  const loadScript = src => {
-    return new Promise(resolve => {
+  const loadScript = (src) => {
+    return new Promise((resolve) => {
       const script = document.createElement("script");
       script.src = src;
       script.onload = () => {
@@ -47,7 +47,7 @@ export const loadRazorPay = async (
   const orderAmount = amount; // Pass your Payment in Paisa/ Cents/ etc.
 
   const options = {
-    key: "rzp_test_P4Kxye5deZxmHx", // Enter the Key ID generated from the Dashboard
+    key: process.env.RAZOR_PAY_KEY, // Enter the Key ID generated from the Dashboard
     amount: orderAmount.toString(),
     currency: currency,
     name: "AVScope Inc.",

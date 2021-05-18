@@ -1,4 +1,4 @@
-const DOMAIN = process.env.DOMAIN;
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const ENDPOINTS = {
   GET_CONTENT: (contentID) => `${DOMAIN}/contents/${contentID}`,

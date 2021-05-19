@@ -1,9 +1,9 @@
 import { EXPIRY_TIMING } from "../configs/app";
 
-export const transformGetContents = data => {
+export const transformGetContents = (data) => {
   const contentData = [];
   const seriesData = [];
-  data.forEach(datum => {
+  data.forEach((datum) => {
     const content = {
       id: datum.id,
       description: datum.description,
@@ -28,9 +28,9 @@ export const transformGetContents = data => {
   };
 };
 
-export const transformGetAllSeries = data =>
-  data.map(datum => {
-    const seasons = datum.seasons.map(season => ({
+export const transformGetAllSeries = (data) =>
+  data.map((datum) => {
+    const seasons = datum.seasons.map((season) => ({
       id: season.startContentId,
       name: data.seriesName,
       carouselUrl:
@@ -45,8 +45,8 @@ export const transformGetAllSeries = data =>
     return { seriesName: datum.seriesName, seriesID: datum.seriesId, seasons };
   });
 
-export const transformGetSeriesContents = data =>
-  data.map(datum => ({
+export const transformGetSeriesContents = (data) =>
+  data.map((datum) => ({
     id: datum.id,
     description: datum.description,
     name: datum.title,
@@ -61,14 +61,14 @@ export const transformGetSeriesContents = data =>
     seriesInfo: datum.contentSeriesInfo,
   }));
 
-export const transformGetSeries = data => ({
+export const transformGetSeries = (data) => ({
   title: data.seriesName,
   seasons: data.seasons,
   id: data.seriesId,
   rating: data.rating,
 });
 
-export const transformGetContent = data => ({
+export const transformGetContent = (data) => ({
   id: data.id,
   description: data.description,
   name: data.title,
@@ -85,10 +85,10 @@ export const transformGetContent = data => ({
   seriesInfo: data.contentSeriesInfo,
 });
 
-export const transformGetHistoryData = data => {
+export const transformGetHistoryData = (data) => {
   const currentDate = new Date();
-  const returnData = data.map(historyData => {
-    var isTicketValid;
+  const returnData = data.map((historyData) => {
+    let isTicketValid;
     const expiryDate = new Date(historyData.purchaseDate);
     const purchaseDate = new Date(historyData.purchaseDate);
     if (historyData.purchaseType === "r") {
@@ -102,7 +102,7 @@ export const transformGetHistoryData = data => {
     return {
       purchaseDate: purchaseDate,
       expiryDate: expiryDate,
-      contentId: historyData.contentId,
+      contentId: historyData.productId,
       purchasePrice: historyData.purchasePrice,
       purchaseType: historyData.purchaseType,
       ticketId: historyData.purchaseId,
@@ -114,23 +114,67 @@ export const transformGetHistoryData = data => {
   return returnData;
 };
 
-export const transformGetUserContentPurchases = data =>
-  data.map(datum => ({
-    userId: datum.userId,
-    purchaseDate: datum.purchaseDate,
-    contentId: datum.contentId,
-    purchaseId: datum.purchaseId,
-    purchaseType: datum.purchaseType,
-    purchasePrice: datum.purchasePrice,
-    contentTitle: datum.contentTitle,
-    thumbnail: datum.thumbnail,
-  }));
+export const transformGetUserContentPurchase = (data) => {
+  const currentDate = new Date();
 
-export const transformGetCreators = data =>
-  data.map(creator => ({
+  const mostRecentPurchase = Math.max(
+    ...data.map((userPurchase) => new Date(userPurchase.purchaseDate))
+  );
+  const mostRecentPurchaseContent = data.find(
+    (userPurchase) =>
+      new Date(userPurchase.purchaseDate).valueOf() === mostRecentPurchase
+  );
+
+  console.log(mostRecentPurchaseContent);
+
+  let isTicketValid = false;
+  const expiryDate = new Date(mostRecentPurchaseContent.purchaseDate);
+  const purchaseDate = new Date(mostRecentPurchaseContent.purchaseDate);
+
+  if (mostRecentPurchaseContent.purchaseType === "r") {
+    expiryDate.setDate(purchaseDate.getDate() + EXPIRY_TIMING.RENT_DAYS);
+
+    isTicketValid = currentDate <= expiryDate;
+  }
+
+  console.log("R");
+  if (mostRecentPurchaseContent.purchaseType === "w") {
+    expiryDate.setHours(purchaseDate.getHours() + EXPIRY_TIMING.WEEKLY_HOURS);
+    isTicketValid = currentDate <= expiryDate;
+  }
+  console.log("W");
+
+  if (mostRecentPurchaseContent.purchaseType === "b") isTicketValid = true;
+
+  console.log({
+    userId: mostRecentPurchaseContent.userId,
+    purchaseDate: mostRecentPurchaseContent.purchaseDate,
+    productId: mostRecentPurchaseContent.productId,
+    purchaseId: mostRecentPurchaseContent.purchaseId,
+    purchaseType: mostRecentPurchaseContent.purchaseType,
+    purchasePrice: mostRecentPurchaseContent.purchasePrice,
+    contentTitle: mostRecentPurchaseContent.contentTitle,
+    thumbnail: mostRecentPurchaseContent.thumbnail,
+    isTicketValid,
+  });
+  return {
+    userId: mostRecentPurchaseContent.userId,
+    purchaseDate: mostRecentPurchaseContent.purchaseDate,
+    productId: mostRecentPurchaseContent.productId,
+    purchaseId: mostRecentPurchaseContent.purchaseId,
+    purchaseType: mostRecentPurchaseContent.purchaseType,
+    purchasePrice: mostRecentPurchaseContent.purchasePrice,
+    contentTitle: mostRecentPurchaseContent.contentTitle,
+    thumbnail: mostRecentPurchaseContent.thumbnail,
+    isTicketValid,
+  };
+};
+
+export const transformGetCreators = (data) =>
+  data.map((creator) => ({
     id: creator.userId,
     email: creator.email,
-    name: creator.user,
+    name: `${creator.fname} ${creator.lname}`,
     phone: creator.phone,
     address: creator.address,
     office: creator.office,
@@ -139,7 +183,7 @@ export const transformGetCreators = data =>
     state: creator.state,
   }));
 
-export const transformPostLoginResponse = data => {
+export const transformPostLoginResponse = (data) => {
   const name = data.fname + " " + data.lname;
 
   return {
@@ -152,7 +196,7 @@ export const transformPostLoginResponse = data => {
   };
 };
 
-export const transformPostSignupResponse = data => {
+export const transformPostSignupResponse = (data) => {
   const name = data.fname + " " + data.lname;
 
   return {
@@ -165,7 +209,7 @@ export const transformPostSignupResponse = data => {
   };
 };
 
-export const transformGetVerifyUser = data => {
+export const transformGetVerifyUser = (data) => {
   const name = data.fname + " " + data.lname;
 
   return {

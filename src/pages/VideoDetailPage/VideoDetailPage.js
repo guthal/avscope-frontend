@@ -22,7 +22,7 @@ import {
   transformGetContent,
   transformGetContents,
   transformGetSeriesContents,
-  transformGetUserContentPurchases,
+  transformGetUserContentPurchase,
 } from "../../utils/api-transforms";
 import { APP_ROUTES } from "../../configs/app";
 import PageLoader from "../../components/PageLoader";
@@ -79,19 +79,23 @@ function VideoDetailPage() {
   } = useGetApi(getContents, getContentsParams, transformGetContents);
 
   const getUserContentPurchasesParams = useMemo(
-    () => (contentData?.id ? [userId, contentData.id] : []),
-    [contentData?.id, userId]
+    () =>
+      contentData
+        ? [userId, contentData.seriesInfo?.seasonId || contentData.id]
+        : [],
+    [contentData, userId]
   );
+  console.log(contentData);
   const {
-    data: userContentPurchasesData,
-    loading: userContentPurchasesLoading,
+    data: userContentPurchaseData,
+    loading: userContentPurchaseLoading,
     // eslint-disable-next-line no-unused-vars
     error: userContentPurchasesError,
-    triggerApi: userContentPurchasesTriggerApi,
+    triggerApi: userContentPurchaseTriggerApi,
   } = useGetApi(
     getUserContentPurchases,
     getUserContentPurchasesParams,
-    transformGetUserContentPurchases
+    transformGetUserContentPurchase
   );
 
   const getSeriesContentsParams = useMemo(
@@ -131,9 +135,9 @@ function VideoDetailPage() {
 
   // Show Play Button if user has made the video purchase
   useEffect(() => {
-    // TODO: Write the logic to check if video is available
-    setIsVideoAvailable(false);
-  }, [userContentPurchasesData]);
+    console.log(userContentPurchaseData?.isTicketValid);
+    setIsVideoAvailable(!!userContentPurchaseData?.isTicketValid);
+  }, [userContentPurchaseData]);
 
   // Set Watch next to first 4 contents from /contents
   useEffect(() => {
@@ -168,8 +172,8 @@ function VideoDetailPage() {
   }, [contentData, seriesTriggerApi]);
 
   useEffect(() => {
-    if (userId && contentData?.id) userContentPurchasesTriggerApi();
-  }, [userId, contentData, userContentPurchasesTriggerApi]);
+    if (userId && contentData?.id) userContentPurchaseTriggerApi();
+  }, [userId, contentData, userContentPurchaseTriggerApi]);
 
   useEffect(() => contentTriggerApi(), [contentTriggerApi, params.contentID]);
 
@@ -183,7 +187,7 @@ function VideoDetailPage() {
               event,
               userId,
               contentData?.price["b"],
-              contentData?.id,
+              contentData?.seriesInfo.seasonId || contentData?.id,
               contentData?.purchase_type
             );
           }}
@@ -198,7 +202,7 @@ function VideoDetailPage() {
               event,
               userId,
               contentData?.price["r"],
-              contentData?.id,
+              contentData?.seriesInfo?.seasonId || contentData?.id,
               contentData?.purchase_type
             );
           }}
@@ -213,7 +217,7 @@ function VideoDetailPage() {
               event,
               userId,
               contentData?.price["w"],
-              contentData?.id,
+              contentData?.seriesInfo?.seasonId || contentData?.id,
               contentData?.purchase_type
             );
           }}
@@ -229,7 +233,7 @@ function VideoDetailPage() {
                 event,
                 userId,
                 contentData?.price["b"],
-                contentData?.id,
+                contentData?.seriesInfo?.seasonId || contentData?.id,
                 "b"
               );
             }}
@@ -241,7 +245,7 @@ function VideoDetailPage() {
                 event,
                 userId,
                 contentData?.price["r"],
-                contentData?.id,
+                contentData?.seriesInfo?.seasonId || contentData?.id,
                 "r"
               );
             }}
@@ -255,7 +259,7 @@ function VideoDetailPage() {
     contentLoading ||
     contentsLoading ||
     seriesLoading ||
-    userContentPurchasesLoading
+    userContentPurchaseLoading
   )
     return <PageLoader />;
 

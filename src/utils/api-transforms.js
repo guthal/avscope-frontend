@@ -88,7 +88,7 @@ export const transformGetContent = (data) => ({
 export const transformGetHistoryData = (data) => {
   const currentDate = new Date();
   const returnData = data.map((historyData) => {
-    var isTicketValid;
+    let isTicketValid;
     const expiryDate = new Date(historyData.purchaseDate);
     const purchaseDate = new Date(historyData.purchaseDate);
     if (historyData.purchaseType === "r") {
@@ -102,7 +102,7 @@ export const transformGetHistoryData = (data) => {
     return {
       purchaseDate: purchaseDate,
       expiryDate: expiryDate,
-      contentId: historyData.contentId,
+      contentId: historyData.productId,
       purchasePrice: historyData.purchasePrice,
       purchaseType: historyData.purchaseType,
       ticketId: historyData.purchaseId,
@@ -114,17 +114,44 @@ export const transformGetHistoryData = (data) => {
   return returnData;
 };
 
-export const transformGetUserContentPurchases = (data) =>
-  data.map((datum) => ({
-    userId: datum.userId,
-    purchaseDate: datum.purchaseDate,
-    contentId: datum.contentId,
-    purchaseId: datum.purchaseId,
-    purchaseType: datum.purchaseType,
-    purchasePrice: datum.purchasePrice,
-    contentTitle: datum.contentTitle,
-    thumbnail: datum.thumbnail,
-  }));
+export const transformGetUserContentPurchase = (data) => {
+  const currentDate = new Date();
+
+  const mostRecentPurchase = Math.max(
+    ...data.map((userPurchase) => new Date(userPurchase.purchaseDate))
+  );
+  const mostRecentPurchaseContent = data.find(
+    (userPurchase) =>
+      new Date(userPurchase.purchaseDate).valueOf() === mostRecentPurchase
+  );
+
+  let isTicketValid = false;
+  const expiryDate = new Date(mostRecentPurchaseContent.purchaseDate);
+  const purchaseDate = new Date(mostRecentPurchaseContent.purchaseDate);
+  if (mostRecentPurchaseContent.purchaseType === "r") {
+    expiryDate.setDate(
+      mostRecentPurchaseContent.getDate() + EXPIRY_TIMING.RENT_DAYS
+    );
+    isTicketValid = currentDate <= expiryDate;
+  }
+  if (mostRecentPurchaseContent.purchaseType === "w") {
+    expiryDate.setHours(purchaseDate.getHours() + EXPIRY_TIMING.WEEKLY_HOURS);
+    isTicketValid = currentDate <= expiryDate;
+  }
+  if (mostRecentPurchaseContent.purchaseType === "b") isTicketValid = true;
+
+  return {
+    userId: mostRecentPurchaseContent.userId,
+    purchaseDate: mostRecentPurchaseContent.purchaseDate,
+    productId: mostRecentPurchaseContent.productId,
+    purchaseId: mostRecentPurchaseContent.purchaseId,
+    purchaseType: mostRecentPurchaseContent.purchaseType,
+    purchasePrice: mostRecentPurchaseContent.purchasePrice,
+    contentTitle: mostRecentPurchaseContent.contentTitle,
+    thumbnail: mostRecentPurchaseContent.thumbnail,
+    isTicketValid,
+  };
+};
 
 export const transformGetCreators = (data) =>
   data.map((creator) => ({

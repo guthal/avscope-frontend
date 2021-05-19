@@ -6,7 +6,7 @@ export const loadRazorPay = async (
   event,
   userId,
   contentAmount,
-  contentId,
+  productId,
   contentType
 ) => {
   const loadScript = (src) => {
@@ -64,7 +64,7 @@ export const loadRazorPay = async (
 
       await postOrderSuccess({
         userId: userId,
-        contentId: contentId,
+        productId,
         amount: amount,
         type: contentType,
         orderCreationId: order_id,

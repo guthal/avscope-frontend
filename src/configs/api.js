@@ -1,4 +1,4 @@
-const DOMAIN = "http://localhost:3001";
+const DOMAIN = "http://localhost:8000";
 
 const ENDPOINTS = {
   GET_CONTENT: contentID => `${DOMAIN}/contents/${contentID}`,

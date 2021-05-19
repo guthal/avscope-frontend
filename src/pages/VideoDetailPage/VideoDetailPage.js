@@ -79,8 +79,11 @@ function VideoDetailPage() {
   } = useGetApi(getContents, getContentsParams, transformGetContents);
 
   const getUserContentPurchasesParams = useMemo(
-    () => (contentData?.id ? [userId, contentData.id] : []),
-    [contentData?.id, userId]
+    () =>
+      contentData?.id
+        ? [userId, contentData.contentSeriesInfo.seasonID, contentData.id]
+        : [],
+    [contentData.contentSeriesInfo.seasonID, contentData.id, userId]
   );
   const {
     data: userContentPurchaseData,

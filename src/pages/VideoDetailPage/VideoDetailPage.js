@@ -80,11 +80,12 @@ function VideoDetailPage() {
 
   const getUserContentPurchasesParams = useMemo(
     () =>
-      contentData?.id
-        ? [userId, contentData.contentSeriesInfo.seasonID, contentData.id]
+      contentData
+        ? [userId, contentData.seriesInfo?.seasonId || contentData.id]
         : [],
-    [contentData.contentSeriesInfo.seasonID, contentData.id, userId]
+    [contentData, userId]
   );
+  console.log(contentData);
   const {
     data: userContentPurchaseData,
     loading: userContentPurchaseLoading,
@@ -186,7 +187,7 @@ function VideoDetailPage() {
               event,
               userId,
               contentData?.price["b"],
-              contentData?.contentSeriesInfo.seasonID || contentData?.id,
+              contentData?.seriesInfo.seasonId || contentData?.id,
               contentData?.purchase_type
             );
           }}
@@ -201,7 +202,7 @@ function VideoDetailPage() {
               event,
               userId,
               contentData?.price["r"],
-              contentData?.contentSeriesInfo.seasonID || contentData?.id,
+              contentData?.seriesInfo?.seasonId || contentData?.id,
               contentData?.purchase_type
             );
           }}
@@ -216,7 +217,7 @@ function VideoDetailPage() {
               event,
               userId,
               contentData?.price["w"],
-              contentData?.contentSeriesInfo.seasonID || contentData?.id,
+              contentData?.seriesInfo?.seasonId || contentData?.id,
               contentData?.purchase_type
             );
           }}
@@ -232,7 +233,7 @@ function VideoDetailPage() {
                 event,
                 userId,
                 contentData?.price["b"],
-                contentData?.contentSeriesInfo.seasonID || contentData?.id,
+                contentData?.seriesInfo?.seasonId || contentData?.id,
                 "b"
               );
             }}
@@ -244,7 +245,7 @@ function VideoDetailPage() {
                 event,
                 userId,
                 contentData?.price["r"],
-                contentData?.contentSeriesInfo.seasonID || contentData?.id,
+                contentData?.seriesInfo?.seasonId || contentData?.id,
                 "r"
               );
             }}

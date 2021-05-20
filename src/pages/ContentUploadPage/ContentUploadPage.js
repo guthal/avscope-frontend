@@ -360,9 +360,8 @@ function ContentUploadPage() {
   }, [contentURLFields]);
 
   useEffect(() => {
-    if (contentTypeSelections.content === contentList[1])
-      triggetGetAllSeriesApi();
-  }, [contentTypeSelections.content, contentList, triggetGetAllSeriesApi]);
+    triggetGetAllSeriesApi();
+  }, [triggetGetAllSeriesApi]);
 
   useEffect(() => {
     if (seriesData)
@@ -393,6 +392,10 @@ function ContentUploadPage() {
       });
     }
   }, [contentTypeSelections.series, seriesData, seriesList]);
+
+  useEffect(() => {
+    if (contentUploadResData) triggetGetAllSeriesApi();
+  }, [contentUploadResData, triggetGetAllSeriesApi]);
 
   if (contentUploadLoading) return <PageLoader />;
 

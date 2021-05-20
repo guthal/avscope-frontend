@@ -125,8 +125,6 @@ export const transformGetUserContentPurchase = (data) => {
       new Date(userPurchase.purchaseDate).valueOf() === mostRecentPurchase
   );
 
-  console.log(mostRecentPurchaseContent);
-
   let isTicketValid = false;
   const expiryDate = new Date(mostRecentPurchaseContent.purchaseDate);
   const purchaseDate = new Date(mostRecentPurchaseContent.purchaseDate);
@@ -137,26 +135,13 @@ export const transformGetUserContentPurchase = (data) => {
     isTicketValid = currentDate <= expiryDate;
   }
 
-  console.log("R");
   if (mostRecentPurchaseContent.purchaseType === "w") {
     expiryDate.setHours(purchaseDate.getHours() + EXPIRY_TIMING.WEEKLY_HOURS);
     isTicketValid = currentDate <= expiryDate;
   }
-  console.log("W");
 
   if (mostRecentPurchaseContent.purchaseType === "b") isTicketValid = true;
 
-  console.log({
-    userId: mostRecentPurchaseContent.userId,
-    purchaseDate: mostRecentPurchaseContent.purchaseDate,
-    productId: mostRecentPurchaseContent.productId,
-    purchaseId: mostRecentPurchaseContent.purchaseId,
-    purchaseType: mostRecentPurchaseContent.purchaseType,
-    purchasePrice: mostRecentPurchaseContent.purchasePrice,
-    contentTitle: mostRecentPurchaseContent.contentTitle,
-    thumbnail: mostRecentPurchaseContent.thumbnail,
-    isTicketValid,
-  });
   return {
     userId: mostRecentPurchaseContent.userId,
     purchaseDate: mostRecentPurchaseContent.purchaseDate,

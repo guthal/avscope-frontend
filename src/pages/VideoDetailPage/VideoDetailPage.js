@@ -28,7 +28,7 @@ import { APP_ROUTES } from "../../configs/app";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import useStyles from "./VideoDetailPage.Styles";
-import { loadRazorPay } from "../../utils/auth";
+import { loadRazorPay } from "../../utils/pay";
 
 const PurchaseButton = ({ btnText, onClick }) => {
   const classes = useStyles();
@@ -85,7 +85,6 @@ function VideoDetailPage() {
         : [],
     [contentData, userId]
   );
-  console.log(contentData);
   const {
     data: userContentPurchaseData,
     loading: userContentPurchaseLoading,
@@ -133,9 +132,27 @@ function VideoDetailPage() {
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${episodeData.id}`);
   };
 
+  const handleRazorPaySuccess = () => contentTriggerApi();
+
+  const handleRazorPay = (
+    event,
+    userId,
+    contentAmount,
+    productId,
+    contentType
+  ) => {
+    loadRazorPay(
+      event,
+      userId,
+      contentAmount,
+      productId,
+      contentType,
+      handleRazorPaySuccess
+    );
+  };
+
   // Show Play Button if user has made the video purchase
   useEffect(() => {
-    console.log(userContentPurchaseData?.isTicketValid);
     setIsVideoAvailable(!!userContentPurchaseData?.isTicketValid);
   }, [userContentPurchaseData]);
 
@@ -183,7 +200,7 @@ function VideoDetailPage() {
         <PurchaseButton
           btnText={`Buy now @ ₹${contentData?.price["b"]}`}
           onClick={(event) => {
-            loadRazorPay(
+            handleRazorPay(
               event,
               userId,
               contentData?.price["b"],
@@ -198,7 +215,7 @@ function VideoDetailPage() {
         <PurchaseButton
           btnText={`Rent now @ ₹${contentData?.price["r"]}`}
           onClick={(event) => {
-            loadRazorPay(
+            handleRazorPay(
               event,
               userId,
               contentData?.price["r"],
@@ -213,7 +230,7 @@ function VideoDetailPage() {
         <PurchaseButton
           btnText={`Purchase ticket now @ ₹${contentData?.price["w"]}`}
           onClick={(event) => {
-            loadRazorPay(
+            handleRazorPay(
               event,
               userId,
               contentData?.price["w"],
@@ -229,7 +246,7 @@ function VideoDetailPage() {
           <PurchaseButton
             btnText={`Buy now @ ₹${contentData?.price["b"]}`}
             onClick={(event) => {
-              loadRazorPay(
+              handleRazorPay(
                 event,
                 userId,
                 contentData?.price["b"],
@@ -241,7 +258,7 @@ function VideoDetailPage() {
           <PurchaseButton
             btnText={`Rent now @ ₹${contentData?.price["r"]}`}
             onClick={(event) => {
-              loadRazorPay(
+              handleRazorPay(
                 event,
                 userId,
                 contentData?.price["r"],

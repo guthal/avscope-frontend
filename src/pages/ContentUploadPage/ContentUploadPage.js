@@ -260,9 +260,6 @@ function ContentUploadPage() {
       )
     )
       return;
-    console.log("first return");
-
-    console.log("second return");
 
     if (
       (contentTypeSelections.content === contentList[0] ||
@@ -278,8 +275,6 @@ function ContentUploadPage() {
       )
     )
       return;
-
-    console.log("third return");
 
     const contentUploadReqBody = {
       creatorId: formFields.creatorId,

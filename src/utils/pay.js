@@ -1,5 +1,5 @@
 import logo from "../assets/logo.png";
-import { postCreateOrder, postOrderSuccess } from "../utils/api";
+import { postCreateOrder, postOrderSuccess } from "./api";
 import { COLORS } from "../configs/theme";
 
 export const loadRazorPay = async (
@@ -7,7 +7,8 @@ export const loadRazorPay = async (
   userId,
   contentAmount,
   productId,
-  contentType
+  contentType,
+  callback
 ) => {
   const loadScript = (src) => {
     return new Promise((resolve) => {
@@ -55,13 +56,6 @@ export const loadRazorPay = async (
     image: { logo },
     order_id: order_id,
     handler: async function (response) {
-      // const data = {
-      //   orderCreationId: orderId,
-      //   razorpayPaymentId: response.razorpay_payment_id,
-      //   razorpayOrderId: response.razorpay_order_id,
-      //   razorpaySignature: response.razorpay_signature,
-      // };
-
       await postOrderSuccess({
         userId: userId,
         productId,
@@ -72,6 +66,8 @@ export const loadRazorPay = async (
         razorpayOrderId: response.razorpay_order_id,
         razorpaySignature: response.razorpay_signature,
       });
+
+      callback();
     },
     prefill: {
       name: "Average Joe",

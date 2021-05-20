@@ -5,7 +5,7 @@ import expired from "../../assets/expired.png";
 import valid from "../../assets/valid.png";
 import { trimDatetoHumanReadable } from "../../utils/generic";
 import CountdownTimer from "../CountdownTimer";
-import { loadRazorPay } from "../../utils/auth";
+import { loadRazorPay } from "../../utils/pay";
 import AuthContext from "../../contexts/AuthContext";
 import TimerIcon from "@material-ui/icons/Timer";
 
@@ -16,7 +16,7 @@ function HistoryCard({ historyCard }) {
   const { userId } = useContext(AuthContext);
 
   const handleComplete = () =>
-    setCardData(prev => ({
+    setCardData((prev) => ({
       ...prev,
       isTicketValid: false,
     }));
@@ -56,7 +56,7 @@ function HistoryCard({ historyCard }) {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={event => {
+                      onClick={(event) => {
                         loadRazorPay(
                           event,
                           userId,
@@ -72,7 +72,7 @@ function HistoryCard({ historyCard }) {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={event => {
+                      onClick={(event) => {
                         loadRazorPay(
                           event,
                           userId,

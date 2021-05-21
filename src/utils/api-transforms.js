@@ -77,7 +77,7 @@ export const transformGetContent = (data) => ({
     "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
   purchase_type: data.type,
   price: data.price,
-  genres: data.genres || [],
+  genres: data.genre || [],
   cast: data.cast || [],
   rating: data.rating,
   duration: data.duration,

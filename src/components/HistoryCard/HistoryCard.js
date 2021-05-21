@@ -21,8 +21,6 @@ function HistoryCard({ historyCard }) {
       isTicketValid: false,
     }));
 
-  console.log("CARDDATA: ", cardData);
-
   return (
     <div className={classes.root}>
       <Grid container spacing={2} className={classes.historyCardContainer}>

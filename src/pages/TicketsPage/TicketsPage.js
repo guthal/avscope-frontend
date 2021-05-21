@@ -74,7 +74,7 @@ function TicketsPage() {
                 className={classes.heading}
                 color="secondary"
               >
-                All Purchased Tickets
+                All Purchased Contents
               </Typography>
             </Box>
             <Grid container>

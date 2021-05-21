@@ -32,6 +32,8 @@ function HistoryPage() {
       <PageError message="Oops.. Something went wrong while fetching contents." />
     );
 
+  console.log("HISTORYDATA: ", historyData);
+
   return (
     <Container maxWidth="lg">
       <Box py={2}>

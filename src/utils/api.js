@@ -36,12 +36,14 @@ export const getAllSeries = () =>
     })
     .then(res => res.data);
 
-export const getHistoryData = userId =>
-  axios
+export const getHistoryData = userId => {
+  console.log("getHistoryData Triggered");
+  return axios
     .get(ENDPOINTS.GET_USER_PURCHASE(userId), {
       withCredentials: true,
     })
     .then(res => res.data);
+};
 
 export const getUserContentPurchases = (userID, contentID) =>
   axios

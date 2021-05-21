@@ -139,7 +139,8 @@ function VideoDetailPage() {
     userId,
     contentAmount,
     productId,
-    contentType
+    contentType,
+    purchaseType
   ) => {
     loadRazorPay(
       event,
@@ -147,6 +148,7 @@ function VideoDetailPage() {
       contentAmount,
       productId,
       contentType,
+      purchaseType,
       handleRazorPaySuccess
     );
   };
@@ -205,6 +207,7 @@ function VideoDetailPage() {
               userId,
               contentData?.price["b"],
               contentData?.seriesInfo.seasonId || contentData?.id,
+              contentData?.seriesInfo.seasonId ? "series" : "content",
               contentData?.purchase_type
             );
           }}
@@ -220,6 +223,8 @@ function VideoDetailPage() {
               userId,
               contentData?.price["r"],
               contentData?.seriesInfo?.seasonId || contentData?.id,
+              contentData?.seriesInfo.seasonId ? "series" : "content",
+
               contentData?.purchase_type
             );
           }}
@@ -235,6 +240,8 @@ function VideoDetailPage() {
               userId,
               contentData?.price["w"],
               contentData?.seriesInfo?.seasonId || contentData?.id,
+              contentData?.seriesInfo.seasonId ? "series" : "content",
+
               contentData?.purchase_type
             );
           }}
@@ -251,6 +258,8 @@ function VideoDetailPage() {
                 userId,
                 contentData?.price["b"],
                 contentData?.seriesInfo?.seasonId || contentData?.id,
+                contentData?.seriesInfo.seasonId ? "series" : "content",
+
                 "b"
               );
             }}
@@ -262,6 +271,8 @@ function VideoDetailPage() {
                 event,
                 userId,
                 contentData?.price["r"],
+                contentData?.seriesInfo.seasonId ? "series" : "content",
+
                 contentData?.seriesInfo?.seasonId || contentData?.id,
                 "r"
               );

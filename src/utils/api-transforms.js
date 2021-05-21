@@ -99,6 +99,9 @@ export const transformGetHistoryData = (data) => {
       expiryDate.setHours(purchaseDate.getHours() + EXPIRY_TIMING.WEEKLY_HOURS);
       isTicketValid = currentDate <= expiryDate;
     }
+    if (historyData.purchaseType === "b") {
+      isTicketValid = true;
+    }
     return {
       purchaseDate: purchaseDate,
       expiryDate: expiryDate,
@@ -111,7 +114,12 @@ export const transformGetHistoryData = (data) => {
       isTicketValid: isTicketValid,
     };
   });
-  return returnData;
+
+  return returnData.sort((a, b) => {
+    if (a.purchaseDate < b.purchaseDate) return 1;
+    else if (a.purchaseDate > b.purchaseDate) return -1;
+    return 0;
+  });
 };
 
 export const transformGetUserContentPurchase = (data) => {

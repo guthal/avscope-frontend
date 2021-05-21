@@ -21,6 +21,8 @@ function HistoryCard({ historyCard }) {
       isTicketValid: false,
     }));
 
+  console.log("CARDDATA: ", cardData);
+
   return (
     <div className={classes.root}>
       <Grid container spacing={2} className={classes.historyCardContainer}>
@@ -40,64 +42,68 @@ function HistoryCard({ historyCard }) {
                   {trimDatetoHumanReadable(cardData.purchaseDate.toString())}
                 </Typography>
                 <Typography variant="h6">₹ {cardData.purchasePrice}</Typography>
-                <Box style={{ display: "flex", alignItems: "center" }}>
-                  {cardData.isTicketValid && <TimerIcon />}
-                  <Box px={1} style={{ fontSize: "15px" }}>
-                    {cardData.isTicketValid && (
-                      <CountdownTimer
-                        onComplete={handleComplete}
-                        expiryDate={cardData.expiryDate}
-                      />
-                    )}
+                {cardData.purchaseType !== "b" && (
+                  <Box style={{ display: "flex", alignItems: "center" }}>
+                    {cardData.isTicketValid && <TimerIcon />}
+                    <Box px={1} style={{ fontSize: "15px" }}>
+                      {cardData.isTicketValid && (
+                        <CountdownTimer
+                          onComplete={handleComplete}
+                          expiryDate={cardData.expiryDate}
+                        />
+                      )}
+                    </Box>
                   </Box>
-                </Box>
-                {!cardData.isTicketValid &&
-                  (cardData.purchaseType === "r" ? (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={(event) => {
-                        loadRazorPay(
-                          event,
-                          userId,
-                          cardData.purchasePrice,
-                          cardData.contentId,
-                          "r"
-                        );
-                      }}
-                    >
-                      Rent Again
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={(event) => {
-                        loadRazorPay(
-                          event,
-                          userId,
-                          cardData.purchasePrice,
-                          cardData.contentId,
-                          "w"
-                        );
-                      }}
-                    >
-                      Buy Weekly Again
-                    </Button>
-                  ))}
+                )}
+                {!cardData.isTicketValid && cardData.purchaseType === "r" && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={(event) => {
+                      loadRazorPay(
+                        event,
+                        userId,
+                        cardData.purchasePrice,
+                        cardData.contentId,
+                        cardData.purchaseType
+                      );
+                    }}
+                  >
+                    Rent Again
+                  </Button>
+                )}
+                {!cardData.isTicketValid && cardData.purchaseType === "w" && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={(event) => {
+                      loadRazorPay(
+                        event,
+                        userId,
+                        cardData.purchasePrice,
+                        cardData.contentId,
+                        cardData.purchaseType
+                      );
+                    }}
+                  >
+                    Buy Weekly Again
+                  </Button>
+                )}
               </Box>
             </Grid>
           </Grid>
         </Grid>
-        <Box style={{ position: "relative" }}>
-          <Box className={classes.validityContainer}>
-            {cardData.isTicketValid ? (
-              <img className={classes.validImg} src={valid} alt="ticket" />
-            ) : (
-              <img className={classes.validImg} src={expired} alt="ticket" />
-            )}
+        {cardData.purchaseType !== "b" && (
+          <Box style={{ position: "relative" }}>
+            <Box className={classes.validityContainer}>
+              {cardData.isTicketValid ? (
+                <img className={classes.validImg} src={valid} alt="ticket" />
+              ) : (
+                <img className={classes.validImg} src={expired} alt="ticket" />
+              )}
+            </Box>
           </Box>
-        </Box>
+        )}
       </Grid>
     </div>
   );

@@ -8,6 +8,7 @@ export const loadRazorPay = async (
   contentAmount,
   productId,
   contentType,
+  purchaseType,
   callback
 ) => {
   const loadScript = (src) => {
@@ -60,7 +61,8 @@ export const loadRazorPay = async (
         userId: userId,
         productId,
         amount: amount,
-        type: contentType,
+        contentType: contentType,
+        purchaseType: purchaseType,
         orderCreationId: order_id,
         razorpayPaymentId: response.razorpay_payment_id,
         razorpayOrderId: response.razorpay_order_id,

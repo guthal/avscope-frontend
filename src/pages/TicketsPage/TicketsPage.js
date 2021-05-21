@@ -47,21 +47,23 @@ function TicketsPage() {
             </Typography>
           </Box>
           <Grid item md={12} sm={6} xs={12}>
-            {ticketsData?.map(
-              (validTickets, index) =>
-                validTickets.isTicketValid && (
-                  <Grid
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    item
-                    key={`content-card-${index}`}
-                  >
-                    <HistoryCard historyCard={validTickets} />
-                  </Grid>
-                )
-            )}
+            {ticketsData
+              ?.filter((ticket) => ticket.purchaseType === "w")
+              .map(
+                (validTickets, index) =>
+                  validTickets.isTicketValid && (
+                    <Grid
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      item
+                      key={`content-card-${index}`}
+                    >
+                      <HistoryCard historyCard={validTickets} />
+                    </Grid>
+                  )
+              )}
           </Grid>
         </Grid>
         <Grid item lg={6} md={12} sm={12} xs={12}>

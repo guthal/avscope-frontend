@@ -64,8 +64,8 @@ function AddCreatorPage() {
       state: textFields.state,
       zipcode: textFields.zipcode,
       phone: textFields.phone,
-      bankAccount: textFields.bankAccount,
-      panCard: textFields.panCard,
+      bankAccount: textFields.bankAccount || null,
+      panCard: textFields.panCard || null,
     });
   };
 
@@ -133,7 +133,6 @@ function AddCreatorPage() {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                id="outlined-basic"
                 label="Office"
                 name="office"
                 autoComplete="office"
@@ -146,7 +145,6 @@ function AddCreatorPage() {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                id="outlined-basic"
                 label="City"
                 name="city"
                 autoComplete="city"
@@ -159,7 +157,6 @@ function AddCreatorPage() {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                id="outlined-basic"
                 name="state"
                 label="State"
                 autoComplete="state"
@@ -172,7 +169,6 @@ function AddCreatorPage() {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                id="outlined-basic"
                 name="zipcode"
                 label="Zip Code"
                 autoComplete="zipcode"
@@ -185,7 +181,6 @@ function AddCreatorPage() {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                id="outlined-basic"
                 name="phone"
                 label="Phone Number"
                 autoComplete="phone"
@@ -198,26 +193,22 @@ function AddCreatorPage() {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                id="outlined-basic"
                 name="bankAccount"
                 label="Bank Account"
                 autoComplete="bankAccount"
                 className={classes.textField}
                 onChange={handleTextFieldChange}
-                required
                 fullWidth
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                id="outlined-basic"
                 name="panCard"
                 label="PAN Card Number"
                 autoComplete="panCard"
                 className={classes.textField}
                 onChange={handleTextFieldChange}
-                required
                 fullWidth
               />
             </Grid>

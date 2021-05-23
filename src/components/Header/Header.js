@@ -72,10 +72,6 @@ function Header() {
     setOpenProfile(false);
   };
 
-  const handleCheckoutClick = () => {
-    history.push(APP_ROUTES.CHECKOUT_PAGE.path);
-  };
-
   const handleHistoryClick = () => {
     history.push(`${APP_ROUTES.HISTORY_PAGE.path}/${userId}`);
   };
@@ -162,15 +158,6 @@ function Header() {
                           {HEADER_LABELS.PROFILE}
                         </Button>
                       )}
-                      <Button
-                        color="secondary"
-                        variant="outlined"
-                        className={classes.profileMenuItem}
-                        onClick={handleCheckoutClick}
-                        disableElevation
-                      >
-                        <Typography>CHECKOUT</Typography>
-                      </Button>
                       <Button
                         color="secondary"
                         variant="outlined"

@@ -18,6 +18,7 @@ import AdminRoute from "../components/routeComponents/AdminRoute";
 import CreatorRoute from "../components/routeComponents/CreatorRoute";
 import PrivateRoute from "../components/routeComponents/PrivateRoute";
 import CreatorProfile from "./CreatorProfile/CreatorProfile";
+import PayoutPage from "./PayoutPage/PayoutPage";
 
 function Pages() {
   return (
@@ -73,6 +74,11 @@ function Pages() {
         <CreatorRoute
           path={`${APP_ROUTES.CREATOR_PROFILE.path}`}
           component={CreatorProfile}
+        />
+
+        <AdminRoute
+          path={`${APP_ROUTES.CREATOR_PAYOUT.path}`}
+          component={PayoutPage}
         />
 
         <Route

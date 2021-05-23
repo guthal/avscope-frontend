@@ -65,6 +65,11 @@ export const APP_ROUTES = {
     key: "",
     label: "Content Upload",
   },
+  CREATOR_PAYOUT: {
+    path: "/admin/creator-payout",
+    key: "",
+    label: "Creator Payout",
+  },
   LOGIN_PAGE: {
     path: "/login",
     key: "",

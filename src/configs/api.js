@@ -21,6 +21,10 @@ const ENDPOINTS = {
   POST_ADD_CREATOR: `${DOMAIN}/fm-register`,
   POST_FETCH_CONTENT_REVENUE: (userID) =>
     `${DOMAIN}/contents/revenue/${userID}`,
+  GET_WATCHLIST_DATA: (userId) => `${DOMAIN}/watchlist/${userId}`,
+  POST_ADD_WATCHLIST_DATA: (userId) => `${DOMAIN}/watchlist/${userId}`,
+  DELETE_WATCHLIST_CONTENT: (userId, contentId) =>
+    `${DOMAIN}/watchlist/${userId}/content/${contentId}`,
 };
 
 export { ENDPOINTS };

@@ -212,6 +212,7 @@ export const transformGetVerifyUser = (data) => {
     utype: data.utype,
     userDate: data.date,
     userHistory: data.history,
+    userWatchlist: data.watchlist,
   };
 };
 
@@ -225,3 +226,14 @@ export const transformPostGetContentsRevenue = (data) =>
     contentTitle: datum.contentTitle,
     purchaseCount: datum.purchaseCount,
   }));
+
+export const transformGetWatchlist = (data) => {
+  const returnData = data.map((watchlistData) => {
+    return {
+      contentId: watchlistData.contentId,
+      contentTitle: watchlistData.contentTitle,
+      thumbnail: watchlistData.thumbnail,
+    };
+  });
+  return returnData;
+};

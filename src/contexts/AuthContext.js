@@ -10,11 +10,13 @@ const AuthContext = createContext({
   username: "",
   utype: 2,
   name: "",
+  userWatchlistData: [],
   setUsername: () => {},
   setUserId: () => {},
   setIsUserLoggedIn: () => {},
   setUtype: () => {},
   setName: () => {},
+  setUserWatchlistData: () => {},
 });
 
 function AuthContextProvider({ children }) {
@@ -23,6 +25,7 @@ function AuthContextProvider({ children }) {
   const [username, setUsername] = useState();
   const [utype, setUtype] = useState(2);
   const [name, setName] = useState();
+  const [userWatchlistData, setUserWatchlistData] = useState([]);
   /**
    * API call to backend with the cookie
    *      -> if no cookie then default
@@ -47,8 +50,9 @@ function AuthContextProvider({ children }) {
       setUserId(verifyUserData.userId);
       setUtype(verifyUserData.utype);
       setName(verifyUserData.name);
+      setUserWatchlistData(verifyUserData.userWatchlist);
     }
-  }, [verifyUserData]);
+  }, [setUserWatchlistData, verifyUserData]);
 
   useEffect(() => {
     if (verifyError) {
@@ -57,6 +61,7 @@ function AuthContextProvider({ children }) {
       setUserId("");
       setUtype(2);
       setName("");
+      setUserWatchlistData([]);
     }
   }, [verifyError]);
 
@@ -72,11 +77,13 @@ function AuthContextProvider({ children }) {
         username,
         utype,
         name,
+        userWatchlistData,
         setUsername,
         setIsUserLoggedIn,
         setUserId,
         setUtype,
         setName,
+        setUserWatchlistData,
       }}
     >
       {children}

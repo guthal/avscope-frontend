@@ -91,6 +91,13 @@ function HistoryCard({ historyCard }) {
             </Grid>
           </Grid>
         </Grid>
+        {cardData.purchaseType === "b" && (
+          <Box style={{ position: "relative" }}>
+            <Box className={classes.validityContainer}>
+              <img className={classes.validImg} src={valid} alt="ticket" />)
+            </Box>
+          </Box>
+        )}
         {cardData.purchaseType !== "b" && (
           <Box style={{ position: "relative" }}>
             <Box className={classes.validityContainer}>

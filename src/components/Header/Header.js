@@ -65,7 +65,7 @@ function Header() {
   };
 
   const handleToggleMenu = () => {
-    setOpenProfile((prev) => !prev);
+    setOpenProfile(prev => !prev);
   };
 
   const handleCloseMenu = () => {
@@ -82,6 +82,10 @@ function Header() {
 
   const handleTicketsClick = () => {
     history.push(`${APP_ROUTES.TICKETS_PAGE.path}/${userId}`);
+  };
+
+  const handleWatchListPage = () => {
+    history.push(`${APP_ROUTES.WATCHLIST_PAGE.path}/${userId}`);
   };
 
   useEffect(() => {
@@ -171,6 +175,16 @@ function Header() {
                         color="secondary"
                         variant="outlined"
                         className={classes.profileMenuItem}
+                        onClick={handleWatchListPage}
+                        disableElevation
+                      >
+                        <Typography>WATCHLIST</Typography>
+                        {/* Write a Count len(watchlist) */}
+                      </Button>
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        className={classes.profileMenuItem}
                         onClick={handleHistoryClick}
                         disableElevation
                       >
@@ -185,7 +199,6 @@ function Header() {
                       >
                         <Typography>TICKETS</Typography>
                       </Button>
-
                       <Button
                         color="secondary"
                         variant="contained"

@@ -162,3 +162,27 @@ export const postGetContentsRevenue = (userID, data) => {
     .post(ENDPOINTS.POST_FETCH_CONTENT_REVENUE(userID))
     .then((res) => res.data);
 };
+
+export const getWatchListData = (userId) => {
+  return axios
+    .get(ENDPOINTS.GET_WATCHLIST_DATA(userId), {
+      withCredentials: true,
+    })
+    .then((res) => res.data);
+};
+
+export const postAddWatchList = (userId, data) => {
+  return axios
+    .post(ENDPOINTS.POST_ADD_WATCHLIST_DATA(userId), data, {
+      withCredentials: true,
+    })
+    .then((res) => res.data);
+};
+
+export const deleteRemoveFromWatchlist = (userId, contentId) => {
+  return axios
+    .delete(ENDPOINTS.DELETE_WATCHLIST_CONTENT(userId, contentId), {
+      withCredentials: true,
+    })
+    .then((res) => res.data);
+};

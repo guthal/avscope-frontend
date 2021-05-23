@@ -17,6 +17,8 @@ import {
   getContents,
   getSeriesContents,
   getUserContentPurchases,
+  postAddWatchList,
+  deleteRemoveFromWatchlist,
 } from "../../utils/api";
 import {
   transformGetContent,
@@ -52,7 +54,8 @@ function VideoDetailPage() {
   const history = useHistory();
   const routeMatch = useRouteMatch();
   const { params } = routeMatch;
-  const { userId } = useContext(AuthContext);
+  const { userId, userWatchlistData, setUserWatchlistData } =
+    useContext(AuthContext);
 
   // eslint-disable-next-line no-unused-vars
   const [isVideoAvailable, setIsVideoAvailable] = useState(false);
@@ -152,7 +155,21 @@ function VideoDetailPage() {
       handleRazorPaySuccess
     );
   };
+  const handleAddToWatchlist = () => {
+    postAddWatchList(userId, {
+      contentId: contentData.id,
+    }).then(() => {
+      setUserWatchlistData((prev) => [...prev, contentData.id]);
+    });
+  };
 
+  const handleRemovefromWatchlist = () => {
+    deleteRemoveFromWatchlist(userId, contentData.id).then(() => {
+      setUserWatchlistData((prev) =>
+        prev.filter((watchlistItem) => watchlistItem !== contentData.id)
+      );
+    });
+  };
   // Show Play Button if user has made the video purchase
   useEffect(() => {
     setIsVideoAvailable(!!userContentPurchaseData?.isTicketValid);
@@ -386,6 +403,27 @@ function VideoDetailPage() {
                     <>
                       <PurchaseTypeElements />
                     </>
+                  )}
+                </Box>
+                <Box my={3}>
+                  {userWatchlistData.includes(contentData?.id) ? (
+                    <Button
+                      color="secondary"
+                      variant="outlined"
+                      className={classes.watchlistBtn}
+                      onClick={handleRemovefromWatchlist}
+                    >
+                      ✓ Remove from Watchlist
+                    </Button>
+                  ) : (
+                    <Button
+                      color="secondary"
+                      variant="outlined"
+                      className={classes.watchlistBtn}
+                      onClick={handleAddToWatchlist}
+                    >
+                      Add to Watchlist
+                    </Button>
                   )}
                 </Box>
               </Box>

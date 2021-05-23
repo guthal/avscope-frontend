@@ -11,8 +11,8 @@ export const loadRazorPay = async (
   purchaseType,
   callback
 ) => {
-  const loadScript = (src) => {
-    return new Promise((resolve) => {
+  const loadScript = src => {
+    return new Promise(resolve => {
       const script = document.createElement("script");
       script.src = src;
       script.onload = () => {

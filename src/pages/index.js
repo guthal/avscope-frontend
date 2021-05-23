@@ -13,6 +13,7 @@ import CreatorsPage from "./CreatorsPage";
 import AdminPage from "./AdminPage";
 import ContentUploadPage from "./ContentUploadPage";
 import AddCreatorPage from "./AddCreatorPage";
+import WatchListPage from "./WatchListPage";
 import AdminRoute from "../components/routeComponents/AdminRoute";
 import CreatorRoute from "../components/routeComponents/CreatorRoute";
 import PrivateRoute from "../components/routeComponents/PrivateRoute";
@@ -41,6 +42,12 @@ function Pages() {
           exact
           path={`${APP_ROUTES.TICKETS_PAGE.path}/:userID`}
           component={TicketsPage}
+        />
+
+        <PrivateRoute
+          exact
+          path={`${APP_ROUTES.WATCHLIST_PAGE.path}/:userID`}
+          component={WatchListPage}
         />
 
         <AdminRoute

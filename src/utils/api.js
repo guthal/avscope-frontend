@@ -128,38 +128,40 @@ export const postOrderSuccess = (data) => {
     .then((res) => res.data);
 };
 
-export const postGetContentsRevenue = (userID, data) => {
-  return Promise.resolve([
-    {
-      contentType: "content",
-      creatorId: "abc",
-      revenue: "2000",
-      purchaseType: "b",
-      commission: "0.3",
-      contentTitle: "Ugram",
-      purchaseCount: "2",
-    },
-    {
-      contentType: "content",
-      creatorId: "abc",
-      revenue: "3000",
-      purchaseType: "r",
-      commission: "0.2",
-      contentTitle: "Ugram",
-      purchaseCount: "4",
-    },
-    {
-      contentType: "series",
-      creatorId: "abc",
-      revenue: "5000",
-      purchaseType: "b",
-      commission: "0.3",
-      contentTitle: "The Magicians",
-      purchaseCount: "1",
-    },
-  ]);
+export const postGetContentsRevenue = (data, userID) => {
+  // return Promise.resolve([
+  //   {
+  //     contentType: "content",
+  //     creatorId: "abc",
+  //     revenue: "2000",
+  //     purchaseType: "b",
+  //     commission: "0.3",
+  //     contentTitle: "Ugram",
+  //     purchaseCount: "2",
+  //   },
+  //   {
+  //     contentType: "content",
+  //     creatorId: "abc",
+  //     revenue: "3000",
+  //     purchaseType: "r",
+  //     commission: "0.2",
+  //     contentTitle: "Ugram",
+  //     purchaseCount: "4",
+  //   },
+  //   {
+  //     contentType: "series",
+  //     creatorId: "abc",
+  //     revenue: "5000",
+  //     purchaseType: "b",
+  //     commission: "0.3",
+  //     contentTitle: "The Magicians",
+  //     purchaseCount: "1",
+  //   },
+  // ]);
   return axios
-    .post(ENDPOINTS.POST_FETCH_CONTENT_REVENUE(userID))
+    .post(ENDPOINTS.POST_FETCH_CONTENT_REVENUE(userID), data, {
+      withCredentials: true,
+    })
     .then((res) => res.data);
 };
 

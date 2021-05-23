@@ -241,7 +241,6 @@ function VideoDetailPage() {
               contentData?.price["r"],
               contentData?.seriesInfo?.seasonId || contentData?.id,
               contentData?.seriesInfo.seasonId ? "series" : "content",
-
               contentData?.purchase_type
             );
           }}
@@ -258,7 +257,6 @@ function VideoDetailPage() {
               contentData?.price["w"],
               contentData?.seriesInfo?.seasonId || contentData?.id,
               contentData?.seriesInfo.seasonId ? "series" : "content",
-
               contentData?.purchase_type
             );
           }}
@@ -276,7 +274,6 @@ function VideoDetailPage() {
                 contentData?.price["b"],
                 contentData?.seriesInfo?.seasonId || contentData?.id,
                 contentData?.seriesInfo.seasonId ? "series" : "content",
-
                 "b"
               );
             }}
@@ -288,9 +285,8 @@ function VideoDetailPage() {
                 event,
                 userId,
                 contentData?.price["r"],
-                contentData?.seriesInfo.seasonId ? "series" : "content",
-
                 contentData?.seriesInfo?.seasonId || contentData?.id,
+                contentData?.seriesInfo.seasonId ? "series" : "content",
                 "r"
               );
             }}

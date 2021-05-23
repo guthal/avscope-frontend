@@ -37,7 +37,6 @@ export const getAllSeries = () =>
     .then(res => res.data);
 
 export const getHistoryData = userId => {
-  console.log("getHistoryData Triggered");
   return axios
     .get(ENDPOINTS.GET_USER_PURCHASE(userId), {
       withCredentials: true,
@@ -124,6 +123,30 @@ export const postCreateOrder = data => {
 export const postOrderSuccess = data => {
   return axios
     .post(ENDPOINTS.POST_ORDER_SUCCESS, data, {
+      withCredentials: true,
+    })
+    .then(res => res.data);
+};
+
+export const getWatchListData = userId => {
+  return axios
+    .get(ENDPOINTS.GET_WATCHLIST_DATA(userId), {
+      withCredentials: true,
+    })
+    .then(res => res.data);
+};
+
+export const postAddWatchList = (userId, data) => {
+  return axios
+    .post(ENDPOINTS.POST_ADD_WATCHLIST_DATA(userId), data, {
+      withCredentials: true,
+    })
+    .then(res => res.data);
+};
+
+export const deleteRemoveFromWatchlist = (userId, contentId) => {
+  return axios
+    .delete(ENDPOINTS.DELETE_WATCHLIST_CONTENT(userId, contentId), {
       withCredentials: true,
     })
     .then(res => res.data);

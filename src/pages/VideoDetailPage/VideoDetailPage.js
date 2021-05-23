@@ -6,6 +6,7 @@ import {
   Grid,
   ClickAwayListener,
 } from "@material-ui/core";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { PlayCircleOutlineOutlined, ArrowDropDown } from "@material-ui/icons";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import React, { useMemo, useEffect, useState, useContext } from "react";
@@ -17,6 +18,8 @@ import {
   getContents,
   getSeriesContents,
   getUserContentPurchases,
+  postAddWatchList,
+  deleteRemoveFromWatchlist,
 } from "../../utils/api";
 import {
   transformGetContent,
@@ -52,13 +55,14 @@ function VideoDetailPage() {
   const history = useHistory();
   const routeMatch = useRouteMatch();
   const { params } = routeMatch;
-  const { userId } = useContext(AuthContext);
+  const { userId, userWatchlistData } = useContext(AuthContext);
 
   // eslint-disable-next-line no-unused-vars
   const [isVideoAvailable, setIsVideoAvailable] = useState(false);
   const [recommendedContents, setRecommendedContents] = useState();
   const [seriesContents, setSeriesContents] = useState();
   const [seasonSelectorOpen, setSeasonSelectorOpen] = useState(false);
+  const [addToWatchlist, setAddToWatchlist] = useState(false);
 
   const getContentParams = useMemo(
     () => [params.contentID],
@@ -85,7 +89,7 @@ function VideoDetailPage() {
         : [],
     [contentData, userId]
   );
-  console.log(contentData);
+
   const {
     data: userContentPurchaseData,
     loading: userContentPurchaseLoading,
@@ -112,30 +116,40 @@ function VideoDetailPage() {
     transformGetSeriesContents
   );
 
-  const handleCardClick = (contentID) =>
+  const handleCardClick = contentID =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   const handleSeasonSelectorClickAway = () => {
     setSeasonSelectorOpen(false);
   };
 
-  const handleSeasonSelectorClick = () =>
-    setSeasonSelectorOpen((prev) => !prev);
+  const handleSeasonSelectorClick = () => setSeasonSelectorOpen(prev => !prev);
 
-  const handleSeasonClick = (seasonNo) => {
+  const handleSeasonClick = seasonNo => {
     setSeriesContents();
     handleSeasonSelectorClickAway();
     const episodeData = seriesData.find(
-      (episode) =>
+      episode =>
         episode.seriesInfo.seasonNo === seasonNo &&
         episode.seriesInfo.episodeNo === 1
     );
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${episodeData.id}`);
   };
 
+  const handleAddToWatchlist = () => {
+    postAddWatchList(userId, {
+      contentId: contentData.id,
+    });
+    setAddToWatchlist(true);
+  };
+
+  const handleRemovefromWatchlist = () => {
+    deleteRemoveFromWatchlist(userId, contentData.id);
+    setAddToWatchlist(false);
+  };
+
   // Show Play Button if user has made the video purchase
   useEffect(() => {
-    console.log(userContentPurchaseData?.isTicketValid);
     setIsVideoAvailable(!!userContentPurchaseData?.isTicketValid);
   }, [userContentPurchaseData]);
 
@@ -144,7 +158,7 @@ function VideoDetailPage() {
     if (contentsData)
       setRecommendedContents(
         contentsData?.contents
-          ?.filter((content) => content.id !== params.contentID)
+          ?.filter(content => content.id !== params.contentID)
           .slice(0, 4)
       );
   }, [contentsData, contentData, params.contentID]);
@@ -153,7 +167,7 @@ function VideoDetailPage() {
   useEffect(() => {
     if (contentData && seriesData) {
       const nextInSeries = seriesData.filter(
-        (episode) =>
+        episode =>
           episode.seriesInfo.seasonNo === contentData.seriesInfo.seasonNo &&
           episode.id !== contentData.id &&
           episode.seriesInfo.episodeNo > contentData.seriesInfo.episodeNo
@@ -177,12 +191,22 @@ function VideoDetailPage() {
 
   useEffect(() => contentTriggerApi(), [contentTriggerApi, params.contentID]);
 
+  useEffect(() => {
+    if (contentData !== undefined) {
+      if (userWatchlistData !== [] || userWatchlistData !== undefined) {
+        if (userWatchlistData.includes(contentData.id)) {
+          setAddToWatchlist(true);
+        }
+      }
+    }
+  }, [contentData, userWatchlistData]);
+
   const PurchaseTypeElements = () => {
     if (contentData?.purchase_type === "b")
       return (
         <PurchaseButton
           btnText={`Buy now @ ₹${contentData?.price["b"]}`}
-          onClick={(event) => {
+          onClick={event => {
             loadRazorPay(
               event,
               userId,
@@ -197,7 +221,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Rent now @ ₹${contentData?.price["r"]}`}
-          onClick={(event) => {
+          onClick={event => {
             loadRazorPay(
               event,
               userId,
@@ -212,7 +236,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Purchase ticket now @ ₹${contentData?.price["w"]}`}
-          onClick={(event) => {
+          onClick={event => {
             loadRazorPay(
               event,
               userId,
@@ -228,7 +252,7 @@ function VideoDetailPage() {
         <>
           <PurchaseButton
             btnText={`Buy now @ ₹${contentData?.price["b"]}`}
-            onClick={(event) => {
+            onClick={event => {
               loadRazorPay(
                 event,
                 userId,
@@ -240,7 +264,7 @@ function VideoDetailPage() {
           />
           <PurchaseButton
             btnText={`Rent now @ ₹${contentData?.price["r"]}`}
-            onClick={(event) => {
+            onClick={event => {
               loadRazorPay(
                 event,
                 userId,
@@ -315,7 +339,7 @@ function VideoDetailPage() {
                           <Box className={classes.seasonSelectorDropdown}>
                             {Array(
                               Math.max(
-                                ...seriesData.map((o) => o.seriesInfo.seasonNo),
+                                ...seriesData.map(o => o.seriesInfo.seasonNo),
                                 0
                               )
                             )
@@ -360,6 +384,30 @@ function VideoDetailPage() {
                     </>
                   )}
                 </Box>
+                {addToWatchlist ? (
+                  <Box my={3}>
+                    <Button
+                      color="secondary"
+                      variant="outlined"
+                      onClick={handleRemovefromWatchlist}
+                    >
+                      <Box pr={1}>
+                        <CheckCircleIcon />
+                      </Box>
+                      Remove from Watchlist
+                    </Button>
+                  </Box>
+                ) : (
+                  <Box my={3}>
+                    <Button
+                      color="secondary"
+                      variant="outlined"
+                      onClick={handleAddToWatchlist}
+                    >
+                      Add to Watchlist
+                    </Button>
+                  </Box>
+                )}
               </Box>
             </Grid>
           </Grid>

@@ -19,6 +19,10 @@ const ENDPOINTS = {
   POST_CREATE_ORDER_RAZORPAY: `${DOMAIN}/orders/create`,
   POST_ORDER_SUCCESS: `${DOMAIN}/orders/success`,
   POST_ADD_CREATOR: `${DOMAIN}/fm-register`,
+  GET_WATCHLIST_DATA: userId => `${DOMAIN}/watchlist/${userId}`,
+  POST_ADD_WATCHLIST_DATA: userId => `${DOMAIN}/watchlist/${userId}`,
+  DELETE_WATCHLIST_CONTENT: (userId, contentId) =>
+    `${DOMAIN}/watchlist/${userId}/content/${contentId}`,
 };
 
 export { ENDPOINTS };

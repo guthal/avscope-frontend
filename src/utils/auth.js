@@ -9,8 +9,8 @@ export const loadRazorPay = async (
   productId,
   contentType
 ) => {
-  const loadScript = (src) => {
-    return new Promise((resolve) => {
+  const loadScript = src => {
+    return new Promise(resolve => {
       const script = document.createElement("script");
       script.src = src;
       script.onload = () => {
@@ -55,13 +55,6 @@ export const loadRazorPay = async (
     image: { logo },
     order_id: order_id,
     handler: async function (response) {
-      // const data = {
-      //   orderCreationId: orderId,
-      //   razorpayPaymentId: response.razorpay_payment_id,
-      //   razorpayOrderId: response.razorpay_order_id,
-      //   razorpaySignature: response.razorpay_signature,
-      // };
-
       await postOrderSuccess({
         userId: userId,
         productId,

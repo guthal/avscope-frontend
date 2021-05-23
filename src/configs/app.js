@@ -70,17 +70,20 @@ export const APP_ROUTES = {
     key: "",
     label: "Login User Page",
   },
-
   SIGNUP_PAGE: {
     path: "/signup",
     key: "",
     label: "Signup New User Page",
   },
-
   CHECKOUT_PAGE: {
     path: "/checkout",
     key: "",
     label: "Checkout for Payment",
+  },
+  WATCHLIST_PAGE: {
+    path: "/watchlist",
+    key: "",
+    label: "Watchlist for User",
   },
 };
 

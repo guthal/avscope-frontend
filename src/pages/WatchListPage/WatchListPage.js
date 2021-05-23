@@ -88,7 +88,6 @@ function WatchListPage() {
                       />
                       <Box style={{ display: "flex", alignItems: "center" }}>
                         <Button
-                          className={classes.removeBtn}
                           color="secondary"
                           onClick={() => {
                             handleRemovefromWatchlist(

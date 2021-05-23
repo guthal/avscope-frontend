@@ -8,9 +8,6 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.primary.main,
     cursor: "pointer",
   },
-  removeBtn: {
-    // position: "absolute",
-  },
   mediaContainer: {
     height: "180px",
     width: "320px",

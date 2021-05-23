@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo } from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import {
   Box,
   Container,
@@ -15,14 +15,16 @@ import useGetApi from "../../hooks/useGetApi";
 import ContentCard from "../../components/ContentCard";
 import { transformGetWatchlist } from "../../utils/api-transforms";
 import useStyles from "./WatchListPage.Styles";
-import { getWatchListData, deleteRemoveFromWatchlist } from "../../utils/api";
 import AuthContext from "../../contexts/AuthContext";
+import { getWatchListData, deleteRemoveFromWatchlist } from "../../utils/api";
+import { APP_ROUTES } from "../../configs/app";
 
 function WatchListPage() {
   const classes = useStyles();
   const routeMatch = useRouteMatch();
+  const history = useHistory();
+  const { setUserWatchlistData } = useContext(AuthContext);
   const { params } = routeMatch;
-  const { userWatchlistData } = useContext(AuthContext);
 
   const getWatchlistDataParams = useMemo(
     () => [params.userID],
@@ -41,10 +43,17 @@ function WatchListPage() {
   );
 
   const handleRemovefromWatchlist = contentId => {
-    deleteRemoveFromWatchlist(params.userID, contentId);
+    deleteRemoveFromWatchlist(params.userID, contentId).then(() => {
+      watchlistTriggerApi();
+      setUserWatchlistData(prev =>
+        prev.filter(watchlistItem => watchlistItem !== contentId)
+      );
+    });
   };
 
-  useEffect(() => {}, [userWatchlistData]);
+  const handleContentRedirect = contentId => {
+    history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentId}`);
+  };
 
   useEffect(() => watchlistTriggerApi(), [watchlistTriggerApi]);
 
@@ -69,23 +78,31 @@ function WatchListPage() {
               <Box p={2}>
                 <Grid item xs={12}>
                   <ContentCard>
-                    <Button
-                      className={classes.removeBtn}
-                      onClick={() => {
-                        handleRemovefromWatchlist(watchlistContent.contentId);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </Button>
                     <Box className={classes.mediaContainer}>
                       <CardMedia
                         className={classes.media}
                         image={watchlistContent.thumbnail}
+                        onClick={() => {
+                          handleContentRedirect(watchlistContent.contentId);
+                        }}
                       />
-                      <Box>
-                        <Typography variant="h6" color="secondary">
-                          {watchlistContent.contentTitle}
-                        </Typography>
+                      <Box style={{ display: "flex", alignItems: "center" }}>
+                        <Button
+                          className={classes.removeBtn}
+                          color="secondary"
+                          onClick={() => {
+                            handleRemovefromWatchlist(
+                              watchlistContent.contentId
+                            );
+                          }}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                        <Box px={2}>
+                          <Typography variant="h6" color="secondary">
+                            {watchlistContent.contentTitle}
+                          </Typography>
+                        </Box>
                       </Box>
                     </Box>
                   </ContentCard>

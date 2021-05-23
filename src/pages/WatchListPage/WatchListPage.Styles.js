@@ -9,10 +9,7 @@ const useStyles = makeStyles(theme => ({
     cursor: "pointer",
   },
   removeBtn: {
-    color: theme.palette.secondary.main,
-    backgroundColor: theme.palette.primary.main,
-    position: "absolute",
-    borderRadius: 0,
+    // position: "absolute",
   },
   mediaContainer: {
     height: "180px",
@@ -21,6 +18,7 @@ const useStyles = makeStyles(theme => ({
   },
   media: {
     height: "100%",
+    cursor: "pointer",
   },
 }));
 

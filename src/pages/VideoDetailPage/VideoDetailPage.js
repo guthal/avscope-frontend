@@ -6,7 +6,6 @@ import {
   Grid,
   ClickAwayListener,
 } from "@material-ui/core";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { PlayCircleOutlineOutlined, ArrowDropDown } from "@material-ui/icons";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import React, { useMemo, useEffect, useState, useContext } from "react";
@@ -55,14 +54,14 @@ function VideoDetailPage() {
   const history = useHistory();
   const routeMatch = useRouteMatch();
   const { params } = routeMatch;
-  const { userId, userWatchlistData } = useContext(AuthContext);
+  const { userId, userWatchlistData, setUserWatchlistData } =
+    useContext(AuthContext);
 
   // eslint-disable-next-line no-unused-vars
   const [isVideoAvailable, setIsVideoAvailable] = useState(false);
   const [recommendedContents, setRecommendedContents] = useState();
   const [seriesContents, setSeriesContents] = useState();
   const [seasonSelectorOpen, setSeasonSelectorOpen] = useState(false);
-  const [addToWatchlist, setAddToWatchlist] = useState(false);
 
   const getContentParams = useMemo(
     () => [params.contentID],
@@ -139,13 +138,17 @@ function VideoDetailPage() {
   const handleAddToWatchlist = () => {
     postAddWatchList(userId, {
       contentId: contentData.id,
+    }).then(() => {
+      setUserWatchlistData(prev => [...prev, contentData.id]);
     });
-    setAddToWatchlist(true);
   };
 
   const handleRemovefromWatchlist = () => {
-    deleteRemoveFromWatchlist(userId, contentData.id);
-    setAddToWatchlist(false);
+    deleteRemoveFromWatchlist(userId, contentData.id).then(() => {
+      setUserWatchlistData(prev =>
+        prev.filter(watchlistItem => watchlistItem !== contentData.id)
+      );
+    });
   };
 
   // Show Play Button if user has made the video purchase
@@ -190,16 +193,6 @@ function VideoDetailPage() {
   }, [userId, contentData, userContentPurchaseTriggerApi]);
 
   useEffect(() => contentTriggerApi(), [contentTriggerApi, params.contentID]);
-
-  useEffect(() => {
-    if (contentData !== undefined) {
-      if (userWatchlistData !== [] || userWatchlistData !== undefined) {
-        if (userWatchlistData.includes(contentData.id)) {
-          setAddToWatchlist(true);
-        }
-      }
-    }
-  }, [contentData, userWatchlistData]);
 
   const PurchaseTypeElements = () => {
     if (contentData?.purchase_type === "b")
@@ -384,30 +377,27 @@ function VideoDetailPage() {
                     </>
                   )}
                 </Box>
-                {addToWatchlist ? (
-                  <Box my={3}>
+                <Box my={3}>
+                  {userWatchlistData.includes(contentData?.id) ? (
                     <Button
                       color="secondary"
                       variant="outlined"
+                      className={classes.watchlistBtn}
                       onClick={handleRemovefromWatchlist}
                     >
-                      <Box pr={1}>
-                        <CheckCircleIcon />
-                      </Box>
-                      Remove from Watchlist
+                      ✓ Remove from Watchlist
                     </Button>
-                  </Box>
-                ) : (
-                  <Box my={3}>
+                  ) : (
                     <Button
                       color="secondary"
                       variant="outlined"
+                      className={classes.watchlistBtn}
                       onClick={handleAddToWatchlist}
                     >
                       Add to Watchlist
                     </Button>
-                  </Box>
-                )}
+                  )}
+                </Box>
               </Box>
             </Grid>
           </Grid>

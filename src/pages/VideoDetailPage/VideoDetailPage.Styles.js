@@ -36,6 +36,9 @@ const useStyles = makeStyles(theme => ({
     textAlign: "left",
     paddingLeft: "0px",
   },
+  watchlistBtn: {
+    width: "300px",
+  },
   genreBtn: {
     fontSize: "8px",
     padding: "2px 4px",

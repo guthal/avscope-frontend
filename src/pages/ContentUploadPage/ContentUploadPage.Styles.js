@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: "48px",
     backgroundColor: theme.palette.background.paper,
@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
 
   selectField: {
     width: "100px",
+    "&:hover": {
+      borderColor: `${theme.palette.primary.main} !important`,
+    },
 
     "& .MuiSelect-selectMenu": {
       color: theme.palette.primary.main,

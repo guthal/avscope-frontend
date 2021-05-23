@@ -14,18 +14,24 @@ import {
   Box,
 } from "@material-ui/core";
 import PageLoader from "../../components/PageLoader";
+import useStyles from "./CreatorProfile.Styles";
 import usePostApi from "../../hooks/usePostApi";
 import { transformPostGetContentsRevenue } from "../../utils/api-transforms";
 import { postGetContentsRevenue } from "../../utils/api";
 import AuthContext from "../../contexts/AuthContext";
+import "./index.css";
 
 function CreatorProfile() {
   const { userId } = useContext(AuthContext);
+  const toDate = new Date(Date.now());
+  const fromDate = new Date(toDate);
+  const classes = useStyles();
 
   const postGetContentsRevenueParams = useMemo(() => [userId], [userId]);
   const {
     data: contentRevenueData,
     loading: contentRevenueLoading,
+    // eslint-disable-next-line no-unused-vars
     error: contentRevenueError,
     triggerPostApi: contentRevenueTriggerApi,
   } = usePostApi(
@@ -35,19 +41,16 @@ function CreatorProfile() {
   );
 
   const [selectedFromDate, setSelectedFromDate] = useState(
-    new Date("2014-08-18T21:11:54")
+    fromDate.setDate(fromDate.getDate() - 7)
   );
-  const [selectedToDate, setSelectedToDate] = useState(
-    new Date("2014-08-18T21:11:54")
-  );
+  const [selectedToDate, setSelectedToDate] = useState(toDate);
 
-  const handleFromDateChange = (date) => setSelectedFromDate(date);
+  const handleFromDateChange = date => setSelectedFromDate(date);
 
-  const handleToDateChange = (date) => setSelectedToDate(date);
+  const handleToDateChange = date => setSelectedToDate(date);
 
   useEffect(() => {
     if (userId) {
-      console.log("Triggered API");
       contentRevenueTriggerApi({
         fromDate: selectedFromDate,
         toDate: selectedToDate,
@@ -58,68 +61,79 @@ function CreatorProfile() {
   if (contentRevenueLoading) return <PageLoader />;
 
   return (
-    <Box>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Grid container spacing={4}>
-          <Grid item xs={6}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="MM/dd/yyyy"
-              margin="normal"
-              id="from-date-picker-inline"
-              label="From"
-              value={selectedFromDate}
-              onChange={handleFromDateChange}
-              KeyboardButtonProps={{
-                "aria-label": "change from date",
-              }}
-            />
+    <Grid container className={classes.root}>
+      <Grid item xs={12}>
+        <MuiPickersUtilsProvider
+          utils={DateFnsUtils}
+          className={classes.calendar}
+        >
+          <Grid container className={classes.dateGridContainer}>
+            <Grid item xs={6}>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                margin="normal"
+                id="from-date-picker-inline"
+                label="From"
+                value={selectedFromDate}
+                onChange={handleFromDateChange}
+                className={classes.calendar}
+                KeyboardButtonProps={{
+                  "aria-label": "change from date",
+                }}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                margin="normal"
+                id="to-date-picker-inline"
+                label="To"
+                value={selectedToDate}
+                onChange={handleToDateChange}
+                className={classes.calendar}
+                KeyboardButtonProps={{
+                  "aria-label": "change to date",
+                }}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="MM/dd/yyyy"
-              margin="normal"
-              id="to-date-picker-inline"
-              label="To"
-              value={selectedToDate}
-              onChange={handleToDateChange}
-              KeyboardButtonProps={{
-                "aria-label": "change to date",
-              }}
-            />
-          </Grid>
-        </Grid>
-      </MuiPickersUtilsProvider>
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Sr. no</TableCell>
-            <TableCell align="left">Content title</TableCell>
-            <TableCell align="center">Revenue</TableCell>
-            <TableCell align="center">Commission</TableCell>
-            <TableCell align="center">No. of purchases</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {contentRevenueData?.map((content, index) => (
-            <TableRow key={`${content.contentTitle}-${index}`}>
-              <TableCell component="th" scope="row">
-                {index + 1}
-              </TableCell>
-              <TableCell align="left" component="th" scope="row">
-                {content.contentTitle}
-              </TableCell>
-              <TableCell align="center">{content.revenue}</TableCell>
-              <TableCell align="center">{content.commission}</TableCell>
-              <TableCell align="center">{content.purchaseCount}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Box>
+        </MuiPickersUtilsProvider>
+      </Grid>
+      <Grid item xs={12}>
+        <Box p={1} className={classes.table}>
+          <Table aria-label="simple table">
+            <TableHead className={classes.head}>
+              <TableRow>
+                <TableCell>Sr. no</TableCell>
+                <TableCell align="left">Content title</TableCell>
+                <TableCell align="center">Revenue</TableCell>
+                <TableCell align="center">Commission</TableCell>
+                <TableCell align="center">No. of purchases</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody className={classes.body}>
+              {contentRevenueData?.map((content, index) => (
+                <TableRow key={`${content.contentTitle}-${index}`}>
+                  <TableCell component="th" scope="row">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {content.contentTitle}
+                  </TableCell>
+                  <TableCell align="center">{content.revenue}</TableCell>
+                  <TableCell align="center">{content.commission}</TableCell>
+                  <TableCell align="center">{content.purchaseCount}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }
 

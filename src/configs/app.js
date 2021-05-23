@@ -82,12 +82,19 @@ export const APP_ROUTES = {
     key: "",
     label: "Checkout for Payment",
   },
+
+  CREATOR_PROFILE: {
+    path: "/creator-profile",
+    key: "",
+    lebel: "Creator Profile",
+  },
 };
 
 export const HEADER_LABELS = {
   LOGIN: "Login",
   LOGOUT: "Logout",
   ADMIN: "Admin",
+  PROFILE: "Profile",
 };
 
 export const EXPIRY_TIMING = {

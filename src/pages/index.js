@@ -14,7 +14,9 @@ import AdminPage from "./AdminPage";
 import ContentUploadPage from "./ContentUploadPage";
 import AddCreatorPage from "./AddCreatorPage";
 import AdminRoute from "../components/routeComponents/AdminRoute";
+import CreatorRoute from "../components/routeComponents/CreatorRoute";
 import PrivateRoute from "../components/routeComponents/PrivateRoute";
+import CreatorProfile from "./CreatorProfile/CreatorProfile";
 
 function Pages() {
   return (
@@ -55,9 +57,15 @@ function Pages() {
           path={`${APP_ROUTES.CONTENT_UPLOAD.path}/:userID`}
           component={ContentUploadPage}
         />
+
         <AdminRoute
           path={`${APP_ROUTES.ADD_CREATOR_PAGE.path}`}
           component={AddCreatorPage}
+        />
+
+        <CreatorRoute
+          path={`${APP_ROUTES.CREATOR_PROFILE.path}`}
+          component={CreatorProfile}
         />
 
         <Route
@@ -65,11 +73,13 @@ function Pages() {
           path={`${APP_ROUTES.LOGIN_PAGE.path}`}
           component={LoginPage}
         />
+
         <Route
           exact
           path={`${APP_ROUTES.SIGNUP_PAGE.path}`}
           component={SignupPage}
         />
+
         <Route path="/*" component={PageNotFound} />
       </Switch>
     </Router>

@@ -52,6 +52,10 @@ function Header() {
     history.push(APP_ROUTES.ADMIN_DASHBOARD.path);
   };
 
+  const handleCreatorProfileClick = () => {
+    history.push(APP_ROUTES.CREATOR_PROFILE.path);
+  };
+
   const handleLoginClick = () => {
     history.push(APP_ROUTES.LOGIN_PAGE.path);
   };
@@ -141,6 +145,17 @@ function Header() {
                           disableElevation
                         >
                           {HEADER_LABELS.ADMIN}
+                        </Button>
+                      )}
+                      {utype <= 2 && (
+                        <Button
+                          color="secondary"
+                          variant="outlined"
+                          className={classes.profileMenuItem}
+                          onClick={handleCreatorProfileClick}
+                          disableElevation
+                        >
+                          {HEADER_LABELS.PROFILE}
                         </Button>
                       )}
                       <Button

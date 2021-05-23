@@ -214,3 +214,14 @@ export const transformGetVerifyUser = (data) => {
     userHistory: data.history,
   };
 };
+
+export const transformPostGetContentsRevenue = (data) =>
+  data.map((datum) => ({
+    contentType: datum.contentType,
+    creatorID: datum.creatorId,
+    purchaseType: datum.purchaseType,
+    revenue: datum.revenue,
+    commission: datum.commission,
+    contentTitle: datum.contentTitle,
+    purchaseCount: datum.purchaseCount,
+  }));

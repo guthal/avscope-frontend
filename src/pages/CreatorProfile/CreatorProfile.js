@@ -52,8 +52,9 @@ function CreatorProfile() {
   useEffect(() => {
     if (userId) {
       contentRevenueTriggerApi({
-        fromDate: selectedFromDate,
-        toDate: selectedToDate,
+        fromDate: new Date(selectedFromDate).toISOString(),
+        toDate: new Date(selectedToDate).toISOString(),
+        creatorId: userId,
       });
     }
   }, [contentRevenueTriggerApi, selectedFromDate, selectedToDate, userId]);
@@ -71,6 +72,7 @@ function CreatorProfile() {
             <Grid item xs={6}>
               <KeyboardDatePicker
                 disableToolbar
+                disableFuture
                 variant="inline"
                 format="MM/dd/yyyy"
                 margin="normal"
@@ -87,11 +89,13 @@ function CreatorProfile() {
             <Grid item xs={6}>
               <KeyboardDatePicker
                 disableToolbar
+                disableFuture
                 variant="inline"
                 format="MM/dd/yyyy"
                 margin="normal"
                 id="to-date-picker-inline"
                 label="To"
+                minDate={selectedFromDate}
                 value={selectedToDate}
                 onChange={handleToDateChange}
                 className={classes.calendar}

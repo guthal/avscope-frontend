@@ -16,8 +16,8 @@ import {
 import PageLoader from "../../components/PageLoader";
 import useStyles from "./PayoutPage.Styles";
 import usePostApi from "../../hooks/usePostApi";
-import { transformPostCreatorPayout } from "../../utils/api-transforms";
-import { postCreatorPayout } from "../../utils/api";
+import { transformPostGetContentsRevenue } from "../../utils/api-transforms";
+import { postGetContentsRevenue } from "../../utils/api";
 import AuthContext from "../../contexts/AuthContext";
 
 function PayoutPage() {
@@ -34,9 +34,9 @@ function PayoutPage() {
     error: creatorPayoutError,
     triggerPostApi: creatorPayoutTriggerApi,
   } = usePostApi(
-    postCreatorPayout,
+    postGetContentsRevenue,
     postCreatorPayoutParams,
-    transformPostCreatorPayout
+    transformPostGetContentsRevenue
   );
 
   const [selectedFromDate, setSelectedFromDate] = useState(
@@ -70,6 +70,7 @@ function PayoutPage() {
             <Grid item xs={6}>
               <KeyboardDatePicker
                 disableToolbar
+                disableFuture
                 variant="inline"
                 format="MM/dd/yyyy"
                 margin="normal"
@@ -86,11 +87,13 @@ function PayoutPage() {
             <Grid item xs={6}>
               <KeyboardDatePicker
                 disableToolbar
+                disableFuture
                 variant="inline"
                 format="MM/dd/yyyy"
                 margin="normal"
                 id="to-date-picker-inline"
                 label="To"
+                minDate={selectedFromDate}
                 value={selectedToDate}
                 onChange={handleToDateChange}
                 className={classes.calendar}

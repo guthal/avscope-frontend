@@ -45,15 +45,16 @@ function CreatorProfile() {
   );
   const [selectedToDate, setSelectedToDate] = useState(toDate);
 
-  const handleFromDateChange = date => setSelectedFromDate(date);
+  const handleFromDateChange = (date) => setSelectedFromDate(date);
 
-  const handleToDateChange = date => setSelectedToDate(date);
+  const handleToDateChange = (date) => setSelectedToDate(date);
 
   useEffect(() => {
     if (userId) {
       contentRevenueTriggerApi({
-        fromDate: selectedFromDate,
-        toDate: selectedToDate,
+        fromDate: new Date(selectedFromDate).toISOString(),
+        toDate: new Date(selectedToDate).toISOString(),
+        creatorId: userId,
       });
     }
   }, [contentRevenueTriggerApi, selectedFromDate, selectedToDate, userId]);
@@ -71,6 +72,7 @@ function CreatorProfile() {
             <Grid item xs={6}>
               <KeyboardDatePicker
                 disableToolbar
+                disableFuture
                 variant="inline"
                 format="MM/dd/yyyy"
                 margin="normal"
@@ -87,11 +89,13 @@ function CreatorProfile() {
             <Grid item xs={6}>
               <KeyboardDatePicker
                 disableToolbar
+                disableFuture
                 variant="inline"
                 format="MM/dd/yyyy"
                 margin="normal"
                 id="to-date-picker-inline"
                 label="To"
+                minDate={selectedFromDate}
                 value={selectedToDate}
                 onChange={handleToDateChange}
                 className={classes.calendar}
@@ -110,6 +114,7 @@ function CreatorProfile() {
               <TableRow>
                 <TableCell>Sr. no</TableCell>
                 <TableCell align="left">Content title</TableCell>
+                <TableCell align="left">Purchase Type</TableCell>
                 <TableCell align="center">Revenue</TableCell>
                 <TableCell align="center">Commission</TableCell>
                 <TableCell align="center">No. of purchases</TableCell>
@@ -123,6 +128,9 @@ function CreatorProfile() {
                   </TableCell>
                   <TableCell align="left" component="th" scope="row">
                     {content.contentTitle}
+                  </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {content.purchaseType}
                   </TableCell>
                   <TableCell align="center">{content.revenue}</TableCell>
                   <TableCell align="center">{content.commission}</TableCell>

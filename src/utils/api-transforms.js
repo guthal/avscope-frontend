@@ -227,7 +227,7 @@ export const transformPostGetContentsRevenue = (data) =>
     contentType: datum.contentType,
     creatorID: datum.creatorId,
     purchaseType: datum.purchaseType,
-    revenue: datum.revenue,
+    revenue: datum.amount,
     commission: datum.commission,
     contentTitle: datum.contentTitle,
     purchaseCount: datum.purchaseCount,
@@ -242,11 +242,4 @@ export const transformGetWatchlist = (data) => {
     };
   });
   return returnData;
-};
-
-export const transformPostCreatorPayout = (data) => {
-  /**
-   * Payout Transformer
-   */
-  console.log("transformPostCreatorPayout Triggered", data);
 };

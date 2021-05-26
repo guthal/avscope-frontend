@@ -14,30 +14,29 @@ import {
   Box,
 } from "@material-ui/core";
 import PageLoader from "../../components/PageLoader";
-import useStyles from "./CreatorProfile.Styles";
+import useStyles from "./PayoutPage.Styles";
 import usePostApi from "../../hooks/usePostApi";
-import { transformPostGetContentsRevenue } from "../../utils/api-transforms";
-import { postGetContentsRevenue } from "../../utils/api";
+import { transformPostCreatorPayout } from "../../utils/api-transforms";
+import { postCreatorPayout } from "../../utils/api";
 import AuthContext from "../../contexts/AuthContext";
-import "./index.css";
 
-function CreatorProfile() {
+function PayoutPage() {
   const { userId } = useContext(AuthContext);
   const toDate = new Date(Date.now());
   const fromDate = new Date(toDate);
   const classes = useStyles();
 
-  const postGetContentsRevenueParams = useMemo(() => [userId], [userId]);
+  const postCreatorPayoutParams = useMemo(() => [userId], [userId]);
   const {
-    data: contentRevenueData,
-    loading: contentRevenueLoading,
+    data: creatorPayoutData,
+    loading: creatorPayoutLoading,
     // eslint-disable-next-line no-unused-vars
-    error: contentRevenueError,
-    triggerPostApi: contentRevenueTriggerApi,
+    error: creatorPayoutError,
+    triggerPostApi: creatorPayoutTriggerApi,
   } = usePostApi(
-    postGetContentsRevenue,
-    postGetContentsRevenueParams,
-    transformPostGetContentsRevenue
+    postCreatorPayout,
+    postCreatorPayoutParams,
+    transformPostCreatorPayout
   );
 
   const [selectedFromDate, setSelectedFromDate] = useState(
@@ -51,14 +50,14 @@ function CreatorProfile() {
 
   useEffect(() => {
     if (userId) {
-      contentRevenueTriggerApi({
+      creatorPayoutTriggerApi({
         fromDate: selectedFromDate,
         toDate: selectedToDate,
       });
     }
-  }, [contentRevenueTriggerApi, selectedFromDate, selectedToDate, userId]);
+  }, [creatorPayoutTriggerApi, selectedFromDate, selectedToDate, userId]);
 
-  if (contentRevenueLoading) return <PageLoader />;
+  if (creatorPayoutLoading) return <PageLoader />;
 
   return (
     <Grid container className={classes.root}>
@@ -116,7 +115,7 @@ function CreatorProfile() {
               </TableRow>
             </TableHead>
             <TableBody className={classes.body}>
-              {contentRevenueData?.map((content, index) => (
+              {creatorPayoutData?.map((content, index) => (
                 <TableRow key={`${content.contentTitle}-${index}`}>
                   <TableCell component="th" scope="row">
                     {index + 1}
@@ -137,4 +136,4 @@ function CreatorProfile() {
   );
 }
 
-export default CreatorProfile;
+export default PayoutPage;

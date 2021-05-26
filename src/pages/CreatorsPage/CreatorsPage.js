@@ -1,4 +1,11 @@
-import { Container, Grid, Box, Typography, Link } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  Box,
+  Typography,
+  Link,
+  Button,
+} from "@material-ui/core";
 import { AccountBox } from "@material-ui/icons";
 import { useHistory } from "react-router";
 import React, { useEffect, useMemo } from "react";
@@ -24,8 +31,12 @@ function CreatorsPage() {
     triggerApi: creatorsTriggerApi,
   } = useGetApi(getCreators, getCreatorsParams, transformGetCreators);
 
-  const handleUserClick = (userID) => {
+  const handleUserClick = userID => {
     history.push(`${APP_ROUTES.CONTENT_UPLOAD.path}/${userID}`);
+  };
+
+  const handlePayoutClick = userID => {
+    history.push(`${APP_ROUTES.CREATOR_PAYOUT.path}/${userID}`);
   };
 
   useEffect(() => creatorsTriggerApi(), [creatorsTriggerApi]);
@@ -48,7 +59,7 @@ function CreatorsPage() {
       )}
       <Box py={2}>
         <Grid container spacing={4}>
-          {creatorsData?.map((creator) => (
+          {creatorsData?.map(creator => (
             <Grid
               key={`creator-${creator.id}`}
               item
@@ -59,13 +70,10 @@ function CreatorsPage() {
             >
               <ContentCard>
                 <Box p={1}>
-                  <Grid container>
+                  <Grid container style={{ borderBottom: "1px solid yellow" }}>
                     <Grid item xs={4}>
                       <Box m="auto">
-                        <AccountBox
-                          onClick={() => handleUserClick(creator.id)}
-                          className={classes.userAvatar}
-                        />
+                        <AccountBox className={classes.userAvatar} />
                       </Box>
                     </Grid>
                     <Grid item xs={8}>
@@ -98,6 +106,28 @@ function CreatorsPage() {
                           </Box>
                         )}
                       </Box>
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={4} justify="flex-start">
+                    <Grid item xs={5}>
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        className={classes.linkBtn}
+                        onClick={() => handleUserClick(creator.id)}
+                      >
+                        Upload
+                      </Button>
+                    </Grid>
+                    <Grid item xs={5}>
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        className={classes.linkBtn}
+                        onClick={() => handlePayoutClick(creator.id)}
+                      >
+                        Payout
+                      </Button>
                     </Grid>
                   </Grid>
                 </Box>

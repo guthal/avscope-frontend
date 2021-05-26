@@ -46,9 +46,9 @@ function CreatorProfile() {
   );
   const [selectedToDate, setSelectedToDate] = useState(toDate);
 
-  const handleFromDateChange = date => setSelectedFromDate(date);
+  const handleFromDateChange = (date) => setSelectedFromDate(date);
 
-  const handleToDateChange = date => setSelectedToDate(date);
+  const handleToDateChange = (date) => setSelectedToDate(date);
 
   useEffect(() => {
     if (userId) {
@@ -115,6 +115,7 @@ function CreatorProfile() {
               <TableRow>
                 <TableCell>Sr. no</TableCell>
                 <TableCell align="left">Content title</TableCell>
+                <TableCell align="left">Purchase Type</TableCell>
                 <TableCell align="center">Revenue</TableCell>
                 <TableCell align="center">Commission</TableCell>
                 <TableCell align="center">No. of purchases</TableCell>
@@ -128,6 +129,9 @@ function CreatorProfile() {
                   </TableCell>
                   <TableCell align="left" component="th" scope="row">
                     {content.contentTitle}
+                  </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {content.purchaseType}
                   </TableCell>
                   <TableCell align="center">{content.revenue}</TableCell>
                   <TableCell align="center">{content.commission}</TableCell>

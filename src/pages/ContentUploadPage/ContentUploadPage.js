@@ -362,9 +362,11 @@ function ContentUploadPage() {
     if (seriesData)
       setSeriesList((prev) => [
         prev[0],
-        ...seriesData.map((series) => series.seriesName),
+        ...seriesData
+          .filter((series) => series.creatorID === params.userID)
+          .map((series) => series.seriesName),
       ]);
-  }, [seriesData]);
+  }, [params.userID, seriesData]);
 
   useEffect(() => {
     setContentTypeSelections((prev) => ({ ...prev, series: seriesList[0] }));

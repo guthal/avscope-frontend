@@ -24,7 +24,8 @@ import "./index.css";
 function CreatorProfile() {
   const { userId } = useContext(AuthContext);
   const toDate = new Date(Date.now());
-  const fromDate = new Date(toDate);
+  const intermediateDate = new Date(toDate);
+  const fromDate = new Date(intermediateDate.setHours(0, 0, 0, 0));
   const classes = useStyles();
 
   const postGetContentsRevenueParams = useMemo(() => [userId], [userId]);

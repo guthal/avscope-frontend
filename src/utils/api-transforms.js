@@ -221,7 +221,7 @@ export const transformPostGetContentsRevenue = data =>
     contentType: datum.contentType,
     creatorID: datum.creatorId,
     purchaseType: datum.purchaseType,
-    amount: datum.amount,
+    revenue: datum.amount,
     commission: datum.commission,
     contentTitle: datum.contentTitle,
     purchaseCount: datum.purchaseCount,

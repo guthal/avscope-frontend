@@ -402,7 +402,7 @@ function VideoDetailPage() {
                   )}
                 </Box>
                 <Box my={3}>
-                  {userWatchlistData.includes(contentData?.id) ? (
+                  {userWatchlistData?.includes(contentData?.id) ? (
                     <Button
                       color="secondary"
                       variant="outlined"

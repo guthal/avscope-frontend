@@ -46,9 +46,12 @@ function CreatorProfile() {
   );
   const [selectedToDate, setSelectedToDate] = useState(toDate);
 
-  const handleFromDateChange = (date) => setSelectedFromDate(date);
+  const handleFromDateChange = date => {
+    const tempDate = new Date(date.setHours(0, 0, 0, 0));
+    setSelectedFromDate(tempDate);
+  };
 
-  const handleToDateChange = (date) => setSelectedToDate(date);
+  const handleToDateChange = date => setSelectedToDate(date);
 
   useEffect(() => {
     if (userId) {

@@ -35,8 +35,8 @@ function CreatorsPage() {
     history.push(`${APP_ROUTES.CONTENT_UPLOAD.path}/${userID}`);
   };
 
-  const handlePayoutClick = userID => {
-    history.push(`${APP_ROUTES.CREATOR_PAYOUT.path}/${userID}`);
+  const handlePayoutClick = creatorID => {
+    history.push(`${APP_ROUTES.CREATOR_PAYOUT.path}/${creatorID}`);
   };
 
   useEffect(() => creatorsTriggerApi(), [creatorsTriggerApi]);

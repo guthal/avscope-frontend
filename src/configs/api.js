@@ -24,6 +24,7 @@ const ENDPOINTS = {
   POST_ADD_WATCHLIST_DATA: userId => `${DOMAIN}/watchlist/${userId}`,
   DELETE_WATCHLIST_CONTENT: (userId, contentId) =>
     `${DOMAIN}/watchlist/${userId}/content/${contentId}`,
+  POST_PAY_CREATOR_EARNINGS: userID => `${DOMAIN}/pay-creator/${userID}`,
 };
 
 export { ENDPOINTS };

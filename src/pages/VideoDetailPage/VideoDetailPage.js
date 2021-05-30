@@ -114,21 +114,20 @@ function VideoDetailPage() {
     transformGetSeriesContents
   );
 
-  const handleCardClick = (contentID) =>
+  const handleCardClick = contentID =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   const handleSeasonSelectorClickAway = () => {
     setSeasonSelectorOpen(false);
   };
 
-  const handleSeasonSelectorClick = () =>
-    setSeasonSelectorOpen((prev) => !prev);
+  const handleSeasonSelectorClick = () => setSeasonSelectorOpen(prev => !prev);
 
-  const handleSeasonClick = (seasonNo) => {
+  const handleSeasonClick = seasonNo => {
     setSeriesContents();
     handleSeasonSelectorClickAway();
     const episodeData = seriesData.find(
-      (episode) =>
+      episode =>
         episode.seriesInfo.seasonNo === seasonNo &&
         episode.seriesInfo.episodeNo === 1
     );
@@ -159,14 +158,14 @@ function VideoDetailPage() {
     postAddWatchList(userId, {
       contentId: contentData.id,
     }).then(() => {
-      setUserWatchlistData((prev) => [...prev, contentData.id]);
+      setUserWatchlistData(prev => [...prev, contentData.id]);
     });
   };
 
   const handleRemovefromWatchlist = () => {
     deleteRemoveFromWatchlist(userId, contentData.id).then(() => {
-      setUserWatchlistData((prev) =>
-        prev.filter((watchlistItem) => watchlistItem !== contentData.id)
+      setUserWatchlistData(prev =>
+        prev.filter(watchlistItem => watchlistItem !== contentData.id)
       );
     });
   };
@@ -180,7 +179,7 @@ function VideoDetailPage() {
     if (contentsData)
       setRecommendedContents(
         contentsData?.contents
-          ?.filter((content) => content.id !== params.contentID)
+          ?.filter(content => content.id !== params.contentID)
           .slice(0, 4)
       );
   }, [contentsData, contentData, params.contentID]);
@@ -189,7 +188,7 @@ function VideoDetailPage() {
   useEffect(() => {
     if (contentData && seriesData) {
       const nextInSeries = seriesData.filter(
-        (episode) =>
+        episode =>
           episode.seriesInfo.seasonNo === contentData.seriesInfo.seasonNo &&
           episode.id !== contentData.id &&
           episode.seriesInfo.episodeNo > contentData.seriesInfo.episodeNo
@@ -218,7 +217,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Buy now @ ₹${contentData?.price["b"]}`}
-          onClick={(event) => {
+          onClick={event => {
             handleRazorPay(
               event,
               userId,
@@ -234,7 +233,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Rent now @ ₹${contentData?.price["r"]}`}
-          onClick={(event) => {
+          onClick={event => {
             handleRazorPay(
               event,
               userId,
@@ -250,7 +249,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Purchase ticket now @ ₹${contentData?.price["w"]}`}
-          onClick={(event) => {
+          onClick={event => {
             handleRazorPay(
               event,
               userId,
@@ -267,7 +266,7 @@ function VideoDetailPage() {
         <>
           <PurchaseButton
             btnText={`Buy now @ ₹${contentData?.price["b"]}`}
-            onClick={(event) => {
+            onClick={event => {
               handleRazorPay(
                 event,
                 userId,
@@ -280,7 +279,7 @@ function VideoDetailPage() {
           />
           <PurchaseButton
             btnText={`Rent now @ ₹${contentData?.price["r"]}`}
-            onClick={(event) => {
+            onClick={event => {
               handleRazorPay(
                 event,
                 userId,
@@ -317,7 +316,9 @@ function VideoDetailPage() {
             <Grid item md={6} xs={12}>
               <Box p={2} mt={2}>
                 <Typography color="secondary" variant="h4">
-                  {contentData?.name}
+                  <Box fontWeight="fontWeightBold">
+                    {contentData?.seriesInfo?.seriesName || contentData?.name}
+                  </Box>
                 </Typography>
                 {contentData?.rating && (
                   <Typography variant="subtitle2">{`Rating: ${contentData?.rating}`}</Typography>
@@ -335,6 +336,13 @@ function VideoDetailPage() {
                     </Box>
                   ))}
                 </Box>
+                {contentData?.seriesID && (
+                  <Box py={2}>
+                    <Typography color="secondary" variant="h6">
+                      {contentData?.name}
+                    </Typography>
+                  </Box>
+                )}
                 {contentData?.seriesInfo.seasonNo && seriesData && (
                   <Box py={2}>
                     <ClickAwayListener
@@ -356,7 +364,7 @@ function VideoDetailPage() {
                           <Box className={classes.seasonSelectorDropdown}>
                             {Array(
                               Math.max(
-                                ...seriesData.map((o) => o.seriesInfo.seasonNo),
+                                ...seriesData.map(o => o.seriesInfo.seasonNo),
                                 0
                               )
                             )
@@ -383,7 +391,27 @@ function VideoDetailPage() {
                   <Typography>{contentData?.description}</Typography>
                 </Box>
 
-                <Box my={3}>
+                <Box>
+                  <Typography variant="h6" color="secondary">
+                    Starring
+                  </Typography>
+                  {contentData?.cast.map((actor, i) => (
+                    <Box>
+                      <Box
+                        component="div"
+                        display="inline"
+                        fontWeight="fontWeightBold"
+                      >
+                        {actor.name}{" "}
+                      </Box>
+                      <Box component="div" display="inline" style={{}}>
+                        as {actor.role}
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+
+                <Box my={2}>
                   {isVideoAvailable && contentData ? (
                     <Button
                       color="secondary"

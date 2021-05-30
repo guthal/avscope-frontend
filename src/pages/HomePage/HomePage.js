@@ -32,7 +32,7 @@ function HomePage() {
     triggerApi: seriesSeasonsTriggerApi,
   } = useGetApi(getAllSeries, getAllSeriesParams, transformGetAllSeries);
 
-  const handleCardClick = (contentID) =>
+  const handleCardClick = contentID =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
@@ -67,7 +67,7 @@ function HomePage() {
             </Box>
             <Grid container spacing={4}>
               {contentsData?.contents
-                ?.filter((content) => content.isAvailable)
+                ?.filter(content => content.isAvailable)
                 .map((contentCard, index) => (
                   <Grid
                     lg={3}
@@ -92,11 +92,11 @@ function HomePage() {
               </Box>
               <Grid container spacing={4}>
                 {seriesSeasonsData
-                  .map((series) => series.seasons)
-                  .map((season) => (
+                  .map(series => series.seasons)
+                  .map(season => (
                     <>
                       {season
-                        ?.filter((contentCard) => contentCard.isAvailable)
+                        ?.filter(contentCard => contentCard.isAvailable)
                         .map((contentCard, index) => (
                           <Grid
                             lg={3}

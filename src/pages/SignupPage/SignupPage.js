@@ -10,7 +10,15 @@ import {
   TextField,
   Checkbox,
   Button,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 import PersonAddOutlinedIcon from "@material-ui/icons/PersonAddOutlined";
 import usePostApi from "../../hooks/usePostApi";
 import { postSignup } from "../../utils/api";
@@ -29,12 +37,15 @@ function SignupPage() {
     firstName: "",
     lastName: "",
     email: "",
+    gender: "male",
     password: "",
     retypePassword: "",
     checkbox: false,
   });
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [signupDisabled, setSignupDisabled] = useState(true);
+  const tempDate = new Date(Date.now());
+  const [dateOfBirth, setDateOfBirth] = useState(tempDate);
 
   const postSignupParams = useMemo(() => [], []);
   const {
@@ -50,6 +61,10 @@ function SignupPage() {
   }, [history, isUserLoggedIn]);
 
   const handleLoginClick = () => history.push(`${APP_ROUTES.LOGIN_PAGE.path}`);
+
+  const handleDateOfBirthChange = date => {
+    setDateOfBirth(date);
+  };
 
   const {
     data: signupData,
@@ -103,6 +118,8 @@ function SignupPage() {
         fname: textFields.firstName,
         lname: textFields.lastName,
         username: textFields.email,
+        dateOfBirth: dateOfBirth.toISOString(),
+        gender: textFields.gender,
         password: textFields.password,
       });
     } else {
@@ -181,6 +198,45 @@ function SignupPage() {
                 name="email"
                 autoComplete="email"
               />
+            </Grid>
+            <Grid item xs={8}>
+              <MuiPickersUtilsProvider
+                utils={DateFnsUtils}
+                className={classes.calendar}
+              >
+                <KeyboardDatePicker
+                  disableFuture
+                  required
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-of-birth-picker-inline"
+                  label="DOB"
+                  value={dateOfBirth}
+                  onChange={handleDateOfBirthChange}
+                  className={classes.calendar}
+                  InputProps={{ readOnly: true }}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date of birth",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={4}>
+              <InputLabel id="gender-select">Gender</InputLabel>
+              <Select
+                required
+                labelId="gender-select"
+                id="gender-select"
+                name="gender"
+                className={classes.gender}
+                value={textFields.gender}
+                onChange={handleTextFieldChange}
+              >
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
+                <MenuItem value="other">Other</MenuItem>
+              </Select>
             </Grid>
             <Grid item xs={12}>
               <TextField

@@ -111,8 +111,13 @@ function Header() {
       <AppBar position="static">
         <Toolbar>
           <Box className={classes.logoContainer}>
-            <Box onClick={handleLogoClick} className={classes.title}>
-              <img src={Banner} alt="logo" />
+            <Box className={classes.title}>
+              <img
+                onClick={handleLogoClick}
+                style={{ cursor: "pointer" }}
+                src={Banner}
+                alt="logo"
+              />
             </Box>
           </Box>
           {!isUserLoggedIn && (

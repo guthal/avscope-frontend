@@ -46,13 +46,6 @@ export const transformGetAllSeries = data =>
       isAvailable: season.isAvailable,
     }));
 
-    console.log({
-      seriesName: datum.seriesName,
-      seriesID: datum.seriesId,
-      seasons,
-      creatorID: datum.userId,
-    });
-
     return {
       seriesName: datum.seriesName,
       seriesID: datum.seriesId,
@@ -212,6 +205,8 @@ export const transformPostSignupResponse = data => {
     userId: data.userId,
     username: data.username,
     name: name,
+    dateOfBirth: data.dateOfBirth,
+    gender: data.gender,
     utype: data.utype,
     userDate: data.date,
     userHistory: data.history,

@@ -8,7 +8,7 @@ import ContentCard from "../ContentCard";
 function MovieCard({ cardData, onClick }) {
   const classes = useStyles();
 
-  const handleCardClick = (cardId) => onClick?.(cardId);
+  const handleCardClick = cardId => onClick?.(cardId);
 
   return (
     <Box

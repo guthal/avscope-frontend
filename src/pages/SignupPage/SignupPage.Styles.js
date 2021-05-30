@@ -16,6 +16,19 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     border: `2px solid ${theme.palette.primary.main}`,
   },
+  calendar: {
+    padding: 0,
+    margin: "0px 8px",
+    "& div": {
+      color: theme.palette.primary.dark,
+    },
+  },
+  gender: {
+    color: theme.palette.primary.dark,
+    "& input": {
+      color: theme.palette.primary.dark,
+    },
+  },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),

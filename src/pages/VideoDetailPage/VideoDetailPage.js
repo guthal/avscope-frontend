@@ -7,6 +7,7 @@ import {
   ClickAwayListener,
 } from "@material-ui/core";
 import { PlayCircleOutlineOutlined, ArrowDropDown } from "@material-ui/icons";
+import { Stream } from "@cloudflare/stream-react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import React, { useMemo, useEffect, useState, useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
@@ -57,8 +58,8 @@ function VideoDetailPage() {
   const { userId, userWatchlistData, setUserWatchlistData } =
     useContext(AuthContext);
 
-  // eslint-disable-next-line no-unused-vars
   const [isVideoAvailable, setIsVideoAvailable] = useState(false);
+  const [playVideo, setPlayVideo] = useState(false);
   const [recommendedContents, setRecommendedContents] = useState();
   const [seriesContents, setSeriesContents] = useState();
   const [seasonSelectorOpen, setSeasonSelectorOpen] = useState(false);
@@ -170,6 +171,8 @@ function VideoDetailPage() {
       );
     });
   };
+
+  const handlePlay = () => setPlayVideo(true);
   // Show Play Button if user has made the video purchase
   useEffect(() => {
     setIsVideoAvailable(!!userContentPurchaseData?.isTicketValid);
@@ -310,178 +313,234 @@ function VideoDetailPage() {
     );
 
   return (
-    <Container maxWidth="xl" className={classes.root}>
-      <Grid container>
-        <Grid item xs={12} className={classes.posterContainer}>
-          <Grid container>
-            <Grid item md={6} xs={12}>
-              <Box p={2} mt={2}>
-                <Typography color="secondary" variant="h4">
-                  {contentData?.name}
-                </Typography>
-                {contentData?.rating && (
-                  <Typography variant="subtitle2">{`Rating: ${contentData?.rating}`}</Typography>
-                )}
-                <Box my={1}>
-                  {contentData?.genres.map((genre, index) => (
-                    <Box component="span" key={`genre-${index}`} pr={1}>
-                      <Button
-                        className={classes.genreBtn}
-                        variant="outlined"
-                        color="secondary"
-                      >
-                        {genre}
-                      </Button>
-                    </Box>
-                  ))}
-                </Box>
-                {contentData?.seriesInfo.seasonNo && seriesData && (
-                  <Box py={2}>
-                    <ClickAwayListener
-                      onClickAway={handleSeasonSelectorClickAway}
-                    >
-                      <Box className={classes.seasonSelectorContainer}>
-                        <Box>
-                          <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={handleSeasonSelectorClick}
-                          >
-                            Season {contentData?.seriesInfo.seasonNo}
-                            <ArrowDropDown />
-                          </Button>
-                        </Box>
-
-                        {seasonSelectorOpen && (
-                          <Box className={classes.seasonSelectorDropdown}>
-                            {Array(
-                              Math.max(
-                                ...seriesData.map((o) => o.seriesInfo.seasonNo),
-                                0
-                              )
-                            )
-                              .fill(0)
-                              .map((_, index) => (
-                                <Box key={`season-menu-item-${index}`}>
-                                  <Button
-                                    onClick={() => handleSeasonClick(index + 1)}
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.seasonSelectorItem}
-                                  >
-                                    Season {index + 1}
-                                  </Button>
-                                </Box>
-                              ))}
-                          </Box>
-                        )}
+    <>
+      <Container
+        maxWidth="xl"
+        className={classes.root}
+        style={playVideo ? { maxHeight: "80vh", overflow: "hidden" } : {}}
+      >
+        <Grid container>
+          <Grid item xs={12} className={classes.posterContainer}>
+            <Grid container>
+              <Grid item md={6} xs={12}>
+                <Box p={2} mt={2}>
+                  <Typography color="secondary" variant="h4">
+                    {contentData?.name}
+                  </Typography>
+                  {contentData?.rating && (
+                    <Typography variant="subtitle2">{`Rating: ${contentData?.rating}`}</Typography>
+                  )}
+                  <Box my={1}>
+                    {contentData?.genres.map((genre, index) => (
+                      <Box component="span" key={`genre-${index}`} pr={1}>
+                        <Button
+                          className={classes.genreBtn}
+                          variant="outlined"
+                          color="secondary"
+                        >
+                          {genre}
+                        </Button>
                       </Box>
-                    </ClickAwayListener>
+                    ))}
                   </Box>
-                )}
-                <Box my={3}>
-                  <Typography>{contentData?.description}</Typography>
-                </Box>
+                  {contentData?.seriesInfo.seasonNo && seriesData && (
+                    <Box py={2}>
+                      <ClickAwayListener
+                        onClickAway={handleSeasonSelectorClickAway}
+                      >
+                        <Box className={classes.seasonSelectorContainer}>
+                          <Box>
+                            <Button
+                              color="primary"
+                              variant="contained"
+                              onClick={handleSeasonSelectorClick}
+                            >
+                              Season {contentData?.seriesInfo.seasonNo}
+                              <ArrowDropDown />
+                            </Button>
+                          </Box>
 
-                <Box my={3}>
-                  {isVideoAvailable && contentData ? (
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      className={classes.playBtn}
+                          {seasonSelectorOpen && (
+                            <Box className={classes.seasonSelectorDropdown}>
+                              {Array(
+                                Math.max(
+                                  ...seriesData.map(
+                                    (o) => o.seriesInfo.seasonNo
+                                  ),
+                                  0
+                                )
+                              )
+                                .fill(0)
+                                .map((_, index) => (
+                                  <Box key={`season-menu-item-${index}`}>
+                                    <Button
+                                      onClick={() =>
+                                        handleSeasonClick(index + 1)
+                                      }
+                                      variant="contained"
+                                      color="primary"
+                                      className={classes.seasonSelectorItem}
+                                    >
+                                      Season {index + 1}
+                                    </Button>
+                                  </Box>
+                                ))}
+                            </Box>
+                          )}
+                        </Box>
+                      </ClickAwayListener>
+                    </Box>
+                  )}
+                  <Box my={3}>
+                    <Typography>{contentData?.description}</Typography>
+                  </Box>
+
+                  <Box my={3}>
+                    {isVideoAvailable && contentData ? (
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        className={classes.playBtn}
+                        onClick={handlePlay}
+                      >
+                        {`Play `}{" "}
+                        <PlayCircleOutlineOutlined
+                          className={classes.platBtnIcon}
+                        />
+                      </Button>
+                    ) : (
+                      <>
+                        <PurchaseTypeElements />
+                      </>
+                    )}
+                  </Box>
+                  <Box my={3}>
+                    {userWatchlistData?.includes(contentData?.id) ? (
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        className={classes.watchlistBtn}
+                        onClick={handleRemovefromWatchlist}
+                      >
+                        ✓ Remove from Watchlist
+                      </Button>
+                    ) : (
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        className={classes.watchlistBtn}
+                        onClick={handleAddToWatchlist}
+                      >
+                        Add to Watchlist
+                      </Button>
+                    )}
+                  </Box>
+                </Box>
+              </Grid>
+            </Grid>
+            <img src={contentData?.posterUrl} alt="Not available" />
+          </Grid>
+
+          {recommendedContents && (
+            <Grid item xs={12}>
+              <Box py={1} pl={2} pr={3}>
+                <Box py={2}>
+                  <Typography variant="h4">Watch next</Typography>
+                </Box>
+                <Grid container spacing={4}>
+                  {recommendedContents.map((contentCard, index) => (
+                    <Grid
+                      lg={3}
+                      md={3}
+                      sm={6}
+                      xs={12}
+                      item
+                      key={`content-card-${index}`}
                     >
-                      {`Play `}{" "}
-                      <PlayCircleOutlineOutlined
-                        className={classes.platBtnIcon}
+                      <MovieCard
+                        cardData={contentCard}
+                        onClick={handleCardClick}
                       />
-                    </Button>
-                  ) : (
-                    <>
-                      <PurchaseTypeElements />
-                    </>
-                  )}
-                </Box>
-                <Box my={3}>
-                  {userWatchlistData?.includes(contentData?.id) ? (
-                    <Button
-                      color="secondary"
-                      variant="outlined"
-                      className={classes.watchlistBtn}
-                      onClick={handleRemovefromWatchlist}
-                    >
-                      ✓ Remove from Watchlist
-                    </Button>
-                  ) : (
-                    <Button
-                      color="secondary"
-                      variant="outlined"
-                      className={classes.watchlistBtn}
-                      onClick={handleAddToWatchlist}
-                    >
-                      Add to Watchlist
-                    </Button>
-                  )}
-                </Box>
+                    </Grid>
+                  ))}
+                </Grid>
               </Box>
             </Grid>
-          </Grid>
-          <img src={contentData?.posterUrl} alt="Not available" />
+          )}
+          {seriesContents?.length > 0 && (
+            <Grid item xs={12}>
+              <Box py={1} pl={2} pr={3}>
+                <Box py={2}>
+                  <Typography variant="h4">Watch next</Typography>
+                </Box>
+                <Grid container spacing={4}>
+                  {seriesContents?.map((contentCard, index) => (
+                    <Grid
+                      lg={3}
+                      md={3}
+                      sm={6}
+                      xs={12}
+                      item
+                      key={`content-card-${index}`}
+                    >
+                      <MovieCard
+                        cardData={contentCard}
+                        onClick={handleCardClick}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            </Grid>
+          )}
         </Grid>
-
-        {recommendedContents && (
-          <Grid item xs={12}>
-            <Box py={1} pl={2} pr={3}>
-              <Box py={2}>
-                <Typography variant="h4">Watch next</Typography>
-              </Box>
-              <Grid container spacing={4}>
-                {recommendedContents.map((contentCard, index) => (
-                  <Grid
-                    lg={3}
-                    md={3}
-                    sm={6}
-                    xs={12}
-                    item
-                    key={`content-card-${index}`}
-                  >
-                    <MovieCard
-                      cardData={contentCard}
-                      onClick={handleCardClick}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
+      </Container>
+      {playVideo && (
+        <Box
+          style={{
+            position: "absolute",
+            zIndex: 100,
+            top: "0px",
+            width: "100vw",
+            backgroundColor: "black",
+            height: "100%",
+          }}
+        >
+          <Box
+            style={{
+              float: "right",
+              zIndex: "1",
+            }}
+          >
+            <Button
+              color="secondary"
+              variant="contained"
+              style={{ fontSize: "2rem" }}
+              onClick={() => setPlayVideo(false)}
+            >
+              <b> X</b>
+            </Button>
+          </Box>
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            <Box style={{ width: "90%" }}>
+              <Stream
+                controls
+                width="400px"
+                // height="100vh"
+                src="838d01a23a0d2c53257e1962596bf00a"
+              />
             </Box>
-          </Grid>
-        )}
-        {seriesContents?.length > 0 && (
-          <Grid item xs={12}>
-            <Box py={1} pl={2} pr={3}>
-              <Box py={2}>
-                <Typography variant="h4">Watch next</Typography>
-              </Box>
-              <Grid container spacing={4}>
-                {seriesContents?.map((contentCard, index) => (
-                  <Grid
-                    lg={3}
-                    md={3}
-                    sm={6}
-                    xs={12}
-                    item
-                    key={`content-card-${index}`}
-                  >
-                    <MovieCard
-                      cardData={contentCard}
-                      onClick={handleCardClick}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          </Grid>
-        )}
-      </Grid>
-    </Container>
+          </Box>
+        </Box>
+      )}
+    </>
   );
 }
 

@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Box, Typography, Button, Switch } from "@material-ui/core";
 import useStyles from "./ManageContentCard.Styles";
 import ContentCard from "../ContentCard";
 import usePostApi from "../../hooks/usePostApi";
 import { postUpdateProductStatus } from "../../utils/api";
+import PageError from "../../components/PageError";
 
 function ManageContentCard({ cardData }) {
   const classes = useStyles();
@@ -17,12 +18,8 @@ function ManageContentCard({ cardData }) {
     [cardData.seasonId, cardData.id]
   );
 
-  const {
-    data: contentStatusData,
-    loading: contentStatusLoading,
-    triggerPostApi: contentStatusTriggerApi,
-    error: contentStatusError,
-  } = usePostApi(postUpdateProductStatus, postUpdateProductStatusParams);
+  const { triggerPostApi: contentStatusTriggerApi, error: contentStatusError } =
+    usePostApi(postUpdateProductStatus, postUpdateProductStatusParams);
 
   const handleSwitchChange = (event) => {
     setIsAvailable(event.target.checked);
@@ -31,6 +28,11 @@ function ManageContentCard({ cardData }) {
       contentType,
     });
   };
+
+  if (contentStatusError)
+    return (
+      <PageError message="Opps.. Something went wrong while updating content status." />
+    );
 
   return (
     <Box className={classes.contentCardContainer}>

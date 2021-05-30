@@ -11,6 +11,7 @@ import {
 } from "../../utils/api-transforms";
 import { APP_ROUTES } from "../../configs/app";
 import ManageContentCard from "../../components/ManageContentCard";
+import ConversionCard from "../../components/ConversionCard";
 
 function ManageContentPage() {
   const history = useHistory();
@@ -34,6 +35,8 @@ function ManageContentPage() {
   const handleCardClick = (contentID) =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
+  const onContentStatusUpdate = () => contentsTriggerApi();
+
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
 
   useEffect(() => seriesSeasonsTriggerApi(), [seriesSeasonsTriggerApi]);
@@ -49,6 +52,33 @@ function ManageContentPage() {
     <>
       <Container maxWidth="lg">
         <Box py={4}>
+          <Box py={1}>
+            <Box py={6}>
+              <Typography variant="h3">Weekly Contents</Typography>
+            </Box>
+            <Grid container spacing={4}>
+              {contentsData?.contents
+                ?.filter((content) => content.purchaseType === "w")
+                .map((contentCard, index) => (
+                  <Grid
+                    lg={4}
+                    md={4}
+                    sm={6}
+                    xs={12}
+                    item
+                    key={`content-card-${index}`}
+                  >
+                    <ConversionCard
+                      cardData={contentCard}
+                      onContentStatusUpdate={onContentStatusUpdate}
+                    />
+                  </Grid>
+                ))}
+            </Grid>
+          </Box>
+          <Box py={2}>
+            <Typography variant="h3">Availability</Typography>
+          </Box>
           <Box py={1}>
             <Box py={2}>
               <Typography variant="h4">Stand Alone Contents</Typography>

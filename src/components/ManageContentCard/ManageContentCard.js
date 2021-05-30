@@ -42,23 +42,25 @@ function ManageContentCard({ cardData }) {
             <Typography variant="h6" color="secondary">
               {cardData.seriesName || cardData.name}
             </Typography>
+            {cardData.seasonNo && (
+              <Box>
+                <Button
+                  className={classes.seasonBtn}
+                  color="secondary"
+                  variant="outlined"
+                >
+                  {`Season ${cardData.seasonNo}`}
+                </Button>
+              </Box>
+            )}
+          </Box>
+          <Box my={2}>
             <Switch
               color="secondary"
               checked={isAvailable}
               onChange={handleSwitchChange}
             />
           </Box>
-          {cardData.seasonNo && (
-            <Box>
-              <Button
-                className={classes.seasonBtn}
-                color="secondary"
-                variant="outlined"
-              >
-                {`Season ${cardData.seasonNo}`}
-              </Button>
-            </Box>
-          )}
         </Box>
       </ContentCard>
     </Box>

@@ -170,3 +170,6 @@ export const deleteRemoveFromWatchlist = (userId, contentId) => {
 
 export const postUpdateProductStatus = (data, productID) =>
   axios.post(ENDPOINTS.POST_PRODUCT_STATUS(productID), data);
+
+export const postContentConversion = (data, contentID) =>
+  axios.post(ENDPOINTS.POST_PRODUCT_CONVERSION(contentID), data);

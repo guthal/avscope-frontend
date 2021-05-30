@@ -27,6 +27,7 @@ const ENDPOINTS = {
   POST_PRODUCT_STATUS: (productID) =>
     `${DOMAIN}/conversion/availability/${productID}`,
   POST_PAY_CREATOR_EARNINGS: (userID) => `${DOMAIN}/pay-creator/${userID}`,
+  POST_PRODUCT_CONVERSION: (contentID) => `${DOMAIN}/conversion/${contentID}`,
 };
 
 export { ENDPOINTS };

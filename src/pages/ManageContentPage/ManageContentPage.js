@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo } from "react";
 import { Box, Typography, Container, Grid } from "@material-ui/core";
-import HomeCarousel from "../../components/HomeCarousel";
-import MovieCard from "../../components/MovieCard";
 import useGetApi from "../../hooks/useGetApi";
 import { getContents, getAllSeries } from "../../utils/api";
 import PageLoader from "../../components/PageLoader";
@@ -12,8 +10,9 @@ import {
   transformGetAllSeries,
 } from "../../utils/api-transforms";
 import { APP_ROUTES } from "../../configs/app";
+import ManageContentCard from "../../components/ManageContentCard";
 
-function HomePage() {
+function ManageContentPage() {
   const history = useHistory();
   const getContentsParams = useMemo(() => [], []);
 
@@ -46,43 +45,30 @@ function HomePage() {
       <PageError message="Opps.. Something went wrong while fetching contents." />
     );
 
-  if (!contentsData) return <></>;
-
   return (
     <>
-      <Box>
-        <HomeCarousel
-          contents={[
-            ...contentsData?.contents?.slice(0, 2),
-            ...contentsData?.series?.slice(0, 2),
-          ]}
-        />
-      </Box>
-
       <Container maxWidth="lg">
         <Box py={4}>
           <Box py={1}>
             <Box py={2}>
-              <Typography variant="h4">Recommended</Typography>
+              <Typography variant="h4">Stand Alone Contents</Typography>
             </Box>
             <Grid container spacing={4}>
-              {contentsData?.contents
-                ?.filter((content) => content.isAvailable)
-                .map((contentCard, index) => (
-                  <Grid
-                    lg={3}
-                    md={3}
-                    sm={6}
-                    xs={12}
-                    item
-                    key={`content-card-${index}`}
-                  >
-                    <MovieCard
-                      cardData={contentCard}
-                      onClick={handleCardClick}
-                    />
-                  </Grid>
-                ))}
+              {contentsData?.contents?.map((contentCard, index) => (
+                <Grid
+                  lg={3}
+                  md={3}
+                  sm={6}
+                  xs={12}
+                  item
+                  key={`content-card-${index}`}
+                >
+                  <ManageContentCard
+                    cardData={contentCard}
+                    onClick={handleCardClick}
+                  />
+                </Grid>
+              ))}
             </Grid>
           </Box>
           {seriesSeasonsData?.length > 0 && (
@@ -95,23 +81,21 @@ function HomePage() {
                   .map((series) => series.seasons)
                   .map((season) => (
                     <>
-                      {season
-                        ?.filter((contentCard) => contentCard.isAvailable)
-                        .map((contentCard, index) => (
-                          <Grid
-                            lg={3}
-                            md={3}
-                            sm={6}
-                            xs={12}
-                            item
-                            key={`content-card-${index}`}
-                          >
-                            <MovieCard
-                              cardData={contentCard}
-                              onClick={handleCardClick}
-                            />
-                          </Grid>
-                        ))}
+                      {season?.map((contentCard, index) => (
+                        <Grid
+                          lg={3}
+                          md={3}
+                          sm={6}
+                          xs={12}
+                          item
+                          key={`content-card-${index}`}
+                        >
+                          <ManageContentCard
+                            cardData={contentCard}
+                            onClick={handleCardClick}
+                          />
+                        </Grid>
+                      ))}
                     </>
                   ))}
               </Grid>
@@ -123,4 +107,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default ManageContentPage;

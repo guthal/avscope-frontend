@@ -17,8 +17,9 @@ import WatchListPage from "./WatchListPage";
 import AdminRoute from "../components/routeComponents/AdminRoute";
 import CreatorRoute from "../components/routeComponents/CreatorRoute";
 import PrivateRoute from "../components/routeComponents/PrivateRoute";
-import CreatorProfile from "./CreatorProfile/CreatorProfile";
-import PayoutPage from "./PayoutPage/PayoutPage";
+import CreatorProfile from "./CreatorProfile";
+import PayoutPage from "./PayoutPage";
+import ManageContentPage from "./ManageContentPage";
 
 function Pages() {
   return (
@@ -69,6 +70,11 @@ function Pages() {
         <AdminRoute
           path={`${APP_ROUTES.ADD_CREATOR_PAGE.path}`}
           component={AddCreatorPage}
+        />
+
+        <AdminRoute
+          path={`${APP_ROUTES.MANAGE_CONTENT_PAGE.path}`}
+          component={ManageContentPage}
         />
 
         <CreatorRoute

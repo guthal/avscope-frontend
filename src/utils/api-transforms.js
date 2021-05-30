@@ -16,6 +16,7 @@ export const transformGetContents = (data) => {
         "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
       genres: datum.genres || [],
       seriesID: datum.seriesId,
+      isAvailable: datum.isAvailable,
     };
 
     if (datum.seriesId) seriesData.push(content);
@@ -32,7 +33,8 @@ export const transformGetAllSeries = (data) =>
   data.map((datum) => {
     const seasons = datum.seasons.map((season) => ({
       id: season.startContentId,
-      name: data.seriesName,
+      name: datum.seriesName,
+      seasonId: season.seasonId,
       carouselUrl:
         season.thumbnail ||
         "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
@@ -41,7 +43,15 @@ export const transformGetAllSeries = (data) =>
         "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
       description: season.description,
       seasonNo: season.seasonNo,
+      isAvailable: season.isAvailable,
     }));
+
+    console.log({
+      seriesName: datum.seriesName,
+      seriesID: datum.seriesId,
+      seasons,
+      creatorID: datum.userId,
+    });
 
     return {
       seriesName: datum.seriesName,

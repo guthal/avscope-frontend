@@ -60,6 +60,11 @@ export const APP_ROUTES = {
     key: "",
     label: "Add Creators",
   },
+  MANAGE_CONTENT_PAGE: {
+    path: "/admin/manage-content",
+    key: "",
+    label: "Manage Content",
+  },
   CONTENT_UPLOAD: {
     path: "/admin/content-upload",
     key: "",

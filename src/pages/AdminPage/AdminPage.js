@@ -15,6 +15,10 @@ function AdminPage() {
 
   const handleAddCreatorClick = () =>
     history.push(APP_ROUTES.ADD_CREATOR_PAGE.path);
+
+  const handleManageContentClick = () =>
+    history.push(APP_ROUTES.MANAGE_CONTENT_PAGE.path);
+
   return (
     <Container maxWidth="lg">
       <Box my={5}>
@@ -62,6 +66,29 @@ function AdminPage() {
                     variant="h5"
                   >
                     Add New Creator
+                  </Typography>
+                </Box>
+              </Box>
+            </ContentCard>
+          </Grid>
+
+          <Grid item xs={6} sm={4} md={3}>
+            <ContentCard>
+              <Box
+                p={2}
+                onClick={handleManageContentClick}
+                className={classes.cardContainer}
+              >
+                <Box className={classes.cardIconContainer}>
+                  <PersonAdd className={classes.cardIcon} />
+                </Box>
+                <Box>
+                  <Typography
+                    color="secondary"
+                    className={classes.cardText}
+                    variant="h5"
+                  >
+                    Manage Content
                   </Typography>
                 </Box>
               </Box>

@@ -396,7 +396,7 @@ function VideoDetailPage() {
                     Starring
                   </Typography>
                   {contentData?.cast.map((actor, i) => (
-                    <Box>
+                    <Box key={i}>
                       <Box
                         component="div"
                         display="inline"

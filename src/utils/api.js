@@ -136,6 +136,14 @@ export const postGetContentsRevenue = (data) => {
     .then((res) => res.data);
 };
 
+export const postPayCreatorEarning = (creatorId, data) => {
+  return axios
+    .post(ENDPOINTS.POST_PAY_CREATOR_EARNINGS(creatorId), data, {
+      withCredentials: true,
+    })
+    .then((res) => res.data);
+};
+
 export const getWatchListData = (userId) => {
   return axios
     .get(ENDPOINTS.GET_WATCHLIST_DATA(userId), {

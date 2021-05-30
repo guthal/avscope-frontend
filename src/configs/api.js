@@ -20,12 +20,13 @@ const ENDPOINTS = {
   POST_ORDER_SUCCESS: `${DOMAIN}/orders/success`,
   POST_ADD_CREATOR: `${DOMAIN}/fm-register`,
   POST_FETCH_CONTENT_REVENUE: `${DOMAIN}/revenue/`,
-  GET_WATCHLIST_DATA: (userId) => `${DOMAIN}/watchlist/${userId}`,
+  GET_WATCHLIST_DATA: (userID) => `${DOMAIN}/watchlist/${userID}`,
   POST_ADD_WATCHLIST_DATA: (userID) => `${DOMAIN}/watchlist/${userID}`,
   DELETE_WATCHLIST_CONTENT: (userID, contentID) =>
     `${DOMAIN}/watchlist/${userID}/content/${contentID}`,
   POST_PRODUCT_STATUS: (productID) =>
     `${DOMAIN}/conversion/availability/${productID}`,
+  POST_PAY_CREATOR_EARNINGS: (userID) => `${DOMAIN}/pay-creator/${userID}`,
 };
 
 export { ENDPOINTS };

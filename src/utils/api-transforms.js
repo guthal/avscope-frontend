@@ -1,9 +1,9 @@
 import { EXPIRY_TIMING } from "../configs/app";
 
-export const transformGetContents = (data) => {
+export const transformGetContents = data => {
   const contentData = [];
   const seriesData = [];
-  data.forEach((datum) => {
+  data.forEach(datum => {
     const content = {
       id: datum.id,
       description: datum.description,
@@ -29,9 +29,9 @@ export const transformGetContents = (data) => {
   };
 };
 
-export const transformGetAllSeries = (data) =>
-  data.map((datum) => {
-    const seasons = datum.seasons.map((season) => ({
+export const transformGetAllSeries = data =>
+  data.map(datum => {
+    const seasons = datum.seasons.map(season => ({
       id: season.startContentId,
       name: datum.seriesName,
       seasonId: season.seasonId,
@@ -61,8 +61,8 @@ export const transformGetAllSeries = (data) =>
     };
   });
 
-export const transformGetSeriesContents = (data) =>
-  data.map((datum) => ({
+export const transformGetSeriesContents = data =>
+  data.map(datum => ({
     id: datum.id,
     description: datum.description,
     name: datum.title,
@@ -77,14 +77,14 @@ export const transformGetSeriesContents = (data) =>
     seriesInfo: datum.contentSeriesInfo,
   }));
 
-export const transformGetSeries = (data) => ({
+export const transformGetSeries = data => ({
   title: data.seriesName,
   seasons: data.seasons,
   id: data.seriesId,
   rating: data.rating,
 });
 
-export const transformGetContent = (data) => ({
+export const transformGetContent = data => ({
   id: data.id,
   description: data.description,
   name: data.title,
@@ -101,9 +101,9 @@ export const transformGetContent = (data) => ({
   seriesInfo: data.contentSeriesInfo,
 });
 
-export const transformGetHistoryData = (data) => {
+export const transformGetHistoryData = data => {
   const currentDate = new Date();
-  const returnData = data.map((historyData) => {
+  const returnData = data.map(historyData => {
     let isTicketValid;
     const expiryDate = new Date(historyData.purchaseDate);
     const purchaseDate = new Date(historyData.purchaseDate);
@@ -138,14 +138,14 @@ export const transformGetHistoryData = (data) => {
   });
 };
 
-export const transformGetUserContentPurchase = (data) => {
+export const transformGetUserContentPurchase = data => {
   const currentDate = new Date();
 
   const mostRecentPurchase = Math.max(
-    ...data.map((userPurchase) => new Date(userPurchase.purchaseDate))
+    ...data.map(userPurchase => new Date(userPurchase.purchaseDate))
   );
   const mostRecentPurchaseContent = data.find(
-    (userPurchase) =>
+    userPurchase =>
       new Date(userPurchase.purchaseDate).valueOf() === mostRecentPurchase
   );
 
@@ -179,8 +179,8 @@ export const transformGetUserContentPurchase = (data) => {
   };
 };
 
-export const transformGetCreators = (data) =>
-  data.map((creator) => ({
+export const transformGetCreators = data =>
+  data.map(creator => ({
     id: creator.userId,
     email: creator.email,
     name: `${creator.fname} ${creator.lname}`,
@@ -192,7 +192,7 @@ export const transformGetCreators = (data) =>
     state: creator.state,
   }));
 
-export const transformPostLoginResponse = (data) => {
+export const transformPostLoginResponse = data => {
   const name = data.fname + " " + data.lname;
 
   return {
@@ -205,7 +205,7 @@ export const transformPostLoginResponse = (data) => {
   };
 };
 
-export const transformPostSignupResponse = (data) => {
+export const transformPostSignupResponse = data => {
   const name = data.fname + " " + data.lname;
 
   return {
@@ -218,7 +218,7 @@ export const transformPostSignupResponse = (data) => {
   };
 };
 
-export const transformGetVerifyUser = (data) => {
+export const transformGetVerifyUser = data => {
   const name = data.fname + " " + data.lname;
 
   return {
@@ -232,8 +232,8 @@ export const transformGetVerifyUser = (data) => {
   };
 };
 
-export const transformPostGetContentsRevenue = (data) =>
-  data.map((datum) => ({
+export const transformPostGetContentsRevenue = data =>
+  data.map(datum => ({
     contentType: datum.contentType,
     creatorID: datum.creatorId,
     purchaseType: datum.purchaseType,
@@ -243,8 +243,15 @@ export const transformPostGetContentsRevenue = (data) =>
     purchaseCount: datum.purchaseCount,
   }));
 
-export const transformGetWatchlist = (data) => {
-  const returnData = data.map((watchlistData) => {
+export const transformPostPayCreatorEarning = data => {
+  /**
+   * Rewrite checking what response comes here
+   */
+  return data;
+};
+
+export const transformGetWatchlist = data => {
+  const returnData = data.map(watchlistData => {
     return {
       contentId: watchlistData.contentId,
       contentTitle: watchlistData.contentTitle,

@@ -26,7 +26,8 @@ import "./index.css";
 function CreatorProfile() {
   const { userId } = useContext(AuthContext);
   const toDate = new Date(Date.now());
-  const fromDate = new Date(toDate);
+  const intermediateDate = new Date(toDate);
+  const fromDate = new Date(intermediateDate.setHours(0, 0, 0, 0));
   const classes = useStyles();
 
   const postGetContentsRevenueParams = useMemo(() => [userId], [userId]);
@@ -47,11 +48,14 @@ function CreatorProfile() {
   );
   const [selectedToDate, setSelectedToDate] = useState(toDate);
 
-  const handleFromDateChange = (date) => setSelectedFromDate(date);
+  const handleFromDateChange = date => {
+    const tempDate = new Date(date.setHours(0, 0, 0, 0));
+    setSelectedFromDate(tempDate);
+  };
 
-  const handleToDateChange = (date) => setSelectedToDate(date);
+  const handleToDateChange = date => setSelectedToDate(date);
 
-  const getPurchaseTypeText = (purchaseType) => {
+  const getPurchaseTypeText = purchaseType => {
     if (purchaseType === "b") return "Buy";
     if (purchaseType === "r") return "Rent";
     if (purchaseType === "w") return "Weekly";
@@ -94,6 +98,7 @@ function CreatorProfile() {
                   value={selectedFromDate}
                   onChange={handleFromDateChange}
                   className={classes.calendar}
+                  InputProps={{ readOnly: true }}
                   KeyboardButtonProps={{
                     "aria-label": "change from date",
                   }}
@@ -112,6 +117,7 @@ function CreatorProfile() {
                   value={selectedToDate}
                   onChange={handleToDateChange}
                   className={classes.calendar}
+                  InputProps={{ readOnly: true }}
                   KeyboardButtonProps={{
                     "aria-label": "change to date",
                   }}
@@ -128,8 +134,8 @@ function CreatorProfile() {
                   <TableCell>Sr. no</TableCell>
                   <TableCell align="left">Content title</TableCell>
                   <TableCell align="center">Purchase Type</TableCell>
-                  <TableCell align="center">Total Revenue</TableCell>
-                  <TableCell align="center">Total Earnings</TableCell>
+                  <TableCell align="center">Revenue</TableCell>
+                  <TableCell align="center">Earnings</TableCell>
                   <TableCell align="center">No. of purchases</TableCell>
                 </TableRow>
               </TableHead>
@@ -145,8 +151,12 @@ function CreatorProfile() {
                     <TableCell align="center" component="th" scope="row">
                       {getPurchaseTypeText(content.purchaseType)}
                     </TableCell>
-                    <TableCell align="center">{content.revenue}</TableCell>
-                    <TableCell align="center">{content.earnings}</TableCell>
+                    <TableCell align="center">
+                      ₹ {Number(content.revenue).toFixed(2)}
+                    </TableCell>
+                    <TableCell align="center">
+                      ₹ {Number(content.earnings).toFixed(2)}
+                    </TableCell>
                     <TableCell align="center">
                       {content.purchaseCount}
                     </TableCell>
@@ -161,11 +171,14 @@ function CreatorProfile() {
         <Grid item xs={12}>
           <Box my={3}>
             <Typography variant="h5" align="right" color="secondary">
-              Total Earnings:{" "}
-              {contentRevenueData?.reduce(
-                (totalEarnings, content) => (totalEarnings += content.earnings),
-                0
-              )}
+              Your Total Earnings: {"₹ "}
+              {Number(
+                contentRevenueData?.reduce(
+                  (totalEarnings, content) =>
+                    (totalEarnings += content.earnings),
+                  0
+                )
+              ).toFixed(2)}
             </Typography>
           </Box>
         </Grid>

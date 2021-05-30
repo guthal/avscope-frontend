@@ -83,7 +83,7 @@ function Pages() {
         />
 
         <AdminRoute
-          path={`${APP_ROUTES.CREATOR_PAYOUT.path}`}
+          path={`${APP_ROUTES.CREATOR_PAYOUT.path}/:creatorID`}
           component={PayoutPage}
         />
 

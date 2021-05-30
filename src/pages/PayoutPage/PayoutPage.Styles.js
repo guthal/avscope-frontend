@@ -10,10 +10,10 @@ const useStyles = makeStyles(theme => ({
   dateGridContainer: {
     padding: "8px",
     margin: "0px 16px",
-    width: "1020px",
-    [theme.breakpoints.down("md")]: {
-      width: "720px",
-    },
+    // width: "1020px",
+    // [theme.breakpoints.down("md")]: {
+    //   width: "720px",
+    // },
   },
   calendar: {
     "& label": {
@@ -26,9 +26,17 @@ const useStyles = makeStyles(theme => ({
   table: {
     backgroundColor: theme.palette.secondary.dark,
     borderRadius: "12px",
-    width: "1020px",
-    [theme.breakpoints.down("md")]: {
-      width: "720px",
+    // width: "1120px",
+    // [theme.breakpoints.down("md")]: {
+    //   width: "720px",
+    // },
+  },
+  textField: {
+    "& input": {
+      color: theme.palette.primary.main,
+    },
+    "& input:hover": {
+      border: "none !important",
     },
   },
   head: {
@@ -39,6 +47,19 @@ const useStyles = makeStyles(theme => ({
   },
   body: {
     backgroundColor: theme.palette.primary.light,
+  },
+  paper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: theme.palette.background.paper,
+    padding: "15px",
+    border: `4px solid ${theme.palette.primary.main}`,
+    borderRadius: "12px",
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+    maxWidth: "150px",
   },
   /**
    * Trying css here instead of index.css

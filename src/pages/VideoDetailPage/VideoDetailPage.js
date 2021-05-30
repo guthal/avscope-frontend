@@ -401,6 +401,7 @@ function VideoDetailPage() {
                         component="div"
                         display="inline"
                         fontWeight="fontWeightBold"
+                        style={{ fontSize: "16px" }}
                       >
                         {actor.name}{" "}
                       </Box>

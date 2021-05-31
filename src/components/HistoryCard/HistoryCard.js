@@ -16,7 +16,7 @@ function HistoryCard({ historyCard }) {
   const { userId } = useContext(AuthContext);
 
   const handleComplete = () =>
-    setCardData((prev) => ({
+    setCardData(prev => ({
       ...prev,
       isTicketValid: false,
     }));
@@ -41,7 +41,7 @@ function HistoryCard({ historyCard }) {
                 </Typography>
                 <Typography variant="h6">₹ {cardData.purchasePrice}</Typography>
                 {cardData.purchaseType !== "b" && (
-                  <Box style={{ display: "flex", alignItems: "center" }}>
+                  <Box mt={1} style={{ display: "flex", alignItems: "center" }}>
                     {cardData.isTicketValid && <TimerIcon />}
                     <Box px={1} style={{ fontSize: "15px" }}>
                       {cardData.isTicketValid && (
@@ -57,7 +57,7 @@ function HistoryCard({ historyCard }) {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={(event) => {
+                    onClick={event => {
                       loadRazorPay(
                         event,
                         userId,
@@ -74,7 +74,7 @@ function HistoryCard({ historyCard }) {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={(event) => {
+                    onClick={event => {
                       loadRazorPay(
                         event,
                         userId,
@@ -91,13 +91,6 @@ function HistoryCard({ historyCard }) {
             </Grid>
           </Grid>
         </Grid>
-        {cardData.purchaseType === "b" && (
-          <Box style={{ position: "relative" }}>
-            <Box className={classes.validityContainer}>
-              <img className={classes.validImg} src={valid} alt="ticket" />)
-            </Box>
-          </Box>
-        )}
         {cardData.purchaseType !== "b" && (
           <Box style={{ position: "relative" }}>
             <Box className={classes.validityContainer}>

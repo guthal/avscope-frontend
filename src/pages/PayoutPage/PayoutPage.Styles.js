@@ -10,10 +10,10 @@ const useStyles = makeStyles(theme => ({
   dateGridContainer: {
     padding: "8px",
     margin: "0px 16px",
-    // width: "1020px",
-    // [theme.breakpoints.down("md")]: {
-    //   width: "720px",
-    // },
+    width: "1020px",
+    [theme.breakpoints.down("md")]: {
+      width: "720px",
+    },
   },
   calendar: {
     "& label": {
@@ -26,10 +26,10 @@ const useStyles = makeStyles(theme => ({
   table: {
     backgroundColor: theme.palette.secondary.dark,
     borderRadius: "12px",
-    // width: "1120px",
-    // [theme.breakpoints.down("md")]: {
-    //   width: "720px",
-    // },
+    width: "1020px",
+    [theme.breakpoints.down("md")]: {
+      width: "720px",
+    },
   },
   textField: {
     "& input": {

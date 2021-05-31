@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     height: "64px",
+    cursor: "default",
 
     "& img": {
       height: "100%",

@@ -325,7 +325,9 @@ function VideoDetailPage() {
               <Grid item md={6} xs={12}>
                 <Box p={2} mt={2}>
                   <Typography color="secondary" variant="h4">
-                    {contentData?.name}
+                    <Box fontWeight="fontWeightBold">
+                      {contentData?.seriesInfo?.seriesName || contentData?.name}
+                    </Box>
                   </Typography>
                   {contentData?.rating && (
                     <Typography variant="subtitle2">{`Rating: ${contentData?.rating}`}</Typography>
@@ -343,6 +345,15 @@ function VideoDetailPage() {
                       </Box>
                     ))}
                   </Box>
+
+                  {contentData?.seriesID && (
+                    <Box py={2}>
+                      <Typography color="secondary" variant="h6">
+                        {contentData?.name}
+                      </Typography>
+                    </Box>
+                  )}
+
                   {contentData?.seriesInfo.seasonNo && seriesData && (
                     <Box py={2}>
                       <ClickAwayListener
@@ -393,6 +404,27 @@ function VideoDetailPage() {
                   )}
                   <Box my={3}>
                     <Typography>{contentData?.description}</Typography>
+                  </Box>
+
+                  <Box>
+                    <Typography variant="h6" color="secondary">
+                      Starring
+                    </Typography>
+                    {contentData?.cast.map((actor, i) => (
+                      <Box key={i}>
+                        <Box
+                          component="div"
+                          display="inline"
+                          fontWeight="fontWeightBold"
+                          style={{ fontSize: "16px" }}
+                        >
+                          {actor.name}{" "}
+                        </Box>
+                        <Box component="div" display="inline" style={{}}>
+                          as {actor.role}
+                        </Box>
+                      </Box>
+                    ))}
                   </Box>
 
                   <Box my={3}>
@@ -530,12 +562,7 @@ function VideoDetailPage() {
             }}
           >
             <Box style={{ width: "90%" }}>
-              <Stream
-                controls
-                width="400px"
-                // height="100vh"
-                src="838d01a23a0d2c53257e1962596bf00a"
-              />
+              <Stream controls src="838d01a23a0d2c53257e1962596bf00a" />
             </Box>
           </Box>
         </Box>

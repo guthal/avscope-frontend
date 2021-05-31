@@ -10,6 +10,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.secondary.contrastText,
     boxShadow: `1px 1px 5px 1px ${theme.palette.primary.main}`,
+    minHeight: "150px",
   },
   imageGrid: {
     padding: "0 !important",

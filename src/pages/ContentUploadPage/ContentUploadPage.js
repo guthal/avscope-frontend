@@ -79,9 +79,7 @@ function ContentUploadPage() {
     transactionID: "",
     comments: "",
   });
-  useEffect(() => {
-    console.log(params);
-  }, [params]);
+
   const [castTextFields, setCastTextFields] = useState([
     { fieldID: 0, role: "", name: "" },
   ]);
@@ -434,8 +432,12 @@ function ContentUploadPage() {
                 variant="outlined"
                 color="primary"
               >
-                {contentList.map(content => (
-                  <MenuItem className={classes.selectItem} value={content}>
+                {contentList.map((content, i) => (
+                  <MenuItem
+                    key={i}
+                    className={classes.selectItem}
+                    value={content}
+                  >
                     {content}
                   </MenuItem>
                 ))}
@@ -451,8 +453,12 @@ function ContentUploadPage() {
                   variant="outlined"
                   color="primary"
                 >
-                  {seriesList.map(series => (
-                    <MenuItem className={classes.selectItem} value={series}>
+                  {seriesList.map((series, i) => (
+                    <MenuItem
+                      key={i}
+                      className={classes.selectItem}
+                      value={series}
+                    >
                       {series}
                     </MenuItem>
                   ))}
@@ -471,8 +477,12 @@ function ContentUploadPage() {
                     variant="outlined"
                     color="primary"
                   >
-                    {seasonsList.map(season => (
-                      <MenuItem className={classes.selectItem} value={season}>
+                    {seasonsList.map((season, i) => (
+                      <MenuItem
+                        key={i}
+                        className={classes.selectItem}
+                        value={season}
+                      >
                         {season}
                       </MenuItem>
                     ))}
@@ -620,58 +630,60 @@ function ContentUploadPage() {
                       </Grid>
                     </Grid>
 
-                    <Grid container spacing={4}>
-                      <Grid item xs={3}>
-                        <Box>
-                          <Box px={2}>
-                            <Typography color="primary">Weekly</Typography>
-                          </Box>
+                    {contentTypeSelections.content !== "Series" && (
+                      <Grid container spacing={4}>
+                        <Grid item xs={3}>
                           <Box>
-                            <Switch
-                              name="weekly-switch"
-                              checked={purchaseTypeSwitches["weekly-switch"]}
-                              onChange={handleSwitchChange}
-                              color="primary"
-                            />
+                            <Box px={2}>
+                              <Typography color="primary">Weekly</Typography>
+                            </Box>
+                            <Box>
+                              <Switch
+                                name="weekly-switch"
+                                checked={purchaseTypeSwitches["weekly-switch"]}
+                                onChange={handleSwitchChange}
+                                color="primary"
+                              />
+                            </Box>
                           </Box>
-                        </Box>
-                      </Grid>
-                      <Grid item xs={5} md={5}>
-                        <Box mt={1}>
-                          {purchaseTypeSwitches["weekly-switch"] && (
-                            <TextField
-                              label="Weekly Price"
-                              name="weekly-field"
-                              value={purchaseTypeFields["weekly-field"]}
-                              color="primary"
-                              variant="outlined"
-                              onChange={handleSwitchTextChange}
-                              className={classes.textField}
-                              placeholder="In Rupees"
-                              required
-                            />
-                          )}
-                        </Box>
-                      </Grid>
+                        </Grid>
+                        <Grid item xs={5} md={5}>
+                          <Box mt={1}>
+                            {purchaseTypeSwitches["weekly-switch"] && (
+                              <TextField
+                                label="Weekly Price"
+                                name="weekly-field"
+                                value={purchaseTypeFields["weekly-field"]}
+                                color="primary"
+                                variant="outlined"
+                                onChange={handleSwitchTextChange}
+                                className={classes.textField}
+                                placeholder="In Rupees"
+                                required
+                              />
+                            )}
+                          </Box>
+                        </Grid>
 
-                      <Grid item xs={4} md={4}>
-                        <Box mt={1}>
-                          {purchaseTypeSwitches["weekly-switch"] && (
-                            <TextField
-                              label="Weeks"
-                              name="weekly-num-field"
-                              value={purchaseTypeFields["weekly-num-field"]}
-                              color="primary"
-                              variant="outlined"
-                              onChange={handleSwitchTextChange}
-                              className={classes.textField}
-                              placeholder="In Rupees"
-                              required
-                            />
-                          )}
-                        </Box>
+                        <Grid item xs={4} md={4}>
+                          <Box mt={1}>
+                            {purchaseTypeSwitches["weekly-switch"] && (
+                              <TextField
+                                label="Weeks"
+                                name="weekly-num-field"
+                                value={purchaseTypeFields["weekly-num-field"]}
+                                color="primary"
+                                variant="outlined"
+                                onChange={handleSwitchTextChange}
+                                className={classes.textField}
+                                placeholder="In Weeks"
+                                required
+                              />
+                            )}
+                          </Box>
+                        </Grid>
                       </Grid>
-                    </Grid>
+                    )}
                   </Grid>
                 </Grid>
               </Grid>
@@ -732,8 +744,9 @@ function ContentUploadPage() {
                           {[
                             ...availableContentResolutions,
                             content.resolution,
-                          ].map(resolution => (
+                          ].map((resolution, i) => (
                             <MenuItem
+                              key={i}
                               className={classes.selectItem}
                               value={resolution}
                             >

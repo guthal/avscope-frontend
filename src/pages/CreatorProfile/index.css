@@ -11,3 +11,7 @@
 .MuiPickersDay-current {
   color: #f5ec4b !important;
 }
+
+.MuiMenu-list {
+  color: #232323;
+}

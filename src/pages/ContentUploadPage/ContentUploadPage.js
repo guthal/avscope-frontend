@@ -340,8 +340,6 @@ function ContentUploadPage() {
       contentUploadReqBody.action = "create_season";
     else contentUploadReqBody.action = "create_episode";
 
-    console.log("FORM_SUBMIT: ", contentUploadReqBody);
-
     triggerContentUploadPostApi([contentUploadReqBody]);
   };
 

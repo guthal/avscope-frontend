@@ -82,7 +82,6 @@ function PayoutPage() {
   const handleToDateChange = date => {
     date.setHours(23, 59, 59, 59);
     const tempDate = new Date(date.setDate(date.getDate() - 1));
-    console.log("tempDate: ", tempDate.toISOString());
     setSelectedToDate(tempDate);
   };
 
@@ -91,12 +90,6 @@ function PayoutPage() {
 
   useEffect(() => {
     if (userId) {
-      console.log(
-        "fromDate: ",
-        new Date(selectedFromDate).toISOString(),
-        "toDate: ",
-        new Date(selectedToDate).toISOString()
-      );
       creatorPayoutTriggerApi({
         fromDate: new Date(selectedFromDate).toISOString(),
         toDate: new Date(selectedToDate).toISOString(),

@@ -89,6 +89,7 @@ function VideoDetailPage() {
         : [],
     [contentData, userId]
   );
+
   const {
     data: userContentPurchaseData,
     loading: userContentPurchaseLoading,
@@ -562,7 +563,7 @@ function VideoDetailPage() {
             }}
           >
             <Box style={{ width: "90%" }}>
-              <Stream controls src="838d01a23a0d2c53257e1962596bf00a" />
+              <Stream controls src={contentData?.contentURL} />
             </Box>
           </Box>
         </Box>

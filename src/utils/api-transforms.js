@@ -3,7 +3,6 @@ import { EXPIRY_TIMING } from "../configs/app";
 export const transformGetContents = (data) => {
   const contentData = [];
   const seriesData = [];
-  console.log(data);
   data.forEach((datum) => {
     const content = {
       id: datum.id,
@@ -96,6 +95,7 @@ export const transformGetContent = (data) => ({
   duration: data.duration,
   seriesID: data.seriesId,
   seriesInfo: data.contentSeriesInfo,
+  contentURL: data.contentUrl,
 });
 
 export const transformGetHistoryData = (data) => {

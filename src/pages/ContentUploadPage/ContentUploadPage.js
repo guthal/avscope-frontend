@@ -69,6 +69,8 @@ function ContentUploadPage() {
     "buy-field": "",
     "rent-field": "",
     "weekly-field": "",
+    "buy-commission": "",
+    "rent-commission": "",
     "weekly-num-field": "",
   });
   const [formFields, setFormFields] = useState({
@@ -97,8 +99,8 @@ function ContentUploadPage() {
     triggerPostApi: triggerContentUploadPostApi,
   } = usePostApi(postContentUpload, postContentUploadParams, undefined);
 
-  const handleContentTypeSelectionsChange = event => {
-    setContentTypeSelections(prev => ({
+  const handleContentTypeSelectionsChange = (event) => {
+    setContentTypeSelections((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
@@ -111,17 +113,17 @@ function ContentUploadPage() {
     // error: seriesError,
     triggerApi: triggetGetAllSeriesApi,
   } = useGetApi(getAllSeries, getAllSeriesParams, transformGetAllSeries);
-  const handleFormFieldsChange = event => {
-    setFormFields(prev => ({
+  const handleFormFieldsChange = (event) => {
+    setFormFields((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
   };
 
-  const handleContentURLFieldsChange = event => {
-    setContentURLFields(prev => {
+  const handleContentURLFieldsChange = (event) => {
+    setContentURLFields((prev) => {
       const fieldIndex = prev.findIndex(
-        contentField =>
+        (contentField) =>
           event.target.name === `content-url-${contentField.fieldID}`
       );
       return [
@@ -132,10 +134,10 @@ function ContentUploadPage() {
     });
   };
 
-  const handleContentURLResolutionChange = event => {
-    setContentURLFields(prev => {
+  const handleContentURLResolutionChange = (event) => {
+    setContentURLFields((prev) => {
       const fieldIndex = prev.findIndex(
-        contentField =>
+        (contentField) =>
           event.target.name === `content-resolution-${contentField.fieldID}`
       );
       return [
@@ -146,11 +148,11 @@ function ContentUploadPage() {
     });
   };
 
-  const handleCastFieldsChange = event => {
+  const handleCastFieldsChange = (event) => {
     if (event.target.name.includes("role")) {
-      setCastTextFields(prev => {
+      setCastTextFields((prev) => {
         const fieldIndex = prev.findIndex(
-          castField => event.target.name === `cast-role-${castField.fieldID}`
+          (castField) => event.target.name === `cast-role-${castField.fieldID}`
         );
         return [
           ...prev.slice(0, fieldIndex),
@@ -159,9 +161,9 @@ function ContentUploadPage() {
         ];
       });
     } else if (event.target.name.includes("name")) {
-      setCastTextFields(prev => {
+      setCastTextFields((prev) => {
         const fieldIndex = prev.findIndex(
-          castField => event.target.name === `cast-name-${castField.fieldID}`
+          (castField) => event.target.name === `cast-name-${castField.fieldID}`
         );
         return [
           ...prev.slice(0, fieldIndex),
@@ -173,13 +175,13 @@ function ContentUploadPage() {
   };
 
   const handleAddContentURL = () => {
-    setContentURLFields(prev => [
+    setContentURLFields((prev) => [
       ...prev,
       { fieldID: prev.length, role: "", name: "" },
     ]);
   };
 
-  const handleRemoveContentURL = index => {
+  const handleRemoveContentURL = (index) => {
     const updatedContentFields = [
       ...contentURLFields.slice(0, index),
       ...contentURLFields.slice(index + 1),
@@ -193,13 +195,13 @@ function ContentUploadPage() {
   };
 
   const handleAddCast = () => {
-    setCastTextFields(prev => [
+    setCastTextFields((prev) => [
       ...prev,
       { fieldID: prev.length, role: "", name: "" },
     ]);
   };
 
-  const handleRemoveCast = index => {
+  const handleRemoveCast = (index) => {
     const updatedCastFields = [
       ...castTextFields.slice(0, index),
       ...castTextFields.slice(index + 1),
@@ -212,40 +214,40 @@ function ContentUploadPage() {
     setCastTextFields(() => updatedCastFields);
   };
 
-  const handleRemoveGenre = index => {
-    setAvailableGenreList(prev => [...prev, selectedGenreList[index]]);
-    setSelectedGenreList(prev => [
+  const handleRemoveGenre = (index) => {
+    setAvailableGenreList((prev) => [...prev, selectedGenreList[index]]);
+    setSelectedGenreList((prev) => [
       ...prev.slice(0, index),
       ...prev.slice(index + 1),
     ]);
   };
 
-  const handleAddGenre = index => {
-    setSelectedGenreList(prev => [...prev, availableGenreList[index]]);
-    setAvailableGenreList(prev => [
+  const handleAddGenre = (index) => {
+    setSelectedGenreList((prev) => [...prev, availableGenreList[index]]);
+    setAvailableGenreList((prev) => [
       ...prev.slice(0, index),
       ...prev.slice(index + 1),
     ]);
   };
 
-  const handleSwitchChange = event => {
+  const handleSwitchChange = (event) => {
     if (event.target.name === "weekly-switch")
-      setPurchaseTypeSwitches(prev => ({
+      setPurchaseTypeSwitches((prev) => ({
         ...prev,
         [event.target.name]: event.target.checked,
         "buy-switch": false,
         "rent-switch": false,
       }));
     else
-      setPurchaseTypeSwitches(prev => ({
+      setPurchaseTypeSwitches((prev) => ({
         ...prev,
         [event.target.name]: event.target.checked,
         "weekly-switch": false,
       }));
   };
 
-  const handleSwitchTextChange = event => {
-    setPurchaseTypeFields(prev => ({
+  const handleSwitchTextChange = (event) => {
+    setPurchaseTypeFields((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
@@ -290,7 +292,7 @@ function ContentUploadPage() {
       seriesId:
         contentTypeSelections.series !== seriesList[0]
           ? seriesData?.find(
-              series => series.seriesName === contentTypeSelections.series
+              (series) => series.seriesName === contentTypeSelections.series
             ).seriesID
           : undefined,
       seasonNo:
@@ -298,12 +300,12 @@ function ContentUploadPage() {
           ? seasonsList.length
           : contentTypeSelections.season,
       contentUrl:
-        contentURLFields?.map(content => ({
+        contentURLFields?.map((content) => ({
           URL: content.URL,
           resolution: content.resolution,
         })) || undefined,
       genres: selectedGenreList,
-      cast: castTextFields.map(cast => ({
+      cast: castTextFields.map((cast) => ({
         role: cast.role,
         name: cast.name,
       })),
@@ -317,6 +319,14 @@ function ContentUploadPage() {
         weekly: purchaseTypeSwitches["weekly-switch"]
           ? purchaseTypeFields["weekly-field"]
           : -1,
+      },
+      commission: {
+        b: purchaseTypeSwitches["buy-switch"]
+          ? purchaseTypeFields["buy-commission"]
+          : 0,
+        r: purchaseTypeSwitches["rent-switch"]
+          ? purchaseTypeFields["rent-commission"]
+          : 0,
       },
     };
 
@@ -347,10 +357,10 @@ function ContentUploadPage() {
 
   useEffect(() => {
     const selectedResolutions = contentURLFields.map(
-      content => content.resolution
+      (content) => content.resolution
     );
     const updatedContentResolutions = CONTENT_RESOLUTIONS.filter(
-      resolution => !selectedResolutions.includes(resolution)
+      (resolution) => !selectedResolutions.includes(resolution)
     );
     setAvailableContentResolution(() => updatedContentResolutions);
   }, [contentURLFields]);
@@ -361,31 +371,31 @@ function ContentUploadPage() {
 
   useEffect(() => {
     if (seriesData)
-      setSeriesList(prev => [
+      setSeriesList((prev) => [
         prev[0],
         ...seriesData
-          .filter(series => series.creatorID === params.userID)
-          .map(series => series.seriesName),
+          .filter((series) => series.creatorID === params.userID)
+          .map((series) => series.seriesName),
       ]);
   }, [params.userID, seriesData]);
 
   useEffect(() => {
-    setContentTypeSelections(prev => ({ ...prev, series: seriesList[0] }));
+    setContentTypeSelections((prev) => ({ ...prev, series: seriesList[0] }));
   }, [seriesList]);
 
   useEffect(() => {
-    setContentTypeSelections(prev => ({ ...prev, season: seasonsList[0] }));
+    setContentTypeSelections((prev) => ({ ...prev, season: seasonsList[0] }));
   }, [seasonsList]);
 
   useEffect(() => {
     if (seriesData && contentTypeSelections.series) {
-      setSeasonsList(prev => {
+      setSeasonsList((prev) => {
         const selectedSeries = seriesData?.find(
-          series => series.seriesName === contentTypeSelections.series
+          (series) => series.seriesName === contentTypeSelections.series
         );
 
         const seasons =
-          selectedSeries?.seasons.map(season => season.seasonNo) || [];
+          selectedSeries?.seasons.map((season) => season.seasonNo) || [];
         return [prev[0], ...seasons];
       });
     }
@@ -576,23 +586,40 @@ function ContentUploadPage() {
                           </Box>
                         </Box>
                       </Grid>
-                      <Grid item xs={8} md={5}>
-                        <Box mt={1}>
-                          {purchaseTypeSwitches["buy-switch"] && (
-                            <TextField
-                              label="Buy Price"
-                              name="buy-field"
-                              value={purchaseTypeFields["buy-field"]}
-                              color="primary"
-                              variant="outlined"
-                              onChange={handleSwitchTextChange}
-                              className={classes.textField}
-                              placeholder="In Rupees"
-                              required
-                            />
-                          )}
-                        </Box>
-                      </Grid>
+                      {purchaseTypeSwitches["buy-switch"] && (
+                        <>
+                          <Grid item xs={4} md={5}>
+                            <Box mt={1}>
+                              <TextField
+                                label="Buy Price"
+                                name="buy-field"
+                                value={purchaseTypeFields["buy-field"]}
+                                color="primary"
+                                variant="outlined"
+                                onChange={handleSwitchTextChange}
+                                className={classes.textField}
+                                placeholder="In Rupees"
+                                required
+                              />
+                            </Box>
+                          </Grid>
+                          <Grid item xs={5} md={5}>
+                            <Box mt={1}>
+                              <TextField
+                                label="Commission"
+                                name="buy-commission"
+                                value={purchaseTypeFields["buy-commission"]}
+                                color="primary"
+                                variant="outlined"
+                                onChange={handleSwitchTextChange}
+                                className={classes.textField}
+                                placeholder="0.0-1.0"
+                                required
+                              />
+                            </Box>
+                          </Grid>
+                        </>
+                      )}
                     </Grid>
 
                     <Grid container spacing={4}>
@@ -611,23 +638,40 @@ function ContentUploadPage() {
                           </Box>
                         </Box>
                       </Grid>
-                      <Grid item xs={8} md={5}>
-                        <Box mt={1}>
-                          {purchaseTypeSwitches["rent-switch"] && (
-                            <TextField
-                              label="Rent Price"
-                              name="rent-field"
-                              value={purchaseTypeFields["rent-field"]}
-                              color="primary"
-                              variant="outlined"
-                              onChange={handleSwitchTextChange}
-                              className={classes.textField}
-                              placeholder="In Rupees"
-                              required
-                            />
-                          )}
-                        </Box>
-                      </Grid>
+                      {purchaseTypeSwitches["rent-switch"] && (
+                        <>
+                          <Grid item xs={4} md={5}>
+                            <Box mt={1}>
+                              <TextField
+                                label="Rent Price"
+                                name="rent-field"
+                                value={purchaseTypeFields["rent-field"]}
+                                color="primary"
+                                variant="outlined"
+                                onChange={handleSwitchTextChange}
+                                className={classes.textField}
+                                placeholder="In Rupees"
+                                required
+                              />
+                            </Box>
+                          </Grid>
+                          <Grid item xs={5} md={5}>
+                            <Box mt={1}>
+                              <TextField
+                                label="Commission"
+                                name="rent-commission"
+                                value={purchaseTypeFields["rent-commission"]}
+                                color="primary"
+                                variant="outlined"
+                                onChange={handleSwitchTextChange}
+                                className={classes.textField}
+                                placeholder="0.0-1.0"
+                                required
+                              />
+                            </Box>
+                          </Grid>
+                        </>
+                      )}
                     </Grid>
 
                     {contentTypeSelections.content !== "Series" && (

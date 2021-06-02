@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Header } from "../components";
+import { Header, Footer } from "../components";
 import { APP_ROUTES } from "../configs/app";
 import HomePage from "./HomePage";
 import HistoryPage from "./HistoryPage";
@@ -101,6 +101,7 @@ function Pages() {
 
         <Route path="/*" component={PageNotFound} />
       </Switch>
+      <Footer />
     </Router>
   );
 }

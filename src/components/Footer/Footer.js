@@ -22,12 +22,7 @@ function Footer() {
           <Box py={3}>
             <Grid container spacing={1}>
               <Grid item xs={12}>
-                <Typography
-                  variant="h5"
-                  style={{ borderBottom: "1px solid white" }}
-                >
-                  Address
-                </Typography>
+                <Typography variant="h5">Address</Typography>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="subtitle2">
@@ -69,12 +64,7 @@ function Footer() {
           <Box py={3}>
             <Grid container spacing={1}>
               <Grid item xs={12}>
-                <Typography
-                  variant="h5"
-                  style={{ borderBottom: "1px solid white" }}
-                >
-                  Follow Us On
-                </Typography>
+                <Typography variant="h5">Follow Us On</Typography>
               </Grid>
               <Grid item xs={3}>
                 <FacebookIcon className={classes.footerIcons} />

@@ -96,6 +96,7 @@ export const transformGetContent = data => ({
   duration: data.duration,
   seriesID: data.seriesId,
   seriesInfo: data.contentSeriesInfo,
+  contentURL: data.contentUrl,
 });
 
 export const transformGetHistoryData = data => {

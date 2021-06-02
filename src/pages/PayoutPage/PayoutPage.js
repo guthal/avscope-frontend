@@ -74,18 +74,18 @@ function PayoutPage() {
   );
   const [selectedToDate, setSelectedToDate] = useState(toDate);
 
-  const handleFromDateChange = date => {
+  const handleFromDateChange = (date) => {
     const tempDate = new Date(date.setHours(0, 0, 0, 0));
     setSelectedFromDate(tempDate);
   };
 
-  const handleToDateChange = date => {
+  const handleToDateChange = (date) => {
     date.setHours(23, 59, 59, 59);
     const tempDate = new Date(date.setDate(date.getDate() - 1));
     setSelectedToDate(tempDate);
   };
 
-  const handleTransactionIdChange = event =>
+  const handleTransactionIdChange = (event) =>
     setTransactionId(event.target.value);
 
   useEffect(() => {

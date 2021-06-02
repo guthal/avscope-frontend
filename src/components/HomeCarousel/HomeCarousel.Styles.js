@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   sliderContainer: {
     padding: "8px 0",
 
@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 
   imageContainer: {
     border: `2px solid ${theme.palette.primary.main}`,
-    height: "500px",
+    height: "600px",
     backgroundColor: theme.palette.primary.main,
     position: "relative",
 
@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
       height: "auto",
     },
 
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       height: "250px",
     },
   },

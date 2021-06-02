@@ -7,6 +7,7 @@ import {
   ClickAwayListener,
 } from "@material-ui/core";
 import { PlayCircleOutlineOutlined, ArrowDropDown } from "@material-ui/icons";
+import { Stream } from "@cloudflare/stream-react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import React, { useMemo, useEffect, useState, useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
@@ -57,8 +58,8 @@ function VideoDetailPage() {
   const { userId, userWatchlistData, setUserWatchlistData } =
     useContext(AuthContext);
 
-  // eslint-disable-next-line no-unused-vars
   const [isVideoAvailable, setIsVideoAvailable] = useState(false);
+  const [playVideo, setPlayVideo] = useState(false);
   const [recommendedContents, setRecommendedContents] = useState();
   const [seriesContents, setSeriesContents] = useState();
   const [seasonSelectorOpen, setSeasonSelectorOpen] = useState(false);
@@ -88,6 +89,7 @@ function VideoDetailPage() {
         : [],
     [contentData, userId]
   );
+
   const {
     data: userContentPurchaseData,
     loading: userContentPurchaseLoading,
@@ -114,20 +116,21 @@ function VideoDetailPage() {
     transformGetSeriesContents
   );
 
-  const handleCardClick = contentID =>
+  const handleCardClick = (contentID) =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   const handleSeasonSelectorClickAway = () => {
     setSeasonSelectorOpen(false);
   };
 
-  const handleSeasonSelectorClick = () => setSeasonSelectorOpen(prev => !prev);
+  const handleSeasonSelectorClick = () =>
+    setSeasonSelectorOpen((prev) => !prev);
 
-  const handleSeasonClick = seasonNo => {
+  const handleSeasonClick = (seasonNo) => {
     setSeriesContents();
     handleSeasonSelectorClickAway();
     const episodeData = seriesData.find(
-      episode =>
+      (episode) =>
         episode.seriesInfo.seasonNo === seasonNo &&
         episode.seriesInfo.episodeNo === 1
     );
@@ -158,17 +161,19 @@ function VideoDetailPage() {
     postAddWatchList(userId, {
       contentId: contentData.id,
     }).then(() => {
-      setUserWatchlistData(prev => [...prev, contentData.id]);
+      setUserWatchlistData((prev) => [...prev, contentData.id]);
     });
   };
 
   const handleRemovefromWatchlist = () => {
     deleteRemoveFromWatchlist(userId, contentData.id).then(() => {
-      setUserWatchlistData(prev =>
-        prev.filter(watchlistItem => watchlistItem !== contentData.id)
+      setUserWatchlistData((prev) =>
+        prev.filter((watchlistItem) => watchlistItem !== contentData.id)
       );
     });
   };
+
+  const handlePlay = () => setPlayVideo(true);
   // Show Play Button if user has made the video purchase
   useEffect(() => {
     setIsVideoAvailable(!!userContentPurchaseData?.isTicketValid);
@@ -179,7 +184,7 @@ function VideoDetailPage() {
     if (contentsData)
       setRecommendedContents(
         contentsData?.contents
-          ?.filter(content => content.id !== params.contentID)
+          ?.filter((content) => content.id !== params.contentID)
           .slice(0, 4)
       );
   }, [contentsData, contentData, params.contentID]);
@@ -188,7 +193,7 @@ function VideoDetailPage() {
   useEffect(() => {
     if (contentData && seriesData) {
       const nextInSeries = seriesData.filter(
-        episode =>
+        (episode) =>
           episode.seriesInfo.seasonNo === contentData.seriesInfo.seasonNo &&
           episode.id !== contentData.id &&
           episode.seriesInfo.episodeNo > contentData.seriesInfo.episodeNo
@@ -217,7 +222,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Buy now @ ₹${contentData?.price["b"]}`}
-          onClick={event => {
+          onClick={(event) => {
             handleRazorPay(
               event,
               userId,
@@ -233,7 +238,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Rent now @ ₹${contentData?.price["r"]}`}
-          onClick={event => {
+          onClick={(event) => {
             handleRazorPay(
               event,
               userId,
@@ -249,7 +254,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Purchase ticket now @ ₹${contentData?.price["w"]}`}
-          onClick={event => {
+          onClick={(event) => {
             handleRazorPay(
               event,
               userId,
@@ -266,7 +271,7 @@ function VideoDetailPage() {
         <>
           <PurchaseButton
             btnText={`Buy now @ ₹${contentData?.price["b"]}`}
-            onClick={event => {
+            onClick={(event) => {
               handleRazorPay(
                 event,
                 userId,
@@ -279,7 +284,7 @@ function VideoDetailPage() {
           />
           <PurchaseButton
             btnText={`Rent now @ ₹${contentData?.price["r"]}`}
-            onClick={event => {
+            onClick={(event) => {
               handleRazorPay(
                 event,
                 userId,
@@ -309,208 +314,261 @@ function VideoDetailPage() {
     );
 
   return (
-    <Container maxWidth="xl" className={classes.root}>
-      <Grid container>
-        <Grid item xs={12} className={classes.posterContainer}>
-          <Grid container>
-            <Grid item md={6} xs={12}>
-              <Box p={2} mt={2}>
-                <Typography color="secondary" variant="h4">
-                  <Box fontWeight="fontWeightBold">
-                    {contentData?.seriesInfo?.seriesName || contentData?.name}
-                  </Box>
-                </Typography>
-                {contentData?.rating && (
-                  <Typography variant="subtitle2">{`Rating: ${contentData?.rating}`}</Typography>
-                )}
-                <Box my={1}>
-                  {contentData?.genres.map((genre, index) => (
-                    <Box component="span" key={`genre-${index}`} pr={1}>
-                      <Button
-                        className={classes.genreBtn}
-                        variant="outlined"
-                        color="secondary"
-                      >
-                        {genre}
-                      </Button>
+    <>
+      <Container
+        maxWidth="xl"
+        className={classes.root}
+        style={playVideo ? { maxHeight: "80vh", overflow: "hidden" } : {}}
+      >
+        <Grid container>
+          <Grid item xs={12} className={classes.posterContainer}>
+            <Grid container>
+              <Grid item md={6} xs={12}>
+                <Box p={2} mt={2}>
+                  <Typography color="secondary" variant="h4">
+                    <Box fontWeight="fontWeightBold">
+                      {contentData?.seriesInfo?.seriesName || contentData?.name}
                     </Box>
-                  ))}
-                </Box>
-                {contentData?.seriesID && (
-                  <Box py={2}>
-                    <Typography color="secondary" variant="h6">
-                      {contentData?.name}
-                    </Typography>
-                  </Box>
-                )}
-                {contentData?.seriesInfo.seasonNo && seriesData && (
-                  <Box py={2}>
-                    <ClickAwayListener
-                      onClickAway={handleSeasonSelectorClickAway}
-                    >
-                      <Box className={classes.seasonSelectorContainer}>
-                        <Box>
-                          <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={handleSeasonSelectorClick}
-                          >
-                            Season {contentData?.seriesInfo.seasonNo}
-                            <ArrowDropDown />
-                          </Button>
-                        </Box>
-
-                        {seasonSelectorOpen && (
-                          <Box className={classes.seasonSelectorDropdown}>
-                            {Array(
-                              Math.max(
-                                ...seriesData.map(o => o.seriesInfo.seasonNo),
-                                0
-                              )
-                            )
-                              .fill(0)
-                              .map((_, index) => (
-                                <Box key={`season-menu-item-${index}`}>
-                                  <Button
-                                    onClick={() => handleSeasonClick(index + 1)}
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.seasonSelectorItem}
-                                  >
-                                    Season {index + 1}
-                                  </Button>
-                                </Box>
-                              ))}
-                          </Box>
-                        )}
-                      </Box>
-                    </ClickAwayListener>
-                  </Box>
-                )}
-                <Box my={3}>
-                  <Typography>{contentData?.description}</Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="h6" color="secondary">
-                    Starring
                   </Typography>
-                  {contentData?.cast.map((actor, i) => (
-                    <Box key={i}>
-                      <Box
-                        component="div"
-                        display="inline"
-                        fontWeight="fontWeightBold"
-                        style={{ fontSize: "16px" }}
-                      >
-                        {actor.name}{" "}
+                  {contentData?.rating && (
+                    <Typography variant="subtitle2">{`Rating: ${contentData?.rating}`}</Typography>
+                  )}
+                  <Box my={1}>
+                    {contentData?.genres.map((genre, index) => (
+                      <Box component="span" key={`genre-${index}`} pr={1}>
+                        <Button
+                          className={classes.genreBtn}
+                          variant="outlined"
+                          color="secondary"
+                        >
+                          {genre}
+                        </Button>
                       </Box>
-                      <Box component="div" display="inline" style={{}}>
-                        as {actor.role}
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
+                    ))}
+                  </Box>
 
-                <Box my={2}>
-                  {isVideoAvailable && contentData ? (
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      className={classes.playBtn}
+                  {contentData?.seriesID && (
+                    <Box py={2}>
+                      <Typography color="secondary" variant="h6">
+                        {contentData?.name}
+                      </Typography>
+                    </Box>
+                  )}
+
+                  {contentData?.seriesInfo.seasonNo && seriesData && (
+                    <Box py={2}>
+                      <ClickAwayListener
+                        onClickAway={handleSeasonSelectorClickAway}
+                      >
+                        <Box className={classes.seasonSelectorContainer}>
+                          <Box>
+                            <Button
+                              color="primary"
+                              variant="contained"
+                              onClick={handleSeasonSelectorClick}
+                            >
+                              Season {contentData?.seriesInfo.seasonNo}
+                              <ArrowDropDown />
+                            </Button>
+                          </Box>
+
+                          {seasonSelectorOpen && (
+                            <Box className={classes.seasonSelectorDropdown}>
+                              {Array(
+                                Math.max(
+                                  ...seriesData.map(
+                                    (o) => o.seriesInfo.seasonNo
+                                  ),
+                                  0
+                                )
+                              )
+                                .fill(0)
+                                .map((_, index) => (
+                                  <Box key={`season-menu-item-${index}`}>
+                                    <Button
+                                      onClick={() =>
+                                        handleSeasonClick(index + 1)
+                                      }
+                                      variant="contained"
+                                      color="primary"
+                                      className={classes.seasonSelectorItem}
+                                    >
+                                      Season {index + 1}
+                                    </Button>
+                                  </Box>
+                                ))}
+                            </Box>
+                          )}
+                        </Box>
+                      </ClickAwayListener>
+                    </Box>
+                  )}
+                  <Box my={3}>
+                    <Typography>{contentData?.description}</Typography>
+                  </Box>
+
+                  <Box>
+                    <Typography variant="h6" color="secondary">
+                      Starring
+                    </Typography>
+                    {contentData?.cast.map((actor, i) => (
+                      <Box key={i}>
+                        <Box
+                          component="div"
+                          display="inline"
+                          fontWeight="fontWeightBold"
+                          style={{ fontSize: "16px" }}
+                        >
+                          {actor.name}{" "}
+                        </Box>
+                        <Box component="div" display="inline" style={{}}>
+                          as {actor.role}
+                        </Box>
+                      </Box>
+                    ))}
+                  </Box>
+
+                  <Box my={3}>
+                    {isVideoAvailable && contentData ? (
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        className={classes.playBtn}
+                        onClick={handlePlay}
+                      >
+                        {`Play `}{" "}
+                        <PlayCircleOutlineOutlined
+                          className={classes.platBtnIcon}
+                        />
+                      </Button>
+                    ) : (
+                      <>
+                        <PurchaseTypeElements />
+                      </>
+                    )}
+                  </Box>
+                  <Box my={3}>
+                    {userWatchlistData?.includes(contentData?.id) ? (
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        className={classes.watchlistBtn}
+                        onClick={handleRemovefromWatchlist}
+                      >
+                        ✓ Remove from Watchlist
+                      </Button>
+                    ) : (
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        className={classes.watchlistBtn}
+                        onClick={handleAddToWatchlist}
+                      >
+                        Add to Watchlist
+                      </Button>
+                    )}
+                  </Box>
+                </Box>
+              </Grid>
+            </Grid>
+            <img src={contentData?.posterUrl} alt="Not available" />
+          </Grid>
+
+          {recommendedContents && (
+            <Grid item xs={12}>
+              <Box py={1} pl={2} pr={3}>
+                <Box py={2}>
+                  <Typography variant="h4">Watch next</Typography>
+                </Box>
+                <Grid container spacing={4}>
+                  {recommendedContents.map((contentCard, index) => (
+                    <Grid
+                      lg={3}
+                      md={3}
+                      sm={6}
+                      xs={12}
+                      item
+                      key={`content-card-${index}`}
                     >
-                      {`Play `}{" "}
-                      <PlayCircleOutlineOutlined
-                        className={classes.platBtnIcon}
+                      <MovieCard
+                        cardData={contentCard}
+                        onClick={handleCardClick}
                       />
-                    </Button>
-                  ) : (
-                    <>
-                      <PurchaseTypeElements />
-                    </>
-                  )}
-                </Box>
-                <Box my={3}>
-                  {userWatchlistData?.includes(contentData?.id) ? (
-                    <Button
-                      color="secondary"
-                      variant="outlined"
-                      className={classes.watchlistBtn}
-                      onClick={handleRemovefromWatchlist}
-                    >
-                      ✓ Remove from Watchlist
-                    </Button>
-                  ) : (
-                    <Button
-                      color="secondary"
-                      variant="outlined"
-                      className={classes.watchlistBtn}
-                      onClick={handleAddToWatchlist}
-                    >
-                      Add to Watchlist
-                    </Button>
-                  )}
-                </Box>
+                    </Grid>
+                  ))}
+                </Grid>
               </Box>
             </Grid>
-          </Grid>
-          <img src={contentData?.posterUrl} alt="Not available" />
+          )}
+          {seriesContents?.length > 0 && (
+            <Grid item xs={12}>
+              <Box py={1} pl={2} pr={3}>
+                <Box py={2}>
+                  <Typography variant="h4">Watch next</Typography>
+                </Box>
+                <Grid container spacing={4}>
+                  {seriesContents?.map((contentCard, index) => (
+                    <Grid
+                      lg={3}
+                      md={3}
+                      sm={6}
+                      xs={12}
+                      item
+                      key={`content-card-${index}`}
+                    >
+                      <MovieCard
+                        cardData={contentCard}
+                        onClick={handleCardClick}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            </Grid>
+          )}
         </Grid>
-
-        {recommendedContents && (
-          <Grid item xs={12}>
-            <Box py={1} pl={2} pr={3}>
-              <Box py={2}>
-                <Typography variant="h4">Watch next</Typography>
-              </Box>
-              <Grid container spacing={4}>
-                {recommendedContents.map((contentCard, index) => (
-                  <Grid
-                    lg={3}
-                    md={3}
-                    sm={6}
-                    xs={12}
-                    item
-                    key={`content-card-${index}`}
-                  >
-                    <MovieCard
-                      cardData={contentCard}
-                      onClick={handleCardClick}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
+      </Container>
+      {playVideo && (
+        <Box
+          style={{
+            position: "absolute",
+            zIndex: 100,
+            top: "0px",
+            width: "100vw",
+            backgroundColor: "black",
+            height: "100%",
+          }}
+        >
+          <Box
+            style={{
+              float: "right",
+              zIndex: "1",
+            }}
+          >
+            <Button
+              color="secondary"
+              variant="contained"
+              style={{ fontSize: "2rem" }}
+              onClick={() => setPlayVideo(false)}
+            >
+              <b> X</b>
+            </Button>
+          </Box>
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            <Box style={{ width: "90%" }}>
+              <Stream controls src={contentData?.contentURL} />
             </Box>
-          </Grid>
-        )}
-        {seriesContents?.length > 0 && (
-          <Grid item xs={12}>
-            <Box py={1} pl={2} pr={3}>
-              <Box py={2}>
-                <Typography variant="h4">Watch next</Typography>
-              </Box>
-              <Grid container spacing={4}>
-                {seriesContents?.map((contentCard, index) => (
-                  <Grid
-                    lg={3}
-                    md={3}
-                    sm={6}
-                    xs={12}
-                    item
-                    key={`content-card-${index}`}
-                  >
-                    <MovieCard
-                      cardData={contentCard}
-                      onClick={handleCardClick}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          </Grid>
-        )}
-      </Grid>
-    </Container>
+          </Box>
+        </Box>
+      )}
+    </>
   );
 }
 

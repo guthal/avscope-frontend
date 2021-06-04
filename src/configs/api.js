@@ -28,6 +28,7 @@ const ENDPOINTS = {
     `${DOMAIN}/conversion/availability/${productID}`,
   POST_PAY_CREATOR_EARNINGS: (userID) => `${DOMAIN}/pay-creator/${userID}`,
   POST_PRODUCT_CONVERSION: (contentID) => `${DOMAIN}/conversion/${contentID}`,
+  GET_LAST_PAY_DATE: (creatorID) => `${DOMAIN}/account/last-pay/${creatorID}`,
 };
 
 export { ENDPOINTS };

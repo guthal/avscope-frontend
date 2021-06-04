@@ -25,9 +25,14 @@ import {
   transformPostGetContentsRevenue,
   transformPostPayCreatorEarning,
 } from "../../utils/api-transforms";
-import { postGetContentsRevenue, postPayCreatorEarning } from "../../utils/api";
+import {
+  getLastPayDate,
+  postGetContentsRevenue,
+  postPayCreatorEarning,
+} from "../../utils/api";
 import AuthContext from "../../contexts/AuthContext";
 import { useRouteMatch } from "react-router";
+import useGetApi from "../../hooks/useGetApi";
 
 function PayoutPage() {
   const { userId } = useContext(AuthContext);
@@ -41,8 +46,26 @@ function PayoutPage() {
 
   const [transactionId, setTransactionId] = useState("");
 
+  const [selectedFromDate, setSelectedFromDate] = useState(
+    fromDate.setDate(fromDate.getDate() - 7)
+  );
+  const [selectedToDate, setSelectedToDate] = useState(
+    toDate.setDate(toDate.getDate() - 1)
+  );
+
+  const getLastPaidParams = useMemo(
+    () => [params.creatorID],
+    [params.creatorID]
+  );
   const postCreatorPayoutParams = useMemo(() => [userId], [userId]);
   const postPayCreatorEarningParams = useMemo(() => [], []);
+
+  const {
+    data: creatorLastPaidData,
+    loading: creatorLastPaidLoading,
+    error: creatorLastPaidError,
+    triggerApi: creatorLastPaidTriggerApi,
+  } = useGetApi(getLastPayDate, getLastPaidParams);
 
   const {
     data: creatorPayoutData,
@@ -69,11 +92,6 @@ function PayoutPage() {
     transformPostPayCreatorEarning
   );
 
-  const [selectedFromDate, setSelectedFromDate] = useState(
-    fromDate.setDate(fromDate.getDate() - 7)
-  );
-  const [selectedToDate, setSelectedToDate] = useState(toDate);
-
   const handleFromDateChange = (date) => {
     const tempDate = new Date(date.setHours(0, 0, 0, 0));
     setSelectedFromDate(tempDate);
@@ -81,12 +99,27 @@ function PayoutPage() {
 
   const handleToDateChange = (date) => {
     date.setHours(23, 59, 59, 59);
-    const tempDate = new Date(date.setDate(date.getDate() - 1));
+    const tempDate = new Date(date);
     setSelectedToDate(tempDate);
   };
 
   const handleTransactionIdChange = (event) =>
     setTransactionId(event.target.value);
+
+  const getPurchaseTypeText = (purchaseType) => {
+    if (purchaseType === "b") return "Buy";
+    if (purchaseType === "r") return "Rent";
+    if (purchaseType === "w") return "Weekly";
+  };
+
+  useEffect(() => {
+    creatorLastPaidTriggerApi();
+  }, [creatorLastPaidTriggerApi]);
+
+  useEffect(() => {
+    if (creatorLastPaidData)
+      setSelectedFromDate(new Date(creatorLastPaidData.lastPayDate));
+  }, [creatorLastPaidData]);
 
   useEffect(() => {
     if (userId) {
@@ -110,7 +143,12 @@ function PayoutPage() {
     });
   }, [payCreatorEarningTriggerApi]);
 
-  if (creatorPayoutLoading || payCreatorEarningLoading) return <PageLoader />;
+  if (
+    creatorLastPaidLoading ||
+    creatorPayoutLoading ||
+    payCreatorEarningLoading
+  )
+    return <PageLoader />;
 
   return (
     <Grid container className={classes.root}>
@@ -131,6 +169,7 @@ function PayoutPage() {
                 label="From"
                 value={selectedFromDate}
                 onChange={handleFromDateChange}
+                disabled
                 className={classes.calendar}
                 InputProps={{ readOnly: true }}
                 KeyboardButtonProps={{
@@ -167,6 +206,7 @@ function PayoutPage() {
               <TableRow>
                 <TableCell>Sr. no</TableCell>
                 <TableCell align="left">Content title</TableCell>
+                <TableCell align="center">Content Type</TableCell>
                 <TableCell align="center">Revenue Generated</TableCell>
                 <TableCell align="center">Creator Earnings</TableCell>
                 <TableCell align="center">Commission Earned</TableCell>
@@ -180,6 +220,9 @@ function PayoutPage() {
                   </TableCell>
                   <TableCell align="left" component="th" scope="row">
                     {content.contentTitle}
+                  </TableCell>
+                  <TableCell align="center">
+                    {getPurchaseTypeText(content.purchaseType)}
                   </TableCell>
                   <TableCell align="center">
                     ₹ {Number(content.revenue).toFixed(2)}

@@ -173,3 +173,6 @@ export const postUpdateProductStatus = (data, productID) =>
 
 export const postContentConversion = (data, contentID) =>
   axios.post(ENDPOINTS.POST_PRODUCT_CONVERSION(contentID), data);
+
+export const getLastPayDate = (creatorID) =>
+  axios.get(ENDPOINTS.GET_LAST_PAY_DATE(creatorID)).then((res) => res.data[0]);

@@ -80,21 +80,8 @@ function LoginPage() {
       <PageError message="Opps.. Something went wrong while fetching contents." />
     );
 
-  const Copyright = () => {
-    return (
-      <Typography variant="body2" color="secondary" align="center">
-        {"Copyright © "}
-        <Link color="inherit" href="/">
-          AVScope
-        </Link>{" "}
-        {new Date().getFullYear()}
-        {"."}
-      </Typography>
-    );
-  };
-
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" style={{ marginBottom: "24px" }}>
       <CssBaseline />
       <Box className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -159,9 +146,6 @@ function LoginPage() {
             </Grid>
           </Grid>
         </Box>
-      </Box>
-      <Box mt={8}>
-        <Copyright />
       </Box>
     </Container>
   );

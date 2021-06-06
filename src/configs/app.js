@@ -101,6 +101,16 @@ export const APP_ROUTES = {
     key: "",
     label: "Watchlist for User",
   },
+  STATIC_PAGE: {
+    path: "/static",
+    key: "",
+    label: "Static Page",
+  },
+  SPECIFIC_CONTENT_DISPLAY: {
+    path: "/sp-content",
+    key: "",
+    label: "Specific Content",
+  },
 };
 
 export const HEADER_LABELS = {

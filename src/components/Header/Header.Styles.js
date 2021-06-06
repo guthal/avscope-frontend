@@ -4,16 +4,44 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  logoContainer: {
-    cursor: "pointer",
+  logoLinkContainer: {
     flexGrow: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  contentTypeLinksContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  contentTypeLink: {
+    color: theme.palette.secondary.main,
+    fontSize: "18px",
+    "&:hover": {
+      cursor: "pointer",
+      color: theme.palette.secondary.light,
+      textShadow: `0px 0px 5px ${theme.palette.secondary.light}`,
+    },
+  },
+  iconTrigger: {
+    width: "40px",
+    height: "40px",
+    cursor: "pointer",
+    color: theme.palette.secondary.main,
+    boxShadow: `0px 0px 2px ${theme.palette.secondary.light}`,
+    borderRadius: "50%",
+    "&:hover": {
+      boxShadow: `0px 0px 5px ${theme.palette.secondary.light}`,
+    },
   },
   title: {
-    height: "64px",
+    width: "125px",
+    marginTop: "5px",
     cursor: "default",
 
     "& img": {
-      height: "100%",
+      width: "100%",
     },
   },
   profileContainer: {

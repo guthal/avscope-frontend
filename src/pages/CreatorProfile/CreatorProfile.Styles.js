@@ -1,6 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
+  mainRoot: {
+    minHeight: "50vh",
+  },
   root: {
     color: theme.palette.primary.dark,
   },
@@ -17,6 +20,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   table: {
+    overflowY: "auto",
     backgroundColor: theme.palette.secondary.dark,
     borderRadius: "12px",
   },

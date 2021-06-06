@@ -9,12 +9,17 @@ import {
 } from "@material-ui/core";
 import useStyles from "./ConversionCard.Styles";
 import ContentCard from "../ContentCard";
+import CountdownTimer from "../CountdownTimer";
 import usePostApi from "../../hooks/usePostApi";
 import { postContentConversion } from "../../utils/api";
+import { addDays } from "../../utils/generic";
 import PageError from "../../components/PageError";
+import expired from "../../assets/expired.png";
 
 function ConversionCard({ cardData, onContentStatusUpdate }) {
   const classes = useStyles();
+
+  const [contentCard, setContentCard] = useState(cardData);
 
   const [purchaseTypeSwitches, setPurchaseTypeSwitches] = useState({
     "buy-switch": false,
@@ -24,13 +29,13 @@ function ConversionCard({ cardData, onContentStatusUpdate }) {
   const [purchaseTypeFields, setPurchaseTypeFields] = useState({
     "buy-field": "-1",
     "rent-field": "-1",
-    "weekly-field": cardData.price["w"],
-    "weekly-num-field": cardData.weeks,
+    "weekly-field": contentCard.price["w"],
+    "weekly-num-field": "0",
   });
 
   const postContentConversionParams = useMemo(
-    () => [cardData.id],
-    [cardData.id]
+    () => [contentCard.id],
+    [contentCard.id]
   );
 
   const handleSwitchTextChange = (event) => {
@@ -80,9 +85,15 @@ function ConversionCard({ cardData, onContentStatusUpdate }) {
         r: purchaseTypeFields["rent-field"],
         w: purchaseTypeFields["weekly-field"],
       },
-      weeks: purchaseTypeFields["weekly-num-field"],
+      weeks:
+        Number(purchaseTypeFields["weekly-num-field"]) +
+        Number(contentCard.weeks),
+      weeklyStartAt: contentCard.weeklyStartAt || Date.now(),
     });
   };
+
+  const handleOnContentExpiry = () =>
+    setContentCard((prev) => ({ ...prev, isExpired: true }));
 
   useEffect(() => {
     if (contentConversionData) onContentStatusUpdate();
@@ -99,9 +110,35 @@ function ConversionCard({ cardData, onContentStatusUpdate }) {
         <Box p={2}>
           <Box p={2}>
             <Typography variant="h5" align="center" color="primary">
-              {cardData.seriesName || cardData.name}
+              {contentCard.seriesName || contentCard.name}
             </Typography>
+            <Typography color="primary" align="center">
+              ( Weeks: {contentCard.weeks})
+            </Typography>
+            {!contentCard.isExpired && (
+              <Typography color="primary" align="center">
+                Expires in:{" "}
+                <CountdownTimer
+                  onComplete={() => handleOnContentExpiry}
+                  expiryDate={addDays(
+                    contentCard.weeklyStartAt,
+                    contentCard.weeks * 7
+                  )}
+                />
+              </Typography>
+            )}
           </Box>
+
+          <Box className={classes.expired}>
+            {contentCard.isExpired && (
+              <img
+                className={classes.expiredImage}
+                src={expired}
+                alt="ticket"
+              />
+            )}
+          </Box>
+
           <Grid container>
             <Grid item xs={12}>
               <Grid container spacing={4}>
@@ -212,7 +249,7 @@ function ConversionCard({ cardData, onContentStatusUpdate }) {
                   <Box mt={1}>
                     {purchaseTypeSwitches["weekly-switch"] && (
                       <TextField
-                        label="Weeks"
+                        label="Extend Weeks"
                         name="weekly-num-field"
                         value={purchaseTypeFields["weekly-num-field"]}
                         color="primary"

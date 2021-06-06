@@ -6,10 +6,12 @@ import {
   Typography,
   Button,
   Badge,
+  InputBase,
   ClickAwayListener,
 } from "@material-ui/core";
 import FaceTwoToneIcon from "@material-ui/icons/FaceTwoTone";
 import HomeTwoToneIcon from "@material-ui/icons/HomeTwoTone";
+import SearchIcon from "@material-ui/icons/Search";
 import { APP_ROUTES, HEADER_LABELS } from "../../configs/app";
 import Banner from "../../assets/avscopeBanner.png";
 import useStyles from "./Header.Styles";
@@ -34,6 +36,7 @@ function Header() {
     setUtype,
   } = useContext(AuthContext);
   const [openProfile, setOpenProfile] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   // Done to set logoutData to undefined through getLogoutParams
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,10 +96,14 @@ function Header() {
   const handleContentTypeClick = contentType =>
     history.push(`${APP_ROUTES.SPECIFIC_CONTENT_DISPLAY.path}/${contentType}`);
 
-  const handleSearchClick = searchString =>
+  const handleSetSearchValue = event => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleSearchClick = event =>
     history.push({
       pathname: `${APP_ROUTES.SPECIFIC_CONTENT_DISPLAY.path}/all`,
-      state: { search: searchString },
+      state: { search: searchValue },
     });
 
   useEffect(() => {
@@ -169,7 +176,7 @@ function Header() {
                           onClick={handleAdminClick}
                           disableElevation
                         >
-                          {HEADER_LABELS.ADMIN}
+                          <Typography>{HEADER_LABELS.ADMIN}</Typography>
                         </Button>
                       )}
                       {utype < 2 && (
@@ -180,7 +187,7 @@ function Header() {
                           onClick={handleCreatorProfileClick}
                           disableElevation
                         >
-                          {HEADER_LABELS.PROFILE}
+                          <Typography>{HEADER_LABELS.PROFILE}</Typography>
                         </Button>
                       )}
                       <Button
@@ -196,15 +203,6 @@ function Header() {
                         >
                           <Typography>WATCHLIST</Typography>
                         </Badge>
-                      </Button>
-                      <Button
-                        color="secondary"
-                        variant="outlined"
-                        className={classes.profileMenuItem}
-                        onClick={() => handleSearchClick("ugram")}
-                        disableElevation
-                      >
-                        <Typography>SEARCH</Typography>
                       </Button>
                       <Button
                         color="secondary"
@@ -241,29 +239,50 @@ function Header() {
           )}
         </Toolbar>
       </AppBar>
-      {isUserLoggedIn && (
-        <AppBar position="static" style={{ borderTop: "1px solid white" }}>
-          <Toolbar>
+      <AppBar position="static" style={{ borderTop: "1px solid white" }}>
+        <Toolbar>
+          <Box pr={2} className={classes.dflex}>
             <Box className={classes.contentTypeLinksContainer}>
-              <Box px={2} onClick={() => handleContentTypeClick("all")}>
+              <Box pr={2} onClick={() => handleContentTypeClick("all")}>
                 <Typography className={classes.contentTypeLink}>
                   All Contents
                 </Typography>
               </Box>
-              <Box px={2} onClick={() => handleContentTypeClick("br")}>
+              <Box pr={2} onClick={() => handleContentTypeClick("br")}>
                 <Typography className={classes.contentTypeLink}>
                   Buy/Rent
                 </Typography>
               </Box>
-              <Box px={2} onClick={() => handleContentTypeClick("week")}>
+              <Box pr={2} onClick={() => handleContentTypeClick("week")}>
                 <Typography className={classes.contentTypeLink}>
                   Weekly
                 </Typography>
               </Box>
             </Box>
-          </Toolbar>
-        </AppBar>
-      )}
+            <Box className={classes.search}>
+              <Box className={classes.searchIcon}>
+                <SearchIcon />
+              </Box>
+              <InputBase
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                name="search"
+                value={searchValue}
+                onChange={handleSetSearchValue}
+                inputProps={{ "aria-label": "search" }}
+              />
+              <Button
+                onClick={() => handleSearchClick("search")}
+                color="secondary"
+              >
+                Search
+              </Button>
+            </Box>
+          </Box>
+        </Toolbar>
+      </AppBar>
     </Box>
   );
 }

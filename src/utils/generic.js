@@ -7,3 +7,9 @@ export const trimDatetoHumanReadable = (date) => {
   const dateSplitArray = date.split(" ");
   return `${dateSplitArray[0]}, ${dateSplitArray[1]} ${dateSplitArray[2]} ${dateSplitArray[3]}, ${dateSplitArray[4]}`;
 };
+
+export const addDays = (date, days) => {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};

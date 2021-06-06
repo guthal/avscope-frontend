@@ -59,6 +59,7 @@ function ManageContentPage() {
             <Grid container spacing={4}>
               {contentsData?.contents
                 ?.filter((content) => content.purchaseType === "w")
+                .sort((a, b) => a.isExpired - b.isExpired)
                 .map((contentCard, index) => (
                   <Grid
                     lg={4}

@@ -88,7 +88,9 @@ function ConversionCard({ cardData, onContentStatusUpdate }) {
       weeks:
         Number(purchaseTypeFields["weekly-num-field"]) +
         Number(contentCard.weeks),
-      weeklyStartAt: contentCard.weeklyStartAt || Date.now(),
+      weeklyStartAt: contentCard.isExpired
+        ? Date.now()
+        : contentCard.weeklyStartAt,
     });
   };
 

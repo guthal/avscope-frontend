@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { Box, Typography, Container, Grid } from "@material-ui/core";
 import MovieCard from "../../components/MovieCard";
 import useGetApi from "../../hooks/useGetApi";
@@ -12,19 +12,17 @@ import {
   transformGetAllSeries,
 } from "../../utils/api-transforms";
 import { APP_ROUTES } from "../../configs/app";
+import { getQueryVariable } from "../../utils/generic";
 
 function SpecificContentPage() {
   const history = useHistory();
   const routeMatch = useRouteMatch();
   const { params } = routeMatch;
 
-  const { state } = useLocation();
-  const search = state?.search;
+  const { search: searchQuery } = useLocation();
+  const searchString = getQueryVariable(searchQuery.slice(1), "search") || "";
 
-  useEffect(() => {
-    console.log("Search: ", search);
-  }, [search]);
-
+  // eslint-disable-next-line no-unused-vars
   const classes = useStyles();
 
   const [contentType, setContentType] = useState([]);
@@ -99,7 +97,10 @@ function SpecificContentPage() {
                 ?.filter(
                   content =>
                     content.isAvailable &&
-                    contentType.includes(content.purchaseType)
+                    contentType.includes(content.purchaseType) &&
+                    content.name
+                      .toLowerCase()
+                      .includes(searchString?.toLowerCase())
                 )
                 .map((contentCard, index) => (
                   <Grid
@@ -118,7 +119,7 @@ function SpecificContentPage() {
                 ))}
             </Grid>
           </Box>
-          {seriesSeasonsData?.length > 0 && (
+          {params.contentType !== "week" && seriesSeasonsData?.length > 0 && (
             <Box py={1}>
               <Box py={2}>
                 <Typography variant="h4">Series</Typography>
@@ -126,10 +127,19 @@ function SpecificContentPage() {
               <Grid container spacing={4}>
                 {seriesSeasonsData
                   .map(series => series.seasons)
-                  .map(season => (
-                    <>
+                  .map((season, i) => (
+                    <Fragment key={i}>
                       {season
-                        ?.filter(contentCard => contentCard.isAvailable)
+                        ?.filter(
+                          contentCard =>
+                            contentCard.isAvailable &&
+                            contentType.includes(
+                              contentCard.purchaseType.toString()
+                            ) &&
+                            contentCard.name
+                              .toLowerCase()
+                              .includes(searchString?.toLowerCase())
+                        )
                         .map((contentCard, index) => (
                           <Grid
                             lg={3}
@@ -145,7 +155,7 @@ function SpecificContentPage() {
                             />
                           </Grid>
                         ))}
-                    </>
+                    </Fragment>
                   ))}
               </Grid>
             </Box>

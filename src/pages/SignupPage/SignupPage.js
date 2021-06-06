@@ -131,24 +131,11 @@ function SignupPage() {
 
   if (signupError)
     return (
-      <PageError message="Opps.. Something went wrong while Signing Up." />
+      <PageError message="Oops.. Something went wrong while Signing Up." />
     );
-
-  const Copyright = () => {
-    return (
-      <Typography variant="body2" color="secondary" align="center">
-        {"Copyright © "}
-        <Link color="inherit" href="/">
-          AVScope
-        </Link>{" "}
-        {new Date().getFullYear()}
-        {"."}
-      </Typography>
-    );
-  };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" style={{ marginBottom: "24px" }}>
       <CssBaseline />
       <Box className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -309,9 +296,6 @@ function SignupPage() {
             </Grid>
           </Grid>
         </Box>
-      </Box>
-      <Box mt={2}>
-        <Copyright />
       </Box>
     </Container>
   );

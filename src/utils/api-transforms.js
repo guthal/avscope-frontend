@@ -263,3 +263,10 @@ export const transformGetWatchlist = (data) => {
   });
   return returnData;
 };
+
+export const transformGetStaticPage = data => {
+  return {
+    head: data.title,
+    body: data.description,
+  };
+};

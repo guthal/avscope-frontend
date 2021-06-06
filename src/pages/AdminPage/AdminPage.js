@@ -20,7 +20,7 @@ function AdminPage() {
     history.push(APP_ROUTES.MANAGE_CONTENT_PAGE.path);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className={classes.root}>
       <Box my={5}>
         <Box my={5}>
           <Typography variant="h3">Admin Panel</Typography>

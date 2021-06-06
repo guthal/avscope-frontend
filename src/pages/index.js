@@ -20,6 +20,8 @@ import PrivateRoute from "../components/routeComponents/PrivateRoute";
 import CreatorProfile from "./CreatorProfile";
 import PayoutPage from "./PayoutPage";
 import ManageContentPage from "./ManageContentPage";
+import StaticPage from "./StaticPage";
+import SpecificContentPage from "./SpecificContentPage";
 
 function Pages() {
   return (
@@ -50,6 +52,12 @@ function Pages() {
           exact
           path={`${APP_ROUTES.WATCHLIST_PAGE.path}/:userID`}
           component={WatchListPage}
+        />
+
+        <PrivateRoute
+          exact
+          path={`${APP_ROUTES.SPECIFIC_CONTENT_DISPLAY.path}/:contentType`}
+          component={SpecificContentPage}
         />
 
         <AdminRoute
@@ -97,6 +105,12 @@ function Pages() {
           exact
           path={`${APP_ROUTES.SIGNUP_PAGE.path}`}
           component={SignupPage}
+        />
+
+        <Route
+          exact
+          path={`${APP_ROUTES.STATIC_PAGE.path}/:type`}
+          component={StaticPage}
         />
 
         <Route path="/*" component={PageNotFound} />

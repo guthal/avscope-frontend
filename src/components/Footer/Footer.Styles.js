@@ -3,23 +3,20 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    margin: 0,
+    margin: "10vh 0 0 0",
     padding: 0,
+    position: "absolute",
     left: 0,
-    bottom: 0,
+    top: "100%",
     right: 0,
+    backgroundColor: theme.palette.primary.main,
   },
   footerContainer: {
-    backgroundColor: theme.palette.primary.main,
     padding: "16px",
   },
-  image: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   title: {
-    height: "128px",
+    width: "200px",
+    padding: "18px 0px",
 
     "& img": {
       height: "100%",
@@ -39,7 +36,26 @@ const useStyles = makeStyles(theme => ({
     height: "30px",
     "&:hover": {
       cursor: "pointer",
-      color: theme.palette.secondary.light,
+    },
+  },
+  facebook: {
+    "&:hover": {
+      color: "#4267B2",
+    },
+  },
+  twitter: {
+    "&:hover": {
+      color: "#1DA1F2",
+    },
+  },
+  instagram: {
+    "&:hover": {
+      color: "#E1306C",
+    },
+  },
+  whatsapp: {
+    "&:hover": {
+      color: "#25D366",
     },
   },
 }));

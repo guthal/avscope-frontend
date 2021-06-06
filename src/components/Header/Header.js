@@ -5,10 +5,11 @@ import {
   Toolbar,
   Typography,
   Button,
+  Badge,
   ClickAwayListener,
-  Avatar,
 } from "@material-ui/core";
 import FaceTwoToneIcon from "@material-ui/icons/FaceTwoTone";
+import HomeTwoToneIcon from "@material-ui/icons/HomeTwoTone";
 import { APP_ROUTES, HEADER_LABELS } from "../../configs/app";
 import Banner from "../../assets/avscopeBanner.png";
 import useStyles from "./Header.Styles";
@@ -26,6 +27,7 @@ function Header() {
     isUserLoggedIn,
     userId,
     utype,
+    userWatchlistData,
     setUsername,
     setIsUserLoggedIn,
     setUserId,
@@ -84,6 +86,19 @@ function Header() {
     history.push(`${APP_ROUTES.WATCHLIST_PAGE.path}/${userId}`);
   };
 
+  const handleHomeClick = () => {
+    history.push(`${APP_ROUTES.HOME_PAGE.path}`);
+  };
+
+  const handleContentTypeClick = contentType =>
+    history.push(`${APP_ROUTES.SPECIFIC_CONTENT_DISPLAY.path}/${contentType}`);
+
+  const handleSearchClick = searchString =>
+    history.push({
+      pathname: `${APP_ROUTES.SPECIFIC_CONTENT_DISPLAY.path}/all`,
+      state: { search: searchString },
+    });
+
   useEffect(() => {
     if (logoutData) {
       setUsername("");
@@ -103,14 +118,14 @@ function Header() {
 
   if (logoutError)
     return (
-      <PageError message="Opps.. Something went wrong while fetching contents." />
+      <PageError message="Oops.. Something went wrong while fetching contents." />
     );
 
   return (
     <Box mb={2}>
       <AppBar position="static">
         <Toolbar>
-          <Box className={classes.logoContainer}>
+          <Box className={classes.logoLinkContainer}>
             <Box className={classes.title}>
               <img
                 onClick={handleLogoClick}
@@ -130,12 +145,17 @@ function Header() {
             </Button>
           )}
           {isUserLoggedIn && (
+            <Box onClick={handleHomeClick} mt={1}>
+              <HomeTwoToneIcon className={classes.iconTrigger} />
+            </Box>
+          )}
+          {isUserLoggedIn && (
             <Box px={2}>
               <ClickAwayListener onClickAway={handleCloseMenu}>
-                <Box className={classes.profileContainer}>
-                  <Avatar onClick={handleToggleMenu}>
-                    <FaceTwoToneIcon />
-                  </Avatar>
+                <Box className={classes.profileContainer} mt={1}>
+                  <Box onClick={handleToggleMenu}>
+                    <FaceTwoToneIcon className={classes.iconTrigger} />
+                  </Box>
                   {openProfile && (
                     <Box
                       className={classes.profileMenu}
@@ -152,7 +172,7 @@ function Header() {
                           {HEADER_LABELS.ADMIN}
                         </Button>
                       )}
-                      {utype <= 2 && (
+                      {utype < 2 && (
                         <Button
                           color="secondary"
                           variant="outlined"
@@ -170,8 +190,21 @@ function Header() {
                         onClick={handleWatchListPage}
                         disableElevation
                       >
-                        <Typography>WATCHLIST</Typography>
-                        {/* Write a Count len(watchlist) */}
+                        <Badge
+                          badgeContent={userWatchlistData.length}
+                          color="secondary"
+                        >
+                          <Typography>WATCHLIST</Typography>
+                        </Badge>
+                      </Button>
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        className={classes.profileMenuItem}
+                        onClick={() => handleSearchClick("ugram")}
+                        disableElevation
+                      >
+                        <Typography>SEARCH</Typography>
                       </Button>
                       <Button
                         color="secondary"
@@ -196,6 +229,7 @@ function Header() {
                         variant="contained"
                         className={classes.profileMenuItem}
                         onClick={handleLogoutClick}
+                        disableElevation
                       >
                         {HEADER_LABELS.LOGOUT}
                       </Button>
@@ -207,6 +241,29 @@ function Header() {
           )}
         </Toolbar>
       </AppBar>
+      {isUserLoggedIn && (
+        <AppBar position="static" style={{ borderTop: "1px solid white" }}>
+          <Toolbar>
+            <Box className={classes.contentTypeLinksContainer}>
+              <Box px={2} onClick={() => handleContentTypeClick("all")}>
+                <Typography className={classes.contentTypeLink}>
+                  All Contents
+                </Typography>
+              </Box>
+              <Box px={2} onClick={() => handleContentTypeClick("br")}>
+                <Typography className={classes.contentTypeLink}>
+                  Buy/Rent
+                </Typography>
+              </Box>
+              <Box px={2} onClick={() => handleContentTypeClick("week")}>
+                <Typography className={classes.contentTypeLink}>
+                  Weekly
+                </Typography>
+              </Box>
+            </Box>
+          </Toolbar>
+        </AppBar>
+      )}
     </Box>
   );
 }

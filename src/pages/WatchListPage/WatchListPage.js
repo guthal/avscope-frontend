@@ -65,51 +65,57 @@ function WatchListPage() {
     );
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className={classes.root}>
       <Box py={2}>
         <Box p={3}>
           <Typography variant="h3" className={classes.heading}>
             Your Watchlist
           </Typography>
         </Box>
-        <Grid container spacing={4}>
-          {watchlistData?.map((watchlistContent, index) => (
-            <Box key={index}>
-              <Box p={2}>
-                <Grid item xs={12}>
-                  <ContentCard>
-                    <Box className={classes.mediaContainer}>
-                      <CardMedia
-                        className={classes.media}
-                        image={watchlistContent.thumbnail}
-                        onClick={() => {
-                          handleContentRedirect(watchlistContent.contentId);
-                        }}
-                      />
-                      <Box style={{ display: "flex", alignItems: "center" }}>
-                        <Button
-                          color="secondary"
+        {watchlistData?.length !== 0 ? (
+          <Grid container spacing={4}>
+            {watchlistData?.map((watchlistContent, index) => (
+              <Box key={index}>
+                <Box p={2}>
+                  <Grid item xs={12}>
+                    <ContentCard>
+                      <Box className={classes.mediaContainer}>
+                        <CardMedia
+                          className={classes.media}
+                          image={watchlistContent.thumbnail}
                           onClick={() => {
-                            handleRemovefromWatchlist(
-                              watchlistContent.contentId
-                            );
+                            handleContentRedirect(watchlistContent.contentId);
                           }}
-                        >
-                          <DeleteIcon />
-                        </Button>
-                        <Box px={2}>
-                          <Typography variant="h6" color="secondary">
-                            {watchlistContent.contentTitle}
-                          </Typography>
+                        />
+                        <Box style={{ display: "flex", alignItems: "center" }}>
+                          <Button
+                            color="secondary"
+                            onClick={() => {
+                              handleRemovefromWatchlist(
+                                watchlistContent.contentId
+                              );
+                            }}
+                          >
+                            <DeleteIcon />
+                          </Button>
+                          <Box px={2}>
+                            <Typography variant="h6" color="secondary">
+                              {watchlistContent.contentTitle}
+                            </Typography>
+                          </Box>
                         </Box>
                       </Box>
-                    </Box>
-                  </ContentCard>
-                </Grid>
+                    </ContentCard>
+                  </Grid>
+                </Box>
               </Box>
-            </Box>
-          ))}
-        </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Box px={4}>
+            <Typography variant="h4">Empty</Typography>
+          </Box>
+        )}
       </Box>
     </Container>
   );

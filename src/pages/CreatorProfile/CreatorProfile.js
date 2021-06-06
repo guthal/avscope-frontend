@@ -74,7 +74,7 @@ function CreatorProfile() {
   if (contentRevenueLoading) return <PageLoader />;
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className={classes.mainRoot}>
       <Grid container className={classes.root}>
         <Grid item xs={12}>
           <MuiPickersUtilsProvider

@@ -4,6 +4,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
+  appNavBar: {
+    height: "auto",
+  },
   logoLinkContainer: {
     flexGrow: 1,
     display: "flex",
@@ -24,6 +27,14 @@ const useStyles = makeStyles(theme => ({
       textShadow: `0px 0px 5px ${theme.palette.secondary.light}`,
     },
   },
+  contentTypeLinkDisabled: {
+    color: theme.palette.secondary.dark,
+    fontSize: "18px",
+    "&:hover": {
+      cursor: "not-allowed",
+      textShadow: `0px 0px 5px ${theme.palette.secondary.dark}`,
+    },
+  },
   iconTrigger: {
     width: "40px",
     height: "40px",
@@ -34,6 +45,21 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       boxShadow: `0px 0px 5px ${theme.palette.secondary.light}`,
     },
+  },
+  iconTriggerDisabled: {
+    width: "35px",
+    height: "35px",
+    fill: theme.palette.secondary.main,
+    boxShadow: `0px 0px 2px ${theme.palette.secondary.light}`,
+    borderRadius: "25%",
+    "&:hover": {
+      cursor: "not-allowed",
+    },
+  },
+  clubLocked: {
+    width: "35px",
+    height: "35px",
+    padding: "5px",
   },
   title: {
     width: "125px",

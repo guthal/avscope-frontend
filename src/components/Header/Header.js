@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   Box,
   AppBar,
@@ -6,23 +12,30 @@ import {
   Typography,
   Button,
   Badge,
+  InputBase,
   ClickAwayListener,
+  Hidden,
+  Modal,
 } from "@material-ui/core";
 import FaceTwoToneIcon from "@material-ui/icons/FaceTwoTone";
 import HomeTwoToneIcon from "@material-ui/icons/HomeTwoTone";
+import SearchIcon from "@material-ui/icons/Search";
 import { APP_ROUTES, HEADER_LABELS } from "../../configs/app";
 import Banner from "../../assets/avscopeBanner.png";
 import useStyles from "./Header.Styles";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import useGetApi from "../../hooks/useGetApi";
 import { getLogoutUser } from "../../utils/api";
 import AuthContext from "../../contexts/AuthContext";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
+import { getQueryVariable } from "../../utils/generic";
 
 function Header() {
   const classes = useStyles();
   const history = useHistory();
+  const { pathname } = useLocation();
+
   const {
     isUserLoggedIn,
     userId,
@@ -34,6 +47,12 @@ function Header() {
     setUtype,
   } = useContext(AuthContext);
   const [openProfile, setOpenProfile] = useState(false);
+
+  const { search: searchQuery } = useLocation();
+  const searchString = getQueryVariable(searchQuery.slice(1), "search");
+
+  const [searchValue, setSearchValue] = useState(searchString);
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
 
   // Done to set logoutData to undefined through getLogoutParams
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,6 +93,14 @@ function Header() {
     setOpenProfile(false);
   };
 
+  const handleSearchModalOpen = () => {
+    setSearchModalOpen(true);
+  };
+
+  const handleSearchModalClose = () => {
+    setSearchModalOpen(false);
+  };
+
   const handleHistoryClick = () => {
     history.push(`${APP_ROUTES.HISTORY_PAGE.path}/${userId}`);
   };
@@ -93,11 +120,19 @@ function Header() {
   const handleContentTypeClick = contentType =>
     history.push(`${APP_ROUTES.SPECIFIC_CONTENT_DISPLAY.path}/${contentType}`);
 
-  const handleSearchClick = searchString =>
-    history.push({
-      pathname: `${APP_ROUTES.SPECIFIC_CONTENT_DISPLAY.path}/all`,
-      state: { search: searchString },
-    });
+  const handleSetSearchValue = event => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleSearchClick = event => {
+    event.preventDefault();
+    handleSearchModalClose();
+    history.push(
+      `${APP_ROUTES.SPECIFIC_CONTENT_DISPLAY.path}/all?search=${
+        searchValue || ""
+      }`
+    );
+  };
 
   useEffect(() => {
     if (logoutData) {
@@ -145,6 +180,73 @@ function Header() {
             </Button>
           )}
           {isUserLoggedIn && (
+            <Fragment>
+              <Hidden mdUp>
+                <Box px={2}>
+                  <Box mt={1}>
+                    <SearchIcon
+                      onClick={handleSearchModalOpen}
+                      className={classes.iconTrigger}
+                    />
+                  </Box>
+                  <Modal
+                    className={classes.modal}
+                    open={searchModalOpen}
+                    onClose={handleSearchModalClose}
+                  >
+                    <Box className={classes.paper}>
+                      <Box className={classes.searchModalIcon}>
+                        <SearchIcon />
+                      </Box>
+                      <InputBase
+                        classes={{
+                          root: classes.inputRoot,
+                          input: classes.inputModalInput,
+                        }}
+                        name="search"
+                        placeholder="Search..."
+                        value={searchValue}
+                        onChange={handleSetSearchValue}
+                        inputProps={{ "aria-label": "search" }}
+                      />
+                      <Box style={{ marginTop: "3px" }}>
+                        <Button
+                          variant="outlined"
+                          onClick={handleSearchClick}
+                          color="secondary"
+                        >
+                          Search
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Modal>
+                </Box>
+              </Hidden>
+              <Hidden smDown>
+                <form onSubmit={handleSearchClick}>
+                  <Box px={2}>
+                    <Box className={classes.search}>
+                      <Box className={classes.searchIcon}>
+                        <SearchIcon />
+                      </Box>
+                      <InputBase
+                        classes={{
+                          root: classes.inputRoot,
+                          input: classes.inputInput,
+                        }}
+                        name="search"
+                        placeholder="Search..."
+                        value={searchValue}
+                        onChange={handleSetSearchValue}
+                        inputProps={{ "aria-label": "search" }}
+                      />
+                    </Box>
+                  </Box>
+                </form>
+              </Hidden>
+            </Fragment>
+          )}
+          {isUserLoggedIn && (
             <Box onClick={handleHomeClick} mt={1}>
               <HomeTwoToneIcon className={classes.iconTrigger} />
             </Box>
@@ -169,7 +271,7 @@ function Header() {
                           onClick={handleAdminClick}
                           disableElevation
                         >
-                          {HEADER_LABELS.ADMIN}
+                          <Typography>{HEADER_LABELS.ADMIN}</Typography>
                         </Button>
                       )}
                       {utype < 2 && (
@@ -180,7 +282,7 @@ function Header() {
                           onClick={handleCreatorProfileClick}
                           disableElevation
                         >
-                          {HEADER_LABELS.PROFILE}
+                          <Typography>{HEADER_LABELS.PROFILE}</Typography>
                         </Button>
                       )}
                       <Button
@@ -196,15 +298,6 @@ function Header() {
                         >
                           <Typography>WATCHLIST</Typography>
                         </Badge>
-                      </Button>
-                      <Button
-                        color="secondary"
-                        variant="outlined"
-                        className={classes.profileMenuItem}
-                        onClick={() => handleSearchClick("ugram")}
-                        disableElevation
-                      >
-                        <Typography>SEARCH</Typography>
                       </Button>
                       <Button
                         color="secondary"
@@ -241,24 +334,28 @@ function Header() {
           )}
         </Toolbar>
       </AppBar>
-      {isUserLoggedIn && (
+      {["/", "/sp-content/all", "/sp-content/br", "/sp-content/week"].includes(
+        pathname
+      ) && (
         <AppBar position="static" style={{ borderTop: "1px solid white" }}>
           <Toolbar>
-            <Box className={classes.contentTypeLinksContainer}>
-              <Box px={2} onClick={() => handleContentTypeClick("all")}>
-                <Typography className={classes.contentTypeLink}>
-                  All Contents
-                </Typography>
-              </Box>
-              <Box px={2} onClick={() => handleContentTypeClick("br")}>
-                <Typography className={classes.contentTypeLink}>
-                  Buy/Rent
-                </Typography>
-              </Box>
-              <Box px={2} onClick={() => handleContentTypeClick("week")}>
-                <Typography className={classes.contentTypeLink}>
-                  Weekly
-                </Typography>
+            <Box pr={2} className={classes.dflex}>
+              <Box className={classes.contentTypeLinksContainer}>
+                <Box pr={2} onClick={() => handleContentTypeClick("all")}>
+                  <Typography className={classes.contentTypeLink}>
+                    All Contents
+                  </Typography>
+                </Box>
+                <Box pr={2} onClick={() => handleContentTypeClick("br")}>
+                  <Typography className={classes.contentTypeLink}>
+                    Buy/Rent
+                  </Typography>
+                </Box>
+                <Box pr={2} onClick={() => handleContentTypeClick("week")}>
+                  <Typography className={classes.contentTypeLink}>
+                    Weekly
+                  </Typography>
+                </Box>
               </Box>
             </Box>
           </Toolbar>

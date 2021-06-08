@@ -3,7 +3,7 @@ export const getEllipsedText = (text, trimLength) => {
   return `${text.substring(0, trimLength - 3)}...`;
 };
 
-export const trimDatetoHumanReadable = (date) => {
+export const trimDatetoHumanReadable = date => {
   const dateSplitArray = date.split(" ");
   return `${dateSplitArray[0]}, ${dateSplitArray[1]} ${dateSplitArray[2]} ${dateSplitArray[3]}, ${dateSplitArray[4]}`;
 };
@@ -12,4 +12,14 @@ export const addDays = (date, days) => {
   var result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
+};
+
+export const getQueryVariable = (query, variable) => {
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (decodeURIComponent(pair[0]) === variable) {
+      return decodeURIComponent(pair[1]);
+    }
+  }
 };

@@ -3,6 +3,12 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
+import {
+  Chart,
+  BarSeries,
+  ArgumentAxis,
+  ValueAxis,
+} from "@devexpress/dx-react-chart-material-ui";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   Grid,
@@ -18,8 +24,14 @@ import {
 import PageLoader from "../../components/PageLoader";
 import useStyles from "./CreatorProfile.Styles";
 import usePostApi from "../../hooks/usePostApi";
-import { transformPostGetContentsRevenue } from "../../utils/api-transforms";
-import { postGetContentsRevenue } from "../../utils/api";
+import {
+  transformPostGetContentsRevenue,
+  transformPostGetContentStat,
+} from "../../utils/api-transforms";
+import {
+  postGetContentsRevenue,
+  postGetContentStatRevenue,
+} from "../../utils/api";
 import AuthContext from "../../contexts/AuthContext";
 import "./index.css";
 
@@ -29,6 +41,10 @@ function CreatorProfile() {
   const intermediateDate = new Date(toDate);
   const fromDate = new Date(intermediateDate.setHours(0, 0, 0, 0));
   const classes = useStyles();
+
+  const [contentPurchaseType, setContentPurchaseType] = useState();
+
+  const [selectedContentChartData, setSelectedContentChartData] = useState([]);
 
   const postGetContentsRevenueParams = useMemo(() => [userId], [userId]);
   const {
@@ -43,22 +59,60 @@ function CreatorProfile() {
     transformPostGetContentsRevenue
   );
 
+  const postGetContentStatRevenueParams = useMemo(() => [], []);
+
+  const {
+    data: contentRevenueStatData,
+    loading: contentRevenueStatLoading,
+    error: contentRevenueStatError,
+    triggerPostApi: contentRevenueStatTriggerApi,
+  } = usePostApi(
+    postGetContentStatRevenue,
+    postGetContentStatRevenueParams,
+    transformPostGetContentStat
+  );
+
   const [selectedFromDate, setSelectedFromDate] = useState(
     fromDate.setDate(fromDate.getDate() - 7)
   );
   const [selectedToDate, setSelectedToDate] = useState(toDate);
 
-  const handleFromDateChange = date => {
+  const handleFromDateChange = (date) => {
     const tempDate = new Date(date.setHours(0, 0, 0, 0));
     setSelectedFromDate(tempDate);
   };
 
-  const handleToDateChange = date => setSelectedToDate(date);
+  useEffect(() => {
+    if (contentRevenueStatData) {
+      const chartData = contentRevenueStatData
+        .filter((data) => data.purchaseType === contentPurchaseType)
+        .map((data) => ({
+          date: data.date,
+          revenue: data.revenue,
+        }));
+      setSelectedContentChartData(chartData);
+    }
+  }, [contentRevenueStatData, contentPurchaseType]);
 
-  const getPurchaseTypeText = purchaseType => {
+  useEffect(() => {
+    console.log(selectedContentChartData);
+  }, [selectedContentChartData]);
+
+  const handleToDateChange = (date) => setSelectedToDate(date);
+
+  const getPurchaseTypeText = (purchaseType) => {
     if (purchaseType === "b") return "Buy";
     if (purchaseType === "r") return "Rent";
     if (purchaseType === "w") return "Weekly";
+  };
+
+  const handleRowClick = (content) => {
+    contentRevenueStatTriggerApi({
+      productId: content.productID,
+      fromDate: new Date(selectedFromDate),
+      toDate: selectedToDate,
+    });
+    setContentPurchaseType(content.purchaseType);
   };
 
   useEffect(() => {
@@ -141,7 +195,10 @@ function CreatorProfile() {
               </TableHead>
               <TableBody className={classes.body}>
                 {contentRevenueData?.map((content, index) => (
-                  <TableRow key={`${content.contentTitle}-${index}`}>
+                  <TableRow
+                    key={`${content.contentTitle}-${index}`}
+                    onClick={() => handleRowClick(content)}
+                  >
                     <TableCell component="th" scope="row">
                       {index + 1}
                     </TableCell>
@@ -183,8 +240,27 @@ function CreatorProfile() {
           </Box>
         </Grid>
       </Grid>
+
+      {selectedContentChartData.length > 0 && (
+        <Chart data={selectedContentChartData}>
+          <ArgumentAxis />
+          <ValueAxis />
+          <BarSeries
+            barWidth={0.2}
+            valueField="revenue"
+            argumentField="date"
+            color="#e6dd00"
+          />
+        </Chart>
+      )}
     </Container>
   );
 }
+
+// [
+//   { date: "2010", revenue: 6.93 },
+//   { date: "1960", revenue: 3.018 },
+
+// ]
 
 export default CreatorProfile;

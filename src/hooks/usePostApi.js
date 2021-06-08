@@ -10,7 +10,7 @@ function usePostApi(
   const [error, setError] = useState();
   const [postData, setPostData] = useState(undefined);
 
-  const triggerPostApi = useCallback(data => setPostData(data), []);
+  const triggerPostApi = useCallback((data) => setPostData(data), []);
 
   useEffect(() => {
     if (data) setError(undefined);
@@ -26,10 +26,10 @@ function usePostApi(
 
       apiCallback
         .apply(null, [postData, ...apiCallbackParams])
-        .then(resData => {
+        .then((resData) => {
           setData(apiTransformFn?.(resData) || resData);
         })
-        .catch(err => {
+        .catch((err) => {
           setError(err);
         })
         .finally(() => {

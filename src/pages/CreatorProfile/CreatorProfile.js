@@ -34,6 +34,7 @@ import {
 } from "../../utils/api";
 import AuthContext from "../../contexts/AuthContext";
 import "./index.css";
+import { COLORS } from "../../configs/theme";
 
 function CreatorProfile() {
   const { userId } = useContext(AuthContext);
@@ -249,18 +250,12 @@ function CreatorProfile() {
             barWidth={0.2}
             valueField="revenue"
             argumentField="date"
-            color="#e6dd00"
+            color={COLORS.SECONDARY_MAIN}
           />
         </Chart>
       )}
     </Container>
   );
 }
-
-// [
-//   { date: "2010", revenue: 6.93 },
-//   { date: "1960", revenue: 3.018 },
-
-// ]
 
 export default CreatorProfile;

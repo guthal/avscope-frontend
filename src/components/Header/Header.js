@@ -90,7 +90,7 @@ function Header() {
   };
 
   const handleToggleMenu = () => {
-    setOpenProfile((prev) => !prev);
+    setOpenProfile(prev => !prev);
   };
 
   const handleCloseMenu = () => {
@@ -121,14 +121,14 @@ function Header() {
     history.push(`${APP_ROUTES.HOME_PAGE.path}`);
   };
 
-  const handleContentTypeClick = (contentType) =>
+  const handleContentTypeClick = contentType =>
     history.push(`${APP_ROUTES.SPECIFIC_CONTENT_DISPLAY.path}/${contentType}`);
 
-  const handleSetSearchValue = (event) => {
+  const handleSetSearchValue = event => {
     setSearchValue(event.target.value);
   };
 
-  const handleSearchClick = (event) => {
+  const handleSearchClick = event => {
     event.preventDefault();
     handleSearchModalClose();
     history.push(
@@ -147,11 +147,11 @@ function Header() {
     }
   }, [logoutData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
 
-  useEffect(() => {
-    if (!isUserLoggedIn) {
-      history.push(APP_ROUTES.LOGIN_PAGE.path);
-    }
-  }, [isUserLoggedIn, history]);
+  // useEffect(() => {
+  //   if (!isUserLoggedIn) {
+  //     history.push(APP_ROUTES.LOGIN_PAGE.path);
+  //   }
+  // }, [isUserLoggedIn, history]);
 
   if (logoutLoading) return <PageLoader />;
 

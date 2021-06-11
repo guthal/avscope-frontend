@@ -80,6 +80,11 @@ export const APP_ROUTES = {
     key: "",
     label: "Login User Page",
   },
+  FORGOT_PASSWORD_PAGE: {
+    path: "/forgot-password",
+    key: "",
+    label: "Forgot Password Page",
+  },
   SIGNUP_PAGE: {
     path: "/signup",
     key: "",

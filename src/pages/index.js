@@ -22,6 +22,7 @@ import PayoutPage from "./PayoutPage";
 import ManageContentPage from "./ManageContentPage";
 import StaticPage from "./StaticPage";
 import SpecificContentPage from "./SpecificContentPage";
+import ForgotPasswordPage from "./ForgotPasswordPage";
 
 function Pages() {
   return (
@@ -99,6 +100,12 @@ function Pages() {
           exact
           path={`${APP_ROUTES.LOGIN_PAGE.path}`}
           component={LoginPage}
+        />
+
+        <Route
+          exact
+          path={`${APP_ROUTES.FORGOT_PASSWORD_PAGE.path}`}
+          component={ForgotPasswordPage}
         />
 
         <Route

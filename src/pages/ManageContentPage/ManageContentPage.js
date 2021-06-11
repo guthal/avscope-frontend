@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { Fragment, useState, useEffect, useMemo } from "react";
 import { Box, Typography, Container, Grid, InputBase } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import useGetApi from "../../hooks/useGetApi";
@@ -21,7 +21,6 @@ function ManageContentPage() {
   const getContentsParams = useMemo(() => [], []);
 
   const [searchValue, setSearchValue] = useState("");
-  const [allContentData, setAllContentData] = useState([]);
 
   const {
     data: contentsData,
@@ -47,25 +46,6 @@ function ManageContentPage() {
 
   const onContentStatusUpdate = () => contentsTriggerApi();
 
-  useEffect(() => {
-    if (contentsData) {
-      setAllContentData(contentsData);
-    }
-  }, [contentsData]);
-
-  // useEffect(() => {
-  //   allContentData?.contents
-  //             ?.filter(
-  //               content =>
-  //                 content.purchaseType === "w" &&
-  //                 content.name
-  //                   .toLowerCase()
-  //                   .includes(searchValue?.toLowerCase())
-  //             )
-  //             .sort((a, b) => a.isExpired - b.isExpired)
-  //             .map((contentCard, index) => ())
-  // }, [searchValue, contentsData])
-
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
 
   useEffect(() => seriesSeasonsTriggerApi(), [seriesSeasonsTriggerApi]);
@@ -80,8 +60,8 @@ function ManageContentPage() {
   return (
     <Container maxWidth="lg">
       <Box py={4}>
-        <Box p={1} className={classes.searchRoot}>
-          <Box className={classes.search}>
+        <Grid container>
+          <Grid item lg={4} md={4} sm={6} xs={12} className={classes.search}>
             <Box className={classes.searchIcon}>
               <SearchIcon />
             </Box>
@@ -96,14 +76,14 @@ function ManageContentPage() {
               onChange={handleSearchClick}
               inputProps={{ "aria-label": "search" }}
             />
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
         <Box py={1}>
           <Box py={6}>
             <Typography variant="h3">Weekly Contents</Typography>
           </Box>
           <Grid container spacing={4}>
-            {allContentData?.contents
+            {contentsData?.contents
               ?.filter(
                 content =>
                   content.purchaseType === "w" &&
@@ -137,21 +117,25 @@ function ManageContentPage() {
             <Typography variant="h4">Stand Alone Contents</Typography>
           </Box>
           <Grid container spacing={4}>
-            {contentsData?.contents?.map((contentCard, index) => (
-              <Grid
-                lg={3}
-                md={3}
-                sm={6}
-                xs={12}
-                item
-                key={`content-card-${index}`}
-              >
-                <ManageContentCard
-                  cardData={contentCard}
-                  onClick={handleCardClick}
-                />
-              </Grid>
-            ))}
+            {contentsData?.contents
+              ?.filter(content =>
+                content.name.toLowerCase().includes(searchValue?.toLowerCase())
+              )
+              .map((contentCard, index) => (
+                <Grid
+                  lg={3}
+                  md={3}
+                  sm={6}
+                  xs={12}
+                  item
+                  key={`content-card-${index}`}
+                >
+                  <ManageContentCard
+                    cardData={contentCard}
+                    onClick={handleCardClick}
+                  />
+                </Grid>
+              ))}
           </Grid>
         </Box>
         {seriesSeasonsData?.length > 0 && (
@@ -162,8 +146,8 @@ function ManageContentPage() {
             <Grid container spacing={4}>
               {seriesSeasonsData
                 .map(series => series.seasons)
-                .map(season => (
-                  <>
+                .map((season, i) => (
+                  <Fragment key={i}>
                     {season?.map((contentCard, index) => (
                       <Grid
                         lg={3}
@@ -179,7 +163,7 @@ function ManageContentPage() {
                         />
                       </Grid>
                     ))}
-                  </>
+                  </Fragment>
                 ))}
             </Grid>
           </Box>

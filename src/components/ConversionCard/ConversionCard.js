@@ -38,33 +38,33 @@ function ConversionCard({ cardData, onContentStatusUpdate }) {
     [contentCard.id]
   );
 
-  const handleSwitchTextChange = (event) => {
-    setPurchaseTypeFields((prev) => ({
+  const handleSwitchTextChange = event => {
+    setPurchaseTypeFields(prev => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
   };
 
-  const handleSwitchChange = (event) => {
+  const handleSwitchChange = event => {
     if (event.target.name === "weekly-switch") {
-      setPurchaseTypeSwitches((prev) => ({
+      setPurchaseTypeSwitches(prev => ({
         ...prev,
         [event.target.name]: event.target.checked,
         "buy-switch": false,
         "rent-switch": false,
       }));
-      setPurchaseTypeFields((prev) => ({
+      setPurchaseTypeFields(prev => ({
         ...prev,
         "buy-field": -1,
         "rent-field": -1,
       }));
     } else {
-      setPurchaseTypeSwitches((prev) => ({
+      setPurchaseTypeSwitches(prev => ({
         ...prev,
         [event.target.name]: event.target.checked,
         "weekly-switch": false,
       }));
-      setPurchaseTypeFields((prev) => ({
+      setPurchaseTypeFields(prev => ({
         ...prev,
         "weekly-field": -1,
         "weekly-num-field": 0,
@@ -95,7 +95,13 @@ function ConversionCard({ cardData, onContentStatusUpdate }) {
   };
 
   const handleOnContentExpiry = () =>
-    setContentCard((prev) => ({ ...prev, isExpired: true }));
+    setContentCard(prev => ({ ...prev, isExpired: true }));
+
+  useEffect(() => {
+    if (cardData) {
+      setContentCard(cardData);
+    }
+  }, [cardData]);
 
   useEffect(() => {
     if (contentConversionData) onContentStatusUpdate();

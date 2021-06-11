@@ -181,6 +181,9 @@ export const getLastPayDate = (creatorID) =>
 export const postGetContentStatRevenue = (data) =>
   axios.post(ENDPOINTS.POST_CONTENT_REVENUE, data).then((res) => res.data);
 
+export const postSendEmail = (data) =>
+  axios.post(ENDPOINTS.POST_REVENUE_INVOICE, data).then((res) => res.data);
+
 export const getStaticPage = (type) => {
   return Promise.resolve({
     title: "Privacy Policy",

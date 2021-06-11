@@ -31,6 +31,7 @@ const ENDPOINTS = {
   GET_LAST_PAY_DATE: (creatorID) => `${DOMAIN}/account/last-pay/${creatorID}`,
   GET_STATIC_PAGE: (type) => `${DOMAIN}/static/${type}`,
   POST_CONTENT_REVENUE: `${DOMAIN}/revenue/summary`,
+  POST_REVENUE_INVOICE: `${DOMAIN}/revenue/invoice`,
 };
 
 export { ENDPOINTS };

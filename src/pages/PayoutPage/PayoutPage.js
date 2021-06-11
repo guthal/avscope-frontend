@@ -118,7 +118,7 @@ function PayoutPage() {
 
   const handleSendEmail = () =>
     postSendEmailTriggerApi({
-      creatorId: userId,
+      creatorId: params.creatorID,
       fromDate: selectedFromDate,
       toDate: selectedToDate,
     });

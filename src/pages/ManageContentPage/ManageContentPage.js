@@ -1,10 +1,12 @@
-import React, { useEffect, useMemo } from "react";
-import { Box, Typography, Container, Grid } from "@material-ui/core";
+import React, { useState, useEffect, useMemo } from "react";
+import { Box, Typography, Container, Grid, InputBase } from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
 import useGetApi from "../../hooks/useGetApi";
 import { getContents, getAllSeries } from "../../utils/api";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import { useHistory } from "react-router";
+import useStyles from "./ManageContentPage.Styles";
 import {
   transformGetContents,
   transformGetAllSeries,
@@ -14,8 +16,12 @@ import ManageContentCard from "../../components/ManageContentCard";
 import ConversionCard from "../../components/ConversionCard";
 
 function ManageContentPage() {
+  const classes = useStyles();
   const history = useHistory();
   const getContentsParams = useMemo(() => [], []);
+
+  const [searchValue, setSearchValue] = useState("");
+  const [allContentData, setAllContentData] = useState([]);
 
   const {
     data: contentsData,
@@ -32,10 +38,33 @@ function ManageContentPage() {
     triggerApi: seriesSeasonsTriggerApi,
   } = useGetApi(getAllSeries, getAllSeriesParams, transformGetAllSeries);
 
-  const handleCardClick = (contentID) =>
+  const handleCardClick = contentID =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
+  const handleSearchClick = event => {
+    setSearchValue(event.target.value);
+  };
+
   const onContentStatusUpdate = () => contentsTriggerApi();
+
+  useEffect(() => {
+    if (contentsData) {
+      setAllContentData(contentsData);
+    }
+  }, [contentsData]);
+
+  // useEffect(() => {
+  //   allContentData?.contents
+  //             ?.filter(
+  //               content =>
+  //                 content.purchaseType === "w" &&
+  //                 content.name
+  //                   .toLowerCase()
+  //                   .includes(searchValue?.toLowerCase())
+  //             )
+  //             .sort((a, b) => a.isExpired - b.isExpired)
+  //             .map((contentCard, index) => ())
+  // }, [searchValue, contentsData])
 
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
 
@@ -49,92 +78,114 @@ function ManageContentPage() {
     );
 
   return (
-    <>
-      <Container maxWidth="lg">
-        <Box py={4}>
-          <Box py={1}>
-            <Box py={6}>
-              <Typography variant="h3">Weekly Contents</Typography>
+    <Container maxWidth="lg">
+      <Box py={4}>
+        <Box p={1} className={classes.searchRoot}>
+          <Box className={classes.search}>
+            <Box className={classes.searchIcon}>
+              <SearchIcon />
             </Box>
-            <Grid container spacing={4}>
-              {contentsData?.contents
-                ?.filter((content) => content.purchaseType === "w")
-                .sort((a, b) => a.isExpired - b.isExpired)
-                .map((contentCard, index) => (
-                  <Grid
-                    lg={4}
-                    md={4}
-                    sm={6}
-                    xs={12}
-                    item
-                    key={`content-card-${index}`}
-                  >
-                    <ConversionCard
-                      cardData={contentCard}
-                      onContentStatusUpdate={onContentStatusUpdate}
-                    />
-                  </Grid>
-                ))}
-            </Grid>
+            <InputBase
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              name="search"
+              placeholder="Search..."
+              value={searchValue}
+              onChange={handleSearchClick}
+              inputProps={{ "aria-label": "search" }}
+            />
           </Box>
-          <Box py={2}>
-            <Typography variant="h3">Availability</Typography>
+        </Box>
+        <Box py={1}>
+          <Box py={6}>
+            <Typography variant="h3">Weekly Contents</Typography>
           </Box>
-          <Box py={1}>
-            <Box py={2}>
-              <Typography variant="h4">Stand Alone Contents</Typography>
-            </Box>
-            <Grid container spacing={4}>
-              {contentsData?.contents?.map((contentCard, index) => (
+          <Grid container spacing={4}>
+            {allContentData?.contents
+              ?.filter(
+                content =>
+                  content.purchaseType === "w" &&
+                  content.name
+                    .toLowerCase()
+                    .includes(searchValue?.toLowerCase())
+              )
+              .sort((a, b) => a.isExpired - b.isExpired)
+              .map((contentCard, index) => (
                 <Grid
-                  lg={3}
-                  md={3}
+                  lg={4}
+                  md={4}
                   sm={6}
                   xs={12}
                   item
                   key={`content-card-${index}`}
                 >
-                  <ManageContentCard
+                  <ConversionCard
                     cardData={contentCard}
-                    onClick={handleCardClick}
+                    onContentStatusUpdate={onContentStatusUpdate}
                   />
                 </Grid>
               ))}
+          </Grid>
+        </Box>
+        <Box py={2}>
+          <Typography variant="h3">Availability</Typography>
+        </Box>
+        <Box py={1}>
+          <Box py={2}>
+            <Typography variant="h4">Stand Alone Contents</Typography>
+          </Box>
+          <Grid container spacing={4}>
+            {contentsData?.contents?.map((contentCard, index) => (
+              <Grid
+                lg={3}
+                md={3}
+                sm={6}
+                xs={12}
+                item
+                key={`content-card-${index}`}
+              >
+                <ManageContentCard
+                  cardData={contentCard}
+                  onClick={handleCardClick}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        {seriesSeasonsData?.length > 0 && (
+          <Box py={1}>
+            <Box py={2}>
+              <Typography variant="h4">Series</Typography>
+            </Box>
+            <Grid container spacing={4}>
+              {seriesSeasonsData
+                .map(series => series.seasons)
+                .map(season => (
+                  <>
+                    {season?.map((contentCard, index) => (
+                      <Grid
+                        lg={3}
+                        md={3}
+                        sm={6}
+                        xs={12}
+                        item
+                        key={`content-card-${index}`}
+                      >
+                        <ManageContentCard
+                          cardData={contentCard}
+                          onClick={handleCardClick}
+                        />
+                      </Grid>
+                    ))}
+                  </>
+                ))}
             </Grid>
           </Box>
-          {seriesSeasonsData?.length > 0 && (
-            <Box py={1}>
-              <Box py={2}>
-                <Typography variant="h4">Series</Typography>
-              </Box>
-              <Grid container spacing={4}>
-                {seriesSeasonsData
-                  .map((series) => series.seasons)
-                  .map((season) => (
-                    <>
-                      {season?.map((contentCard, index) => (
-                        <Grid
-                          lg={3}
-                          md={3}
-                          sm={6}
-                          xs={12}
-                          item
-                          key={`content-card-${index}`}
-                        >
-                          <ManageContentCard
-                            cardData={contentCard}
-                            onClick={handleCardClick}
-                          />
-                        </Grid>
-                      ))}
-                    </>
-                  ))}
-              </Grid>
-            </Box>
-          )}
-        </Box>
-      </Container>
-    </>
+        )}
+      </Box>
+    </Container>
   );
 }
 

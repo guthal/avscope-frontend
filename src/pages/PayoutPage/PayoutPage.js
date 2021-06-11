@@ -19,6 +19,7 @@ import {
   Button,
 } from "@material-ui/core";
 import PageLoader from "../../components/PageLoader";
+import PageError from "../../components/PageError";
 import useStyles from "./PayoutPage.Styles";
 import usePostApi from "../../hooks/usePostApi";
 import {
@@ -29,6 +30,7 @@ import {
   getLastPayDate,
   postGetContentsRevenue,
   postPayCreatorEarning,
+  postSendEmail,
 } from "../../utils/api";
 import AuthContext from "../../contexts/AuthContext";
 import { useRouteMatch } from "react-router";
@@ -92,6 +94,14 @@ function PayoutPage() {
     transformPostPayCreatorEarning
   );
 
+  const postSendEmailParams = useMemo(() => [], []);
+
+  const {
+    loading: postSendEmailLoading,
+    error: postSendEmailError,
+    triggerPostApi: postSendEmailTriggerApi,
+  } = usePostApi(postSendEmail, postSendEmailParams);
+
   const handleFromDateChange = (date) => {
     const tempDate = new Date(date.setHours(0, 0, 0, 0));
     setSelectedFromDate(tempDate);
@@ -105,6 +115,13 @@ function PayoutPage() {
 
   const handleTransactionIdChange = (event) =>
     setTransactionId(event.target.value);
+
+  const handleSendEmail = () =>
+    postSendEmailTriggerApi({
+      creatorId: userId,
+      fromDate: selectedFromDate,
+      toDate: selectedToDate,
+    });
 
   const getPurchaseTypeText = (purchaseType) => {
     if (purchaseType === "b") return "Buy";
@@ -146,9 +163,12 @@ function PayoutPage() {
   if (
     creatorLastPaidLoading ||
     creatorPayoutLoading ||
-    payCreatorEarningLoading
+    payCreatorEarningLoading ||
+    postSendEmailLoading
   )
     return <PageLoader />;
+
+  if (postSendEmailError) return <PageError />;
 
   return (
     <Grid container className={classes.root}>
@@ -307,6 +327,7 @@ function PayoutPage() {
                   variant="contained"
                   className={classes.submit}
                   color="primary"
+                  onClick={handleSendEmail}
                 >
                   Send Email
                 </Button>

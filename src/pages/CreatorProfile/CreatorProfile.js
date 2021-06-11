@@ -24,6 +24,7 @@ import {
 import PageLoader from "../../components/PageLoader";
 import useStyles from "./CreatorProfile.Styles";
 import usePostApi from "../../hooks/usePostApi";
+import PageError from "../../components/PageError";
 import {
   transformPostGetContentsRevenue,
   transformPostGetContentStat,
@@ -127,6 +128,8 @@ function CreatorProfile() {
   }, [contentRevenueTriggerApi, selectedFromDate, selectedToDate, userId]);
 
   if (contentRevenueLoading) return <PageLoader />;
+
+  if (contentRevenueError) return <PageError />;
 
   return (
     <Container maxWidth="lg" className={classes.mainRoot}>

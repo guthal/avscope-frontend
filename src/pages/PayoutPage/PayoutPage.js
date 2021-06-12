@@ -118,9 +118,9 @@ function PayoutPage() {
 
   const handleSendEmail = () =>
     postSendEmailTriggerApi({
-      creatorId: userId,
+      creatorId: params.creatorID,
       fromDate: selectedFromDate,
-      toDate: selectedToDate,
+      toDate: new Date(selectedToDate),
     });
 
   const getPurchaseTypeText = (purchaseType) => {

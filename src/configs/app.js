@@ -90,6 +90,16 @@ export const APP_ROUTES = {
     key: "",
     label: "Signup New User Page",
   },
+  EMAIL_VERIFY_PAGE: {
+    path: "/signup/email-verify",
+    key: "",
+    label: "Post Signup Verify User Page",
+  },
+  RESET_PASSWORD_PAGE: {
+    path: "/forgot-password/reset",
+    key: "",
+    label: "Reset Password Page",
+  },
   CHECKOUT_PAGE: {
     path: "/checkout",
     key: "",

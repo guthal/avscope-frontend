@@ -30,7 +30,10 @@ function ResetPasswordPage() {
     retypePassword: "",
   });
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-  const postLoginParams = useMemo(() => [], []);
+  const postResetPasswordParams = useMemo(
+    () => [params.userId],
+    [params.userId]
+  );
 
   const {
     data: resetPasswordData,
@@ -39,13 +42,13 @@ function ResetPasswordPage() {
     triggerPostApi: resetPasswordTriggerPostApi,
   } = usePostApi(
     postResetPassword,
-    postLoginParams,
+    postResetPasswordParams,
     transformPostResetPasswordResponse
   );
 
-  const handleTextFieldChange = event => {
+  const handleTextFieldChange = (event) => {
     setPasswordsMatch(true);
-    setTextFields(prev => ({
+    setTextFields((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
@@ -56,8 +59,8 @@ function ResetPasswordPage() {
 
   const handleFormSubmit = () => {
     if (textFields.password === textFields.retypePassword) {
-      resetPasswordTriggerPostApi(params.userId, {
-        password: textFields.password,
+      resetPasswordTriggerPostApi({
+        newPassword: textFields.password,
       });
     } else {
       setPasswordsMatch(false);
@@ -82,7 +85,7 @@ function ResetPasswordPage() {
           </Typography>
         </Box>
         <Box className={classes.form}>
-          {resetPasswordData === undefined ? (
+          {!resetPasswordData ? (
             <Box>
               <Grid container spacing={2}>
                 <Grid item xs={12}>

@@ -46,9 +46,9 @@ function ResetPasswordPage() {
     transformPostResetPasswordResponse
   );
 
-  const handleTextFieldChange = (event) => {
+  const handleTextFieldChange = event => {
     setPasswordsMatch(true);
-    setTextFields((prev) => ({
+    setTextFields(prev => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));

@@ -20,6 +20,9 @@ import {
 import FaceTwoToneIcon from "@material-ui/icons/FaceTwoTone";
 import HomeTwoToneIcon from "@material-ui/icons/HomeTwoTone";
 import SearchIcon from "@material-ui/icons/Search";
+import VideoLibraryRoundedIcon from "@material-ui/icons/VideoLibraryRounded";
+import LockIcon from "@material-ui/icons/Lock";
+import AVClubLogo from "../../assets/logo.svg";
 import { APP_ROUTES, HEADER_LABELS } from "../../configs/app";
 import Banner from "../../assets/avscopeBanner.png";
 import useStyles from "./Header.Styles";
@@ -34,6 +37,7 @@ import { getQueryVariable } from "../../utils/generic";
 function Header() {
   const classes = useStyles();
   const history = useHistory();
+  // eslint-disable-next-line no-unused-vars
   const { pathname } = useLocation();
 
   const {
@@ -86,7 +90,7 @@ function Header() {
   };
 
   const handleToggleMenu = () => {
-    setOpenProfile((prev) => !prev);
+    setOpenProfile(prev => !prev);
   };
 
   const handleCloseMenu = () => {
@@ -117,14 +121,14 @@ function Header() {
     history.push(`${APP_ROUTES.HOME_PAGE.path}`);
   };
 
-  const handleContentTypeClick = (contentType) =>
+  const handleContentTypeClick = contentType =>
     history.push(`${APP_ROUTES.SPECIFIC_CONTENT_DISPLAY.path}/${contentType}`);
 
-  const handleSetSearchValue = (event) => {
+  const handleSetSearchValue = event => {
     setSearchValue(event.target.value);
   };
 
-  const handleSearchClick = (event) => {
+  const handleSearchClick = event => {
     event.preventDefault();
     handleSearchModalClose();
     history.push(
@@ -143,11 +147,11 @@ function Header() {
     }
   }, [logoutData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
 
-  useEffect(() => {
-    if (!isUserLoggedIn) {
-      history.push(APP_ROUTES.LOGIN_PAGE.path);
-    }
-  }, [isUserLoggedIn, history]);
+  // useEffect(() => {
+  //   if (!isUserLoggedIn) {
+  //     history.push(APP_ROUTES.LOGIN_PAGE.path);
+  //   }
+  // }, [isUserLoggedIn, history]);
 
   if (logoutLoading) return <PageLoader />;
 
@@ -158,7 +162,7 @@ function Header() {
 
   return (
     <Box mb={2}>
-      <AppBar position="static">
+      <AppBar position="sticky" className={classes.appNavBar}>
         <Toolbar>
           <Box className={classes.logoLinkContainer}>
             <Box className={classes.title}>
@@ -178,6 +182,48 @@ function Header() {
             >
               {HEADER_LABELS.LOGIN}
             </Button>
+          )}
+          {isUserLoggedIn && (
+            <Fragment>
+              <Hidden mdUp>
+                <Box mt={1}>
+                  <Box px={2}>
+                    <img
+                      src={AVClubLogo}
+                      alt="AVClub-Logo"
+                      className={classes.iconTriggerDisabled}
+                    />
+                  </Box>
+                </Box>
+              </Hidden>
+              <Hidden smDown>
+                <Box px={2}>
+                  <Button variant="outlined" color="secondary">
+                    <LockIcon className={classes.clubLocked} /> AVClub
+                  </Button>
+                </Box>
+              </Hidden>
+            </Fragment>
+          )}
+          {isUserLoggedIn && (
+            <Fragment>
+              <Hidden mdUp>
+                <Box mt={1}>
+                  <Box onClick={() => handleContentTypeClick("all")}>
+                    <VideoLibraryRoundedIcon className={classes.iconTrigger} />
+                  </Box>
+                </Box>
+              </Hidden>
+              <Hidden smDown>
+                <Box>
+                  <Box onClick={() => handleContentTypeClick("all")}>
+                    <Typography className={classes.contentTypeLink}>
+                      All Contents
+                    </Typography>
+                  </Box>
+                </Box>
+              </Hidden>
+            </Fragment>
           )}
           {isUserLoggedIn && (
             <Fragment>
@@ -334,7 +380,7 @@ function Header() {
           )}
         </Toolbar>
       </AppBar>
-      {["/", "/sp-content/all", "/sp-content/br", "/sp-content/week"].includes(
+      {/* {["/", "/sp-content/all", "/sp-content/br", "/sp-content/week"].includes(
         pathname
       ) && (
         <AppBar position="static" style={{ borderTop: "1px solid white" }}>
@@ -360,7 +406,7 @@ function Header() {
             </Box>
           </Toolbar>
         </AppBar>
-      )}
+      )} */}
     </Box>
   );
 }

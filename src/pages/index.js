@@ -7,6 +7,7 @@ import HistoryPage from "./HistoryPage";
 import TicketsPage from "./TicketsPage";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
+import VerifyEmailPage from "./VerifyEmailPage";
 import PageNotFound from "./PageNotFound";
 import VideoDetailPage from "./VideoDetailPage";
 import CreatorsPage from "./CreatorsPage";
@@ -22,6 +23,8 @@ import PayoutPage from "./PayoutPage";
 import ManageContentPage from "./ManageContentPage";
 import StaticPage from "./StaticPage";
 import SpecificContentPage from "./SpecificContentPage";
+import ForgotPasswordPage from "./ForgotPasswordPage";
+import ResetPasswordPage from "./ResetPasswordPage";
 
 function Pages() {
   return (
@@ -103,8 +106,26 @@ function Pages() {
 
         <Route
           exact
+          path={`${APP_ROUTES.FORGOT_PASSWORD_PAGE.path}`}
+          component={ForgotPasswordPage}
+        />
+
+        <Route
+          exact
           path={`${APP_ROUTES.SIGNUP_PAGE.path}`}
           component={SignupPage}
+        />
+
+        <Route
+          exact
+          path={`${APP_ROUTES.EMAIL_VERIFY_PAGE.path}/:userId`}
+          component={VerifyEmailPage}
+        />
+
+        <Route
+          exact
+          path={`${APP_ROUTES.RESET_PASSWORD_PAGE.path}/:userId`}
+          component={ResetPasswordPage}
         />
 
         <Route

@@ -66,6 +66,9 @@ function LoginPage() {
     }
   }, [history, loginData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
 
+  const handleForgotPasswordClick = () =>
+    history.push(`${APP_ROUTES.FORGOT_PASSWORD_PAGE.path}`);
+
   const handleSignupClick = () =>
     history.push(`${APP_ROUTES.SIGNUP_PAGE.path}`);
 
@@ -131,7 +134,11 @@ function LoginPage() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link
+                onClick={handleForgotPasswordClick}
+                variant="body2"
+                style={{ cursor: "pointer" }}
+              >
                 Forgot password?
               </Link>
             </Grid>

@@ -6,6 +6,7 @@ import PageLoader from "../components/PageLoader";
 
 const AuthContext = createContext({
   isUserLoggedIn: false,
+  isUserEmailVerified: false,
   userId: "",
   username: "",
   utype: 2,
@@ -14,6 +15,7 @@ const AuthContext = createContext({
   setUsername: () => {},
   setUserId: () => {},
   setIsUserLoggedIn: () => {},
+  setIsUserEmailVerified: () => {},
   setUtype: () => {},
   setName: () => {},
   setUserWatchlistData: () => {},
@@ -21,6 +23,7 @@ const AuthContext = createContext({
 
 function AuthContextProvider({ children }) {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [isUserEmailVerified, setIsUserEmailVerified] = useState(false);
   const [userId, setUserId] = useState();
   const [username, setUsername] = useState();
   const [utype, setUtype] = useState(2);
@@ -45,8 +48,10 @@ function AuthContextProvider({ children }) {
 
   useEffect(() => {
     if (verifyUserData) {
+      console.log("verifyUserData: ", verifyUserData);
       setUsername(verifyUserData.username);
       setIsUserLoggedIn(true);
+      setIsUserEmailVerified(verifyUserData.userVerified);
       setUserId(verifyUserData.userId);
       setUtype(verifyUserData.utype);
       setName(verifyUserData.name);
@@ -73,6 +78,7 @@ function AuthContextProvider({ children }) {
     <AuthContext.Provider
       value={{
         isUserLoggedIn,
+        isUserEmailVerified,
         userId,
         username,
         utype,
@@ -80,6 +86,7 @@ function AuthContextProvider({ children }) {
         userWatchlistData,
         setUsername,
         setIsUserLoggedIn,
+        setIsUserEmailVerified,
         setUserId,
         setUtype,
         setName,

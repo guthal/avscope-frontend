@@ -113,7 +113,7 @@ export const postForgotPassword = data => {
     .then(res => res.data);
 };
 
-export const postResetPassword = (userId, data) => {
+export const postResetPassword = (data, userId) => {
   return axios
     .post(ENDPOINTS.POST_RESET_PASSWORD(userId), data, {
       withCredentials: true,

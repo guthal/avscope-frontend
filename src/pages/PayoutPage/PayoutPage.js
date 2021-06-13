@@ -22,14 +22,10 @@ import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import useStyles from "./PayoutPage.Styles";
 import usePostApi from "../../hooks/usePostApi";
-import {
-  transformPostGetContentsRevenue,
-  transformPostPayCreatorEarning,
-} from "../../utils/api-transforms";
+import { transformPostGetContentsRevenue } from "../../utils/api-transforms";
 import {
   getLastPayDate,
   postGetContentsRevenue,
-  postPayCreatorEarning,
   postSendEmail,
 } from "../../utils/api";
 import AuthContext from "../../contexts/AuthContext";
@@ -59,8 +55,10 @@ function PayoutPage() {
     () => [params.creatorID],
     [params.creatorID]
   );
-  const postCreatorPayoutParams = useMemo(() => [userId], [userId]);
-  const postPayCreatorEarningParams = useMemo(() => [], []);
+  const postCreatorPayoutParams = useMemo(
+    () => [params.creatorID],
+    [params.creatorID]
+  );
 
   const {
     data: creatorLastPaidData,
@@ -79,19 +77,6 @@ function PayoutPage() {
     postGetContentsRevenue,
     postCreatorPayoutParams,
     transformPostGetContentsRevenue
-  );
-
-  const {
-    // eslint-disable-next-line no-unused-vars
-    data: payCreatorEarningData,
-    loading: payCreatorEarningLoading,
-    // eslint-disable-next-line no-unused-vars
-    error: payCreatorEarningError,
-    triggerPostApi: payCreatorEarningTriggerApi,
-  } = usePostApi(
-    postPayCreatorEarning,
-    postPayCreatorEarningParams,
-    transformPostPayCreatorEarning
   );
 
   const postSendEmailParams = useMemo(() => [], []);
@@ -154,18 +139,7 @@ function PayoutPage() {
     userId,
   ]);
 
-  useEffect(() => {
-    payCreatorEarningTriggerApi({
-      transactionId: "", // enter what transactionId to send
-    });
-  }, [payCreatorEarningTriggerApi]);
-
-  if (
-    creatorLastPaidLoading ||
-    creatorPayoutLoading ||
-    payCreatorEarningLoading ||
-    postSendEmailLoading
-  )
+  if (creatorLastPaidLoading || creatorPayoutLoading || postSendEmailLoading)
     return <PageLoader />;
 
   if (postSendEmailError) return <PageError />;

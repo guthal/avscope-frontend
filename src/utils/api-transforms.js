@@ -101,6 +101,7 @@ export const transformGetContent = data => ({
   seriesID: data.seriesId,
   seriesInfo: data.contentSeriesInfo,
   contentURL: data.contentUrl,
+  certificate: data.certificate || "Unrated",
 });
 
 export const transformGetHistoryData = data => {

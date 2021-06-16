@@ -198,7 +198,11 @@ function Header() {
               </Hidden>
               <Hidden smDown>
                 <Box px={2}>
-                  <Button variant="outlined" color="secondary">
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    disableTouchRipple
+                  >
                     <LockIcon className={classes.clubLocked} /> AVClub
                   </Button>
                 </Box>

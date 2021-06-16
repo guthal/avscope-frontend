@@ -55,7 +55,7 @@ function VideoDetailPage() {
   const history = useHistory();
   const routeMatch = useRouteMatch();
   const { params } = routeMatch;
-  const { userId, userWatchlistData, setUserWatchlistData } =
+  const { userId, userAge, userWatchlistData, setUserWatchlistData } =
     useContext(AuthContext);
 
   const [isVideoAvailable, setIsVideoAvailable] = useState(false);
@@ -299,6 +299,65 @@ function VideoDetailPage() {
     return <></>;
   };
 
+  const ShowPlayAfterAgeCheck = () => {
+    if (contentData?.certificate === "NC-17") {
+      if (userAge >= 18) {
+        return (
+          <Box my={3}>
+            {isVideoAvailable && contentData ? (
+              <Button
+                color="secondary"
+                variant="contained"
+                className={classes.playBtn}
+                onClick={handlePlay}
+              >
+                {`Play `}{" "}
+                <PlayCircleOutlineOutlined className={classes.platBtnIcon} />
+              </Button>
+            ) : (
+              <>
+                <PurchaseTypeElements />
+              </>
+            )}
+          </Box>
+        );
+      } else {
+        return (
+          <Box my={3}>
+            <Button
+              color="secondary"
+              variant="outlined"
+              className={classes.ageRestrictedBtn}
+              disableTouchRipple
+            >
+              {`This Content is Unavailable `}{" "}
+            </Button>
+          </Box>
+        );
+      }
+    } else {
+      return (
+        <Box my={3}>
+          {isVideoAvailable && contentData ? (
+            <Button
+              color="secondary"
+              variant="contained"
+              className={classes.playBtn}
+              onClick={handlePlay}
+            >
+              {`Play `}{" "}
+              <PlayCircleOutlineOutlined className={classes.platBtnIcon} />
+            </Button>
+          ) : (
+            <>
+              <PurchaseTypeElements />
+            </>
+          )}
+        </Box>
+      );
+    }
+  };
+
   if (
     contentLoading ||
     contentsLoading ||
@@ -437,26 +496,7 @@ function VideoDetailPage() {
                       </Box>
                     ))}
                   </Box>
-
-                  <Box my={3}>
-                    {isVideoAvailable && contentData ? (
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        className={classes.playBtn}
-                        onClick={handlePlay}
-                      >
-                        {`Play `}{" "}
-                        <PlayCircleOutlineOutlined
-                          className={classes.platBtnIcon}
-                        />
-                      </Button>
-                    ) : (
-                      <>
-                        <PurchaseTypeElements />
-                      </>
-                    )}
-                  </Box>
+                  <ShowPlayAfterAgeCheck />
                   <Box my={3}>
                     {userWatchlistData?.includes(contentData?.id) ? (
                       <Button

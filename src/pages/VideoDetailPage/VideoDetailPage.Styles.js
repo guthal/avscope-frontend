@@ -69,6 +69,16 @@ const useStyles = makeStyles(theme => ({
     fontWeight: "bold",
     fontSize: "20px",
   },
+  ageRestrictedBtn: {
+    color: theme.palette.warning.dark,
+    textTransform: "initial",
+    fontWeight: "bold",
+    fontSize: "20px",
+    "&:hover": {
+      cursor: "not-allowed",
+      color: theme.palette.warning.dark,
+    },
+  },
 
   platBtnIcon: {
     fontSize: 40,

@@ -23,3 +23,14 @@ export const getQueryVariable = (query, variable) => {
     }
   }
 };
+
+export const getAge = dateString => {
+  const today = new Date();
+  const birthDate = new Date(dateString);
+  const age = today.getFullYear() - birthDate.getFullYear();
+  const month = today.getMonth() - birthDate.getMonth();
+  if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+    return age - 1;
+  }
+  return age;
+};

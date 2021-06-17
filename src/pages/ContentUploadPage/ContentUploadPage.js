@@ -60,9 +60,8 @@ function ContentUploadPage() {
     season: seasonsList[0],
   });
 
-  const certificateList = CONTENT_CERTIFICATES;
   const [certificateSelection, setCertificateSelection] = useState(
-    certificateList[1]
+    CONTENT_CERTIFICATES[1]
   );
 
   const [selectedGenreList, setSelectedGenreList] = useState([]);
@@ -583,7 +582,7 @@ function ContentUploadPage() {
                       variant="outlined"
                       color="primary"
                     >
-                      {certificateList.map((certificate, i) => (
+                      {CONTENT_CERTIFICATES.map((certificate, i) => (
                         <MenuItem
                           key={i}
                           className={classes.selectItem}

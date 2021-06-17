@@ -8,12 +8,14 @@ const AuthContext = createContext({
   isUserLoggedIn: false,
   isUserEmailVerified: false,
   userId: "",
+  userAge: -1,
   username: "",
   utype: 2,
   name: "",
   userWatchlistData: [],
   setUsername: () => {},
   setUserId: () => {},
+  setUserAge: () => {},
   setIsUserLoggedIn: () => {},
   setIsUserEmailVerified: () => {},
   setUtype: () => {},
@@ -24,6 +26,7 @@ const AuthContext = createContext({
 function AuthContextProvider({ children }) {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isUserEmailVerified, setIsUserEmailVerified] = useState(false);
+  const [userAge, setUserAge] = useState(-1);
   const [userId, setUserId] = useState();
   const [username, setUsername] = useState();
   const [utype, setUtype] = useState(2);
@@ -48,11 +51,11 @@ function AuthContextProvider({ children }) {
 
   useEffect(() => {
     if (verifyUserData) {
-      console.log("verifyUserData: ", verifyUserData);
       setUsername(verifyUserData.username);
       setIsUserLoggedIn(true);
       setIsUserEmailVerified(verifyUserData.userVerified);
       setUserId(verifyUserData.userId);
+      setUserAge(verifyUserData.userAge);
       setUtype(verifyUserData.utype);
       setName(verifyUserData.name);
       setUserWatchlistData(verifyUserData.userWatchlist);
@@ -64,6 +67,7 @@ function AuthContextProvider({ children }) {
       setUsername("");
       setIsUserLoggedIn(false);
       setUserId("");
+      setUserAge(-1);
       setUtype(2);
       setName("");
       setUserWatchlistData([]);
@@ -80,6 +84,7 @@ function AuthContextProvider({ children }) {
         isUserLoggedIn,
         isUserEmailVerified,
         userId,
+        userAge,
         username,
         utype,
         name,
@@ -88,6 +93,7 @@ function AuthContextProvider({ children }) {
         setIsUserLoggedIn,
         setIsUserEmailVerified,
         setUserId,
+        setUserAge,
         setUtype,
         setName,
         setUserWatchlistData,

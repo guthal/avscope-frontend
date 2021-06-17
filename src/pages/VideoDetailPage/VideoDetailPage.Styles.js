@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
+import "../../fonts/fonts.css";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,6 +22,21 @@ const useStyles = makeStyles(theme => ({
         "radial-gradient(at 65% 50%, black, transparent 72%)",
       maskImage: "radial-gradient(at 65% 50%, black, transparent 72%)",
     },
+  },
+
+  certificateContainer: {
+    fontFamily: "MateSC",
+    fontSize: "16px",
+    fontWeight: "bold",
+    borderRight: `1px solid ${theme.palette.secondary.dark}`,
+    paddingRight: "12px",
+  },
+
+  certificateElement: {
+    display: "inline",
+    padding: "6px",
+    border: `2px solid ${theme.palette.secondary.dark}`,
+    borderRadius: "4px",
   },
 
   seasonSelectorContainer: { position: "relative" },
@@ -52,6 +68,16 @@ const useStyles = makeStyles(theme => ({
     textTransform: "initial",
     fontWeight: "bold",
     fontSize: "20px",
+  },
+  ageRestrictedBtn: {
+    color: theme.palette.warning.dark,
+    textTransform: "initial",
+    fontWeight: "bold",
+    fontSize: "20px",
+    "&:hover": {
+      cursor: "not-allowed",
+      color: theme.palette.warning.dark,
+    },
   },
 
   platBtnIcon: {

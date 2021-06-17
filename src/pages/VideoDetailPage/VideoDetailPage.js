@@ -55,7 +55,7 @@ function VideoDetailPage() {
   const history = useHistory();
   const routeMatch = useRouteMatch();
   const { params } = routeMatch;
-  const { userId, userWatchlistData, setUserWatchlistData } =
+  const { userId, userAge, userWatchlistData, setUserWatchlistData } =
     useContext(AuthContext);
 
   const [isVideoAvailable, setIsVideoAvailable] = useState(false);
@@ -116,21 +116,20 @@ function VideoDetailPage() {
     transformGetSeriesContents
   );
 
-  const handleCardClick = (contentID) =>
+  const handleCardClick = contentID =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   const handleSeasonSelectorClickAway = () => {
     setSeasonSelectorOpen(false);
   };
 
-  const handleSeasonSelectorClick = () =>
-    setSeasonSelectorOpen((prev) => !prev);
+  const handleSeasonSelectorClick = () => setSeasonSelectorOpen(prev => !prev);
 
-  const handleSeasonClick = (seasonNo) => {
+  const handleSeasonClick = seasonNo => {
     setSeriesContents();
     handleSeasonSelectorClickAway();
     const episodeData = seriesData.find(
-      (episode) =>
+      episode =>
         episode.seriesInfo.seasonNo === seasonNo &&
         episode.seriesInfo.episodeNo === 1
     );
@@ -161,14 +160,14 @@ function VideoDetailPage() {
     postAddWatchList(userId, {
       contentId: contentData.id,
     }).then(() => {
-      setUserWatchlistData((prev) => [...prev, contentData.id]);
+      setUserWatchlistData(prev => [...prev, contentData.id]);
     });
   };
 
   const handleRemovefromWatchlist = () => {
     deleteRemoveFromWatchlist(userId, contentData.id).then(() => {
-      setUserWatchlistData((prev) =>
-        prev.filter((watchlistItem) => watchlistItem !== contentData.id)
+      setUserWatchlistData(prev =>
+        prev.filter(watchlistItem => watchlistItem !== contentData.id)
       );
     });
   };
@@ -184,7 +183,7 @@ function VideoDetailPage() {
     if (contentsData)
       setRecommendedContents(
         contentsData?.contents
-          ?.filter((content) => content.id !== params.contentID)
+          ?.filter(content => content.id !== params.contentID)
           .slice(0, 4)
       );
   }, [contentsData, contentData, params.contentID]);
@@ -193,7 +192,7 @@ function VideoDetailPage() {
   useEffect(() => {
     if (contentData && seriesData) {
       const nextInSeries = seriesData.filter(
-        (episode) =>
+        episode =>
           episode.seriesInfo.seasonNo === contentData.seriesInfo.seasonNo &&
           episode.id !== contentData.id &&
           episode.seriesInfo.episodeNo > contentData.seriesInfo.episodeNo
@@ -222,7 +221,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Buy now @ ₹${contentData?.price["b"]}`}
-          onClick={(event) => {
+          onClick={event => {
             handleRazorPay(
               event,
               userId,
@@ -238,7 +237,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Rent now @ ₹${contentData?.price["r"]}`}
-          onClick={(event) => {
+          onClick={event => {
             handleRazorPay(
               event,
               userId,
@@ -254,7 +253,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Purchase ticket now @ ₹${contentData?.price["w"]}`}
-          onClick={(event) => {
+          onClick={event => {
             handleRazorPay(
               event,
               userId,
@@ -271,7 +270,7 @@ function VideoDetailPage() {
         <>
           <PurchaseButton
             btnText={`Buy now @ ₹${contentData?.price["b"]}`}
-            onClick={(event) => {
+            onClick={event => {
               handleRazorPay(
                 event,
                 userId,
@@ -284,7 +283,7 @@ function VideoDetailPage() {
           />
           <PurchaseButton
             btnText={`Rent now @ ₹${contentData?.price["r"]}`}
-            onClick={(event) => {
+            onClick={event => {
               handleRazorPay(
                 event,
                 userId,
@@ -298,6 +297,65 @@ function VideoDetailPage() {
         </>
       );
     return <></>;
+  };
+
+  const ShowPlayAfterAgeCheck = () => {
+    if (contentData?.certificate === "NC-17") {
+      if (userAge >= 18) {
+        return (
+          <Box my={3}>
+            {isVideoAvailable && contentData ? (
+              <Button
+                color="secondary"
+                variant="contained"
+                className={classes.playBtn}
+                onClick={handlePlay}
+              >
+                {`Play `}{" "}
+                <PlayCircleOutlineOutlined className={classes.platBtnIcon} />
+              </Button>
+            ) : (
+              <>
+                <PurchaseTypeElements />
+              </>
+            )}
+          </Box>
+        );
+      } else {
+        return (
+          <Box my={3}>
+            <Button
+              color="secondary"
+              variant="outlined"
+              className={classes.ageRestrictedBtn}
+              disableTouchRipple
+            >
+              {`This Content is Unavailable `}{" "}
+            </Button>
+          </Box>
+        );
+      }
+    } else {
+      return (
+        <Box my={3}>
+          {isVideoAvailable && contentData ? (
+            <Button
+              color="secondary"
+              variant="contained"
+              className={classes.playBtn}
+              onClick={handlePlay}
+            >
+              {`Play `}{" "}
+              <PlayCircleOutlineOutlined className={classes.platBtnIcon} />
+            </Button>
+          ) : (
+            <>
+              <PurchaseTypeElements />
+            </>
+          )}
+        </Box>
+      );
+    }
   };
 
   if (
@@ -334,17 +392,30 @@ function VideoDetailPage() {
                     <Typography variant="subtitle2">{`Rating: ${contentData?.rating}`}</Typography>
                   )}
                   <Box my={1}>
-                    {contentData?.genres.map((genre, index) => (
-                      <Box component="span" key={`genre-${index}`} pr={1}>
-                        <Button
-                          className={classes.genreBtn}
-                          variant="outlined"
-                          color="secondary"
-                        >
-                          {genre}
-                        </Button>
+                    <Box
+                      component="span"
+                      className={classes.certificateContainer}
+                    >
+                      <Box
+                        component="span"
+                        className={classes.certificateElement}
+                      >
+                        {contentData?.certificate}
                       </Box>
-                    ))}
+                    </Box>
+                    <Box component="div" display="inline">
+                      {contentData?.genres.map((genre, index) => (
+                        <Box component="span" key={`genre-${index}`} px={1}>
+                          <Button
+                            className={classes.genreBtn}
+                            variant="outlined"
+                            color="secondary"
+                          >
+                            {genre}
+                          </Button>
+                        </Box>
+                      ))}
+                    </Box>
                   </Box>
 
                   {contentData?.seriesID && (
@@ -376,9 +447,7 @@ function VideoDetailPage() {
                             <Box className={classes.seasonSelectorDropdown}>
                               {Array(
                                 Math.max(
-                                  ...seriesData.map(
-                                    (o) => o.seriesInfo.seasonNo
-                                  ),
+                                  ...seriesData.map(o => o.seriesInfo.seasonNo),
                                   0
                                 )
                               )
@@ -427,26 +496,7 @@ function VideoDetailPage() {
                       </Box>
                     ))}
                   </Box>
-
-                  <Box my={3}>
-                    {isVideoAvailable && contentData ? (
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        className={classes.playBtn}
-                        onClick={handlePlay}
-                      >
-                        {`Play `}{" "}
-                        <PlayCircleOutlineOutlined
-                          className={classes.platBtnIcon}
-                        />
-                      </Button>
-                    ) : (
-                      <>
-                        <PurchaseTypeElements />
-                      </>
-                    )}
-                  </Box>
+                  <ShowPlayAfterAgeCheck />
                   <Box my={3}>
                     {userWatchlistData?.includes(contentData?.id) ? (
                       <Button

@@ -1,5 +1,5 @@
 import { EXPIRY_TIMING } from "../configs/app";
-import { addDays } from "./generic";
+import { addDays, getAge } from "./generic";
 
 export const transformGetContents = data => {
   const contentData = [];
@@ -101,6 +101,7 @@ export const transformGetContent = data => ({
   seriesID: data.seriesId,
   seriesInfo: data.contentSeriesInfo,
   contentURL: data.contentUrl,
+  certificate: data.certificate || "NC-17",
 });
 
 export const transformGetHistoryData = data => {
@@ -242,6 +243,7 @@ export const transformPostResetPasswordResponse = data => {
 
 export const transformGetVerifyUser = data => {
   const name = data.fname + " " + data.lname;
+  const userAge = getAge(data.dateOfBirth);
 
   return {
     userId: data.userId,
@@ -252,6 +254,7 @@ export const transformGetVerifyUser = data => {
     userHistory: data.history,
     userWatchlist: data.watchlist,
     userVerified: data.verified,
+    userAge: userAge,
   };
 };
 

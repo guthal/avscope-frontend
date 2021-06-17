@@ -12,7 +12,7 @@ export const CONTENT_GENRES = [
   "sports",
 ];
 
-export const CONTENT_CERTIFICATES = ["A", "U/A", "PG-13"];
+export const CONTENT_CERTIFICATES = ["A", "U/A", "G"];
 
 export const CONTENT_RESOLUTIONS = ["360p", "480p", "720p", "1080p", "4k"];
 

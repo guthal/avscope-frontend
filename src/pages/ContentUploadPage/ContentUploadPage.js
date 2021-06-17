@@ -56,6 +56,9 @@ function ContentUploadPage() {
     season: seasonsList[0],
   });
 
+  const categoryList = useMemo(() => ["A", "U/A", "PG-13"], []);
+  const [categorySelection, setCategorySelection] = useState(categoryList[1]);
+
   const [selectedGenreList, setSelectedGenreList] = useState([]);
   const [availableGenreList, setAvailableGenreList] = useState(CONTENT_GENRES);
   const [availableContentResolutions, setAvailableContentResolution] =
@@ -71,6 +74,7 @@ function ContentUploadPage() {
     "weekly-field": "",
     "buy-commission": "",
     "rent-commission": "",
+    "weekly-commission": "",
     "weekly-num-field": "",
   });
   const [formFields, setFormFields] = useState({
@@ -78,6 +82,8 @@ function ContentUploadPage() {
     creatorId: params.userID,
     description: "",
     thumbnailURL: "",
+    language: "",
+    subtitleLanguage: "",
     transactionID: "",
     comments: "",
   });
@@ -105,6 +111,9 @@ function ContentUploadPage() {
       [event.target.name]: event.target.value,
     }));
   };
+
+  const handleCatergoySelectionChange = (event) =>
+    setCategorySelection(event.target.value);
 
   const getAllSeriesParams = useMemo(() => [], []);
   const {
@@ -286,6 +295,9 @@ function ContentUploadPage() {
       thumbnailUrl: formFields.thumbnailURL,
       transactionId: formFields.transactionID,
       comments: formFields.comments,
+      language: formFields.language,
+      subtitleLanguage: formFields.subtitleLanguage,
+      category: categorySelection,
       weeks: purchaseTypeSwitches["weekly-switch"]
         ? purchaseTypeFields["weekly-num-field"]
         : undefined,
@@ -326,6 +338,9 @@ function ContentUploadPage() {
           : 0,
         r: purchaseTypeSwitches["rent-switch"]
           ? purchaseTypeFields["rent-commission"]
+          : 0,
+        w: purchaseTypeSwitches["weekly-switch"]
+          ? purchaseTypeFields["weekly-commission"]
           : 0,
       },
     };
@@ -515,7 +530,6 @@ function ContentUploadPage() {
 
           <Grid container spacing={4}>
             <Grid item xs={12} sm={6}>
-              <Grid container></Grid>
               <Grid
                 container
                 className={classes.contentTitleWithDescriptionContainer}
@@ -551,6 +565,30 @@ function ContentUploadPage() {
                     />
                   </Box>
                 </Grid>
+
+                {(contentTypeSelections.content === contentList[0] ||
+                  contentTypeSelections.series === seriesList[0]) && (
+                  <Grid item xs={12}>
+                    <Select
+                      name="category"
+                      value={categorySelection}
+                      onChange={handleCatergoySelectionChange}
+                      className={`${classes.selectField} ${classes.textField}`}
+                      variant="outlined"
+                      color="primary"
+                    >
+                      {categoryList.map((category, i) => (
+                        <MenuItem
+                          key={i}
+                          className={classes.selectItem}
+                          value={category}
+                        >
+                          {category}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                )}
               </Grid>
             </Grid>
 
@@ -586,7 +624,7 @@ function ContentUploadPage() {
                       </Grid>
                       {purchaseTypeSwitches["buy-switch"] && (
                         <>
-                          <Grid item xs={4} md={5}>
+                          <Grid item xs={12} md={4}>
                             <Box mt={1}>
                               <TextField
                                 label="Buy Price"
@@ -601,7 +639,7 @@ function ContentUploadPage() {
                               />
                             </Box>
                           </Grid>
-                          <Grid item xs={5} md={5}>
+                          <Grid item xs={12} md={5}>
                             <Box mt={1}>
                               <TextField
                                 label="Commission"
@@ -638,7 +676,7 @@ function ContentUploadPage() {
                       </Grid>
                       {purchaseTypeSwitches["rent-switch"] && (
                         <>
-                          <Grid item xs={4} md={5}>
+                          <Grid item xs={12} md={4}>
                             <Box mt={1}>
                               <TextField
                                 label="Rent Price"
@@ -653,7 +691,7 @@ function ContentUploadPage() {
                               />
                             </Box>
                           </Grid>
-                          <Grid item xs={5} md={5}>
+                          <Grid item xs={12} md={5}>
                             <Box mt={1}>
                               <TextField
                                 label="Commission"
@@ -689,41 +727,58 @@ function ContentUploadPage() {
                             </Box>
                           </Box>
                         </Grid>
-                        <Grid item xs={5} md={5}>
-                          <Box mt={1}>
-                            {purchaseTypeSwitches["weekly-switch"] && (
-                              <TextField
-                                label="Weekly Price"
-                                name="weekly-field"
-                                value={purchaseTypeFields["weekly-field"]}
-                                color="primary"
-                                variant="outlined"
-                                onChange={handleSwitchTextChange}
-                                className={classes.textField}
-                                placeholder="In Rupees"
-                                required
-                              />
-                            )}
-                          </Box>
-                        </Grid>
+                        {purchaseTypeSwitches["weekly-switch"] && (
+                          <>
+                            <Grid item xs={12} md={5}>
+                              <Box mt={1}>
+                                <TextField
+                                  label="Weekly Price"
+                                  name="weekly-field"
+                                  value={purchaseTypeFields["weekly-field"]}
+                                  color="primary"
+                                  variant="outlined"
+                                  onChange={handleSwitchTextChange}
+                                  className={classes.textField}
+                                  placeholder="In Rupees"
+                                  required
+                                />
+                              </Box>
+                            </Grid>
 
-                        <Grid item xs={4} md={4}>
-                          <Box mt={1}>
-                            {purchaseTypeSwitches["weekly-switch"] && (
-                              <TextField
-                                label="Weeks"
-                                name="weekly-num-field"
-                                value={purchaseTypeFields["weekly-num-field"]}
-                                color="primary"
-                                variant="outlined"
-                                onChange={handleSwitchTextChange}
-                                className={classes.textField}
-                                placeholder="In Weeks"
-                                required
-                              />
-                            )}
-                          </Box>
-                        </Grid>
+                            <Grid item xs={12} md={4}>
+                              <Box mt={1}>
+                                <TextField
+                                  label="Weeks"
+                                  name="weekly-num-field"
+                                  value={purchaseTypeFields["weekly-num-field"]}
+                                  color="primary"
+                                  variant="outlined"
+                                  onChange={handleSwitchTextChange}
+                                  className={classes.textField}
+                                  placeholder="In Weeks"
+                                  required
+                                />
+                              </Box>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                              <Box>
+                                <TextField
+                                  label="Commission"
+                                  name="weekly-commission"
+                                  value={
+                                    purchaseTypeFields["weekly-commission"]
+                                  }
+                                  color="primary"
+                                  variant="outlined"
+                                  onChange={handleSwitchTextChange}
+                                  className={classes.textField}
+                                  placeholder="0.0-1.0"
+                                  required
+                                />
+                              </Box>
+                            </Grid>
+                          </>
+                        )}
                       </Grid>
                     )}
                   </Grid>
@@ -731,6 +786,40 @@ function ContentUploadPage() {
               </Grid>
             )}
           </Grid>
+
+          {(contentTypeSelections.content === contentList[0] ||
+            contentTypeSelections.series === seriesList[0]) && (
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={6}>
+                <Box py={1}>
+                  <TextField
+                    name="language"
+                    label="Language"
+                    variant="outlined"
+                    value={formFields.language}
+                    onChange={handleFormFieldsChange}
+                    className={classes.textField}
+                    color="primary"
+                    required
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Box py={1}>
+                  <TextField
+                    name="subtitleLanguage"
+                    label="Subtitle Language"
+                    variant="outlined"
+                    value={formFields.subtitleLanguage}
+                    onChange={handleFormFieldsChange}
+                    className={classes.textField}
+                    color="primary"
+                    required
+                  />
+                </Box>
+              </Grid>
+            </Grid>
+          )}
 
           {(contentTypeSelections.content === contentList[0] ||
             contentTypeSelections.season !== seasonsList[0]) && (

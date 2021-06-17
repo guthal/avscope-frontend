@@ -20,7 +20,11 @@ import { useRouteMatch } from "react-router";
 import useStyles from "./ContentUploadPage.Styles";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
-import { CONTENT_GENRES, CONTENT_RESOLUTIONS } from "../../configs/app";
+import {
+  CONTENT_CERTIFICATES,
+  CONTENT_GENRES,
+  CONTENT_RESOLUTIONS,
+} from "../../configs/app";
 import useGetApi from "../../hooks/useGetApi";
 import usePostApi from "../../hooks/usePostApi";
 import { getAllSeries, postContentUpload } from "../../utils/api";
@@ -56,8 +60,10 @@ function ContentUploadPage() {
     season: seasonsList[0],
   });
 
-  const categoryList = useMemo(() => ["A", "U/A", "PG-13"], []);
-  const [categorySelection, setCategorySelection] = useState(categoryList[1]);
+  const certificateList = CONTENT_CERTIFICATES;
+  const [certificateSelection, setCertificateSelection] = useState(
+    certificateList[1]
+  );
 
   const [selectedGenreList, setSelectedGenreList] = useState([]);
   const [availableGenreList, setAvailableGenreList] = useState(CONTENT_GENRES);
@@ -113,7 +119,7 @@ function ContentUploadPage() {
   };
 
   const handleCatergoySelectionChange = (event) =>
-    setCategorySelection(event.target.value);
+    setCertificateSelection(event.target.value);
 
   const getAllSeriesParams = useMemo(() => [], []);
   const {
@@ -297,7 +303,7 @@ function ContentUploadPage() {
       comments: formFields.comments,
       language: formFields.language,
       subtitleLanguage: formFields.subtitleLanguage,
-      category: categorySelection,
+      certificate: certificateSelection,
       weeks: purchaseTypeSwitches["weekly-switch"]
         ? purchaseTypeFields["weekly-num-field"]
         : undefined,
@@ -570,20 +576,20 @@ function ContentUploadPage() {
                   contentTypeSelections.series === seriesList[0]) && (
                   <Grid item xs={12}>
                     <Select
-                      name="category"
-                      value={categorySelection}
+                      name="certificate"
+                      value={certificateSelection}
                       onChange={handleCatergoySelectionChange}
                       className={`${classes.selectField} ${classes.textField}`}
                       variant="outlined"
                       color="primary"
                     >
-                      {categoryList.map((category, i) => (
+                      {certificateList.map((certificate, i) => (
                         <MenuItem
                           key={i}
                           className={classes.selectItem}
-                          value={category}
+                          value={certificate}
                         >
-                          {category}
+                          {certificate}
                         </MenuItem>
                       ))}
                     </Select>

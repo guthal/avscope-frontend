@@ -500,7 +500,7 @@ function VideoDetailPage() {
                   <Box py={1}>
                     <Box>
                       <Typography component="span" color="secondary">
-                        Audio:{" "}
+                        Language:{" "}
                       </Typography>
                       <Typography component="span">
                         {contentData?.language}

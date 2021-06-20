@@ -16,6 +16,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     border: `2px solid ${theme.palette.primary.main}`,
   },
+  loginError: {
+    color: "red",
+  },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
@@ -27,6 +30,31 @@ const useStyles = makeStyles(theme => ({
     "& input:hover": {
       border: "none !important",
     },
+  },
+  iconsContainer: {
+    borderTop: `1px solid ${theme.palette.primary.dark}`,
+    padding: "16px",
+  },
+  iconBox: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    border: `1px solid ${theme.palette.primary.dark}`,
+    borderRadius: "12px",
+    margin: "10px 0px",
+    padding: "5px 0px",
+  },
+  googleIcon: {
+    width: "30px",
+    height: "30px",
+    margin: "0px 10px",
+  },
+  facebookIcon: {
+    color: "#4267B2",
+    width: "30px",
+    height: "30px",
+    margin: "0px 10px",
   },
   submit: {
     margin: theme.spacing(3, 0, 2),

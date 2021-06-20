@@ -606,8 +606,8 @@ function VideoDetailPage() {
           style={{
             position: "absolute",
             zIndex: 100,
-            top: "0px",
-            width: "100vw",
+            top: "48px",
+            width: "100%",
             backgroundColor: "black",
             height: "100%",
           }}

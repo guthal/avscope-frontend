@@ -64,24 +64,6 @@ function HomePage() {
         />
       </Box>
 
-      <div style={{ paddingTop: "56.25%", position: "relative" }}>
-        <iframe
-          title="MOvie"
-          src="https://player.vdocipher.com/playerAssets/1.x/vdo/embed/index.html#otp=20160313versASE323x0SHyLySJanUE1i5oEcJoy15UPGckwMqm40YYOsEbf2eyH&playbackInfo=eyJ2aWRlb0lkIjoiNzk0ODY1ZjllMTc4NGFkNjk4YzQwMDE4ZDdjNjY5MzYifQ=="
-          style={{
-            border: 0,
-            maxWidth: "100%",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            height: "100%",
-            width: "100%",
-          }}
-          allowFullScreen="true"
-          allow="encrypted-media"
-        />
-      </div>
-
       <Container maxWidth="lg">
         <Box>
           <AdSense.Google

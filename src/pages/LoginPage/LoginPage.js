@@ -12,10 +12,11 @@ import {
   Button,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import GoogleIcon from "../../assets/google.svg";
 import usePostApi from "../../hooks/usePostApi";
 import { postLogin } from "../../utils/api";
 import PageLoader from "../../components/PageLoader";
-import PageError from "../../components/PageError";
 import useStyles from "./LoginPage.Styles";
 import { transformPostLoginResponse } from "../../utils/api-transforms";
 import { useHistory } from "react-router";
@@ -25,10 +26,13 @@ import AuthContext from "../../contexts/AuthContext";
 function LoginPage() {
   const history = useHistory();
   const classes = useStyles();
+
   const [textFields, setTextFields] = useState({
     username: "",
     password: "",
   });
+  const [loginErrorFlag, setLoginErrorFlag] = useState(false);
+
   const postLoginParams = useMemo(() => [], []);
   const {
     isUserLoggedIn,
@@ -50,6 +54,7 @@ function LoginPage() {
   } = usePostApi(postLogin, postLoginParams, transformPostLoginResponse);
 
   const handleTextFieldChange = event => {
+    setLoginErrorFlag(false);
     setTextFields(prev => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -76,12 +81,13 @@ function LoginPage() {
     loginTriggerPostApi(textFields);
   };
 
-  if (loginLoading) return <PageLoader />;
+  useEffect(() => {
+    if (loginError) {
+      setLoginErrorFlag(true);
+    }
+  }, [loginError]);
 
-  if (loginError)
-    return (
-      <PageError message="Opps.. Something went wrong while fetching contents." />
-    );
+  if (loginLoading) return <PageLoader />;
 
   return (
     <Container component="main" maxWidth="xs" style={{ marginBottom: "24px" }}>
@@ -122,6 +128,13 @@ function LoginPage() {
             <Checkbox value="remember" color="primary" />
             <Typography color="primary">Remember Me</Typography>
           </Box>
+          {loginErrorFlag && (
+            <Box className={classes.loginError}>
+              <Typography align="center" variant="subtitle1">
+                Invalid User Credentials
+              </Typography>
+            </Box>
+          )}
           <Button
             type="submit"
             fullWidth
@@ -132,6 +145,22 @@ function LoginPage() {
           >
             Log In
           </Button>
+          <Box className={classes.iconsContainer}>
+            <Box textAlign="center">
+              <Box className={classes.iconBox}>
+                <Typography color="primary">Log in using</Typography>
+                <img
+                  src={GoogleIcon}
+                  alt="google-login"
+                  className={classes.googleIcon}
+                />
+              </Box>
+              <Box className={classes.iconBox}>
+                <Typography color="primary">Log in using</Typography>
+                <FacebookIcon className={classes.facebookIcon} />
+              </Box>
+            </Box>
+          </Box>
           <Grid container>
             <Grid item xs>
               <Link

@@ -141,11 +141,17 @@ function Header() {
   useEffect(() => {
     if (logoutData) {
       setUsername("");
-      setIsUserLoggedIn(false);
       setUserId("");
       setUtype("");
+      setIsUserLoggedIn(false);
     }
   }, [logoutData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
+
+  useEffect(() => {
+    if (!isUserLoggedIn) {
+      history.push(APP_ROUTES.LOGIN_PAGE.path);
+    }
+  }, [history, isUserLoggedIn]);
 
   // useEffect(() => {
   //   if (!isUserLoggedIn) {

@@ -636,10 +636,10 @@ function VideoDetailPage() {
             }}
           >
             <Box style={{ width: "90%" }}>
-              {contentData && contentData.purchaseType === "w" && (
+              {contentData?.purchaseType === "w" ? (
                 <iframe
                   title="Weekly"
-                  src={contentData?.contentURL}
+                  src={contentData.contentURL}
                   style={{
                     border: 0,
                     maxWidth: "90%",
@@ -652,8 +652,7 @@ function VideoDetailPage() {
                   allowFullScreen="true"
                   allow="encrypted-media"
                 />
-              )}
-              {contentData && contentData.purchaseType !== "w" && (
+              ) : (
                 <Stream controls src={contentData?.contentURL} />
               )}
             </Box>

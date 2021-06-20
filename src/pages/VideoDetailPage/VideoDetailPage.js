@@ -636,7 +636,7 @@ function VideoDetailPage() {
             }}
           >
             <Box style={{ width: "90%" }}>
-              {contentData.purchaseType === "w" ? (
+              {contentData.type === "w" ? (
                 <iframe
                   title="Weekly"
                   src={contentData?.contentURL}

@@ -639,7 +639,7 @@ function VideoDetailPage() {
               {contentData.type === "w" ? (
                 <iframe
                   title="Weekly"
-                  src={contentData?.contentURL}
+                  src="https://player.vdocipher.com/playerAssets/1.x/vdo/embed/index.html#otp=20160313versASE323k7CklCEhRpSlef9tKz7PXaZTydBHvj2izVBlCNZczhrdne&playbackInfo=eyJ2aWRlb0lkIjoiNzk0ODY1ZjllMTc4NGFkNjk4YzQwMDE4ZDdjNjY5MzYifQ=="
                   style={{
                     border: 0,
                     maxWidth: "100%",

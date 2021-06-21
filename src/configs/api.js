@@ -13,6 +13,8 @@ const ENDPOINTS = {
   GET_CREATORS: `${DOMAIN}/creators`,
   POST_CONTENT_UPLOAD: `${DOMAIN}/content-upload`,
   POST_LOGIN: `${DOMAIN}/login`,
+  GET_GOOGLE_LOGIN: `${DOMAIN}/auth/google`,
+  GET_FACEBOOK_LOGIN: `${DOMAIN}/auth/facebook`,
   GET_VERIFY_LOGIN: `${DOMAIN}/login/verify`,
   POST_SIGNUP: `${DOMAIN}/register`,
   GET_VERIFY_EMAIL: userID => `${DOMAIN}/register/verify/${userID}`,

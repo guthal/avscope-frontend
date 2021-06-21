@@ -18,6 +18,7 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
+import PasswordStrengthBar from "react-password-strength-bar";
 import DateFnsUtils from "@date-io/date-fns";
 import PersonAddOutlinedIcon from "@material-ui/icons/PersonAddOutlined";
 import usePostApi from "../../hooks/usePostApi";
@@ -44,6 +45,7 @@ function SignupPage() {
     checkbox: false,
   });
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [minPasswordLengthCheck, setMinPasswordLengthCheck] = useState(true);
   const [signupDisabled, setSignupDisabled] = useState(true);
   const tempDate = new Date(Date.now());
   const [dateOfBirth, setDateOfBirth] = useState(tempDate);
@@ -70,6 +72,7 @@ function SignupPage() {
 
   const handleTextFieldChange = event => {
     setPasswordsMatch(true);
+    setMinPasswordLengthCheck(true);
     setTextFields(prev => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -88,20 +91,24 @@ function SignupPage() {
   }, [textFields.checkbox]);
 
   const handleFormSubmit = () => {
-    if (
-      textFields.password === textFields.retypePassword &&
-      textFields.checkbox
-    ) {
-      signupTriggerPostApi({
-        fname: textFields.firstName,
-        lname: textFields.lastName,
-        username: textFields.email,
-        dateOfBirth: dateOfBirth.toISOString(),
-        gender: textFields.gender,
-        password: textFields.password,
-      });
+    if (textFields.password.length >= 8) {
+      if (
+        textFields.password === textFields.retypePassword &&
+        textFields.checkbox
+      ) {
+        signupTriggerPostApi({
+          fname: textFields.firstName,
+          lname: textFields.lastName,
+          username: textFields.email,
+          dateOfBirth: dateOfBirth.toISOString(),
+          gender: textFields.gender,
+          password: textFields.password,
+        });
+      } else {
+        setPasswordsMatch(false);
+      }
     } else {
-      setPasswordsMatch(false);
+      setMinPasswordLengthCheck(false);
     }
   };
 
@@ -218,6 +225,21 @@ function SignupPage() {
                   autoComplete="current-password"
                 />
               </Grid>
+              <Grid item xs={12}>
+                <PasswordStrengthBar
+                  password={textFields.password}
+                  scoreWordStyle={{ color: "black", textAlign: "center" }}
+                  shortScoreWord="Password must have atleast 8 characters"
+                  minLength="8"
+                />
+              </Grid>
+              {!minPasswordLengthCheck && (
+                <Box px={2}>
+                  <Typography variant="subtitle2" style={{ color: "red" }}>
+                    Password must have atleast 8 characters
+                  </Typography>
+                </Box>
+              )}
               {!passwordsMatch && (
                 <Box px={2}>
                   <Typography variant="subtitle2" style={{ color: "red" }}>

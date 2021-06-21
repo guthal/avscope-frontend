@@ -126,7 +126,6 @@ function VideoDetailPage() {
   const handleSeasonSelectorClick = () => setSeasonSelectorOpen(prev => !prev);
 
   const handleSeasonClick = seasonNo => {
-    setSeriesContents();
     handleSeasonSelectorClickAway();
     const episodeData = seriesData.find(
       episode =>

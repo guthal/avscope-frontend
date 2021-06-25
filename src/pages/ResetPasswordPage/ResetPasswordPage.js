@@ -9,6 +9,7 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
+import PasswordStrengthBar from "react-password-strength-bar";
 import LockTwoToneIcon from "@material-ui/icons/LockTwoTone";
 import usePostApi from "../../hooks/usePostApi";
 import { postResetPassword } from "../../utils/api";
@@ -30,6 +31,7 @@ function ResetPasswordPage() {
     retypePassword: "",
   });
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [minPasswordLengthCheck, setMinPasswordLengthCheck] = useState(true);
   const postResetPasswordParams = useMemo(
     () => [params.userId],
     [params.userId]
@@ -48,6 +50,7 @@ function ResetPasswordPage() {
 
   const handleTextFieldChange = event => {
     setPasswordsMatch(true);
+    setMinPasswordLengthCheck(true);
     setTextFields(prev => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -58,12 +61,16 @@ function ResetPasswordPage() {
     history.push(`${APP_ROUTES.LOGIN_PAGE.path}`);
 
   const handleFormSubmit = () => {
-    if (textFields.password === textFields.retypePassword) {
-      resetPasswordTriggerPostApi({
-        newPassword: textFields.password,
-      });
+    if (textFields.password.length >= 8) {
+      if (textFields.password === textFields.retypePassword) {
+        resetPasswordTriggerPostApi({
+          newPassword: textFields.password,
+        });
+      } else {
+        setPasswordsMatch(false);
+      }
     } else {
-      setPasswordsMatch(false);
+      setMinPasswordLengthCheck(false);
     }
   };
 
@@ -102,6 +109,21 @@ function ResetPasswordPage() {
                     autoComplete="current-password"
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <PasswordStrengthBar
+                    password={textFields.password}
+                    scoreWordStyle={{ color: "black", textAlign: "center" }}
+                    shortScoreWord="Password must have atleast 8 characters"
+                    minLength="8"
+                  />
+                </Grid>
+                {!minPasswordLengthCheck && (
+                  <Box px={2}>
+                    <Typography variant="subtitle2" style={{ color: "red" }}>
+                      Password must have atleast 8 characters
+                    </Typography>
+                  </Box>
+                )}
                 {!passwordsMatch && (
                   <Box px={2}>
                     <Typography variant="subtitle2" style={{ color: "red" }}>

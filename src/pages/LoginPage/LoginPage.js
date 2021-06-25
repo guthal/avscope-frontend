@@ -156,6 +156,7 @@ function LoginPage() {
                 <Typography
                   color="primary"
                   component="a"
+                  style={{ textDecoration: "none" }}
                   href={`${ENDPOINTS.GET_GOOGLE_LOGIN}`}
                 >
                   Login using
@@ -173,6 +174,7 @@ function LoginPage() {
                 <Typography
                   color="primary"
                   component="a"
+                  style={{ textDecoration: "none" }}
                   href={`${ENDPOINTS.GET_FACEBOOK_LOGIN}`}
                 >
                   Login using

@@ -144,14 +144,9 @@ function Header() {
       setUserId("");
       setUtype("");
       setIsUserLoggedIn(false);
+      window.location.href = "/login";
     }
   }, [logoutData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
-
-  useEffect(() => {
-    if (!isUserLoggedIn) {
-      history.push(APP_ROUTES.LOGIN_PAGE.path);
-    }
-  }, [history, isUserLoggedIn]);
 
   // useEffect(() => {
   //   if (!isUserLoggedIn) {

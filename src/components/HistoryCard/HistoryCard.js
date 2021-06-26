@@ -80,6 +80,7 @@ function HistoryCard({ historyCard }) {
                         userId,
                         cardData.purchasePrice,
                         cardData.contentId,
+                        cardData.contentType,
                         cardData.purchaseType
                       );
                     }}

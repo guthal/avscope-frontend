@@ -65,6 +65,7 @@ function HomePage() {
       </Box>
 
       <Container maxWidth="lg">
+        ADS
         <Box>
           <AdSense.Google
             client="ca-pub-7785498935820458"

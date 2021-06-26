@@ -70,6 +70,15 @@ const useStyles = makeStyles(theme => ({
       width: "100%",
     },
   },
+  mobileTitle: {
+    width: "75px",
+    marginTop: "5px",
+    cursor: "default",
+
+    "& img": {
+      width: "100%",
+    },
+  },
   profileContainer: {
     position: "relative",
   },

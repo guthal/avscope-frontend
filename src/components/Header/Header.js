@@ -23,6 +23,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import VideoLibraryRoundedIcon from "@material-ui/icons/VideoLibraryRounded";
 import LockIcon from "@material-ui/icons/Lock";
 import AVClubLogo from "../../assets/logo.svg";
+import MobileAVLogo from "../../assets/logo.png";
 import { APP_ROUTES, HEADER_LABELS } from "../../configs/app";
 import Banner from "../../assets/avscopeBanner.png";
 import useStyles from "./Header.Styles";
@@ -144,14 +145,9 @@ function Header() {
       setUserId("");
       setUtype("");
       setIsUserLoggedIn(false);
+      window.location.href = "/login";
     }
   }, [logoutData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
-
-  useEffect(() => {
-    if (!isUserLoggedIn) {
-      history.push(APP_ROUTES.LOGIN_PAGE.path);
-    }
-  }, [history, isUserLoggedIn]);
 
   // useEffect(() => {
   //   if (!isUserLoggedIn) {
@@ -170,16 +166,31 @@ function Header() {
     <Box mb={2}>
       <AppBar position="sticky" className={classes.appNavBar}>
         <Toolbar>
-          <Box className={classes.logoLinkContainer}>
-            <Box className={classes.title}>
-              <img
-                onClick={handleLogoClick}
-                style={{ cursor: "pointer" }}
-                src={Banner}
-                alt="logo"
-              />
-            </Box>
-          </Box>
+          <Fragment>
+            <Hidden smDown>
+              <Box className={classes.logoLinkContainer}>
+                <Box className={classes.title}>
+                  <img
+                    onClick={handleLogoClick}
+                    style={{ cursor: "pointer" }}
+                    src={Banner}
+                    alt="logo"
+                  />
+                </Box>
+              </Box>
+            </Hidden>
+            <Hidden mdUp>
+              <Box className={classes.logoLinkContainer}>
+                <Box className={classes.mobileTitle}>
+                  <img
+                    onClick={handleLogoClick}
+                    src={MobileAVLogo}
+                    alt="logo"
+                  />
+                </Box>
+              </Box>
+            </Hidden>
+          </Fragment>
           {!isUserLoggedIn && (
             <Button
               color="secondary"

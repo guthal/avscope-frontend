@@ -174,8 +174,11 @@ function VideoDetailPage() {
   const handlePlay = () => setPlayVideo(true);
   // Show Play Button if user has made the video purchase
   useEffect(() => {
-    setIsVideoAvailable(!!userContentPurchaseData?.isTicketValid);
-  }, [userContentPurchaseData]);
+    setIsVideoAvailable(
+      !!userContentPurchaseData?.isTicketValid ||
+        contentData?.purchaseType === "f"
+    );
+  }, [userContentPurchaseData, contentData]);
 
   // Set Watch next to first 4 contents from /contents
   useEffect(() => {
@@ -216,7 +219,7 @@ function VideoDetailPage() {
   useEffect(() => contentTriggerApi(), [contentTriggerApi, params.contentID]);
 
   const PurchaseTypeElements = () => {
-    if (contentData?.purchase_type === "b")
+    if (contentData?.purchaseType === "b")
       return (
         <PurchaseButton
           btnText={`Buy now @ ₹${contentData?.price["b"]}`}
@@ -227,12 +230,12 @@ function VideoDetailPage() {
               contentData?.price["b"],
               contentData?.seriesInfo.seasonId || contentData?.id,
               contentData?.seriesInfo.seasonId ? "series" : "content",
-              contentData?.purchase_type
+              contentData?.purchaseType
             );
           }}
         />
       );
-    if (contentData?.purchase_type === "r")
+    if (contentData?.purchaseType === "r")
       return (
         <PurchaseButton
           btnText={`Rent now @ ₹${contentData?.price["r"]}`}
@@ -243,12 +246,12 @@ function VideoDetailPage() {
               contentData?.price["r"],
               contentData?.seriesInfo?.seasonId || contentData?.id,
               contentData?.seriesInfo.seasonId ? "series" : "content",
-              contentData?.purchase_type
+              contentData?.purchaseType
             );
           }}
         />
       );
-    if (contentData?.purchase_type === "w")
+    if (contentData?.purchaseType === "w")
       return (
         <PurchaseButton
           btnText={`Purchase ticket now @ ₹${contentData?.price["w"]}`}
@@ -259,12 +262,12 @@ function VideoDetailPage() {
               contentData?.price["w"],
               contentData?.seriesInfo?.seasonId || contentData?.id,
               contentData?.seriesInfo.seasonId ? "series" : "content",
-              contentData?.purchase_type
+              contentData?.purchaseType
             );
           }}
         />
       );
-    if (contentData?.purchase_type === "br")
+    if (contentData?.purchaseType === "br")
       return (
         <>
           <PurchaseButton
@@ -303,7 +306,7 @@ function VideoDetailPage() {
       if (userAge >= 18) {
         return (
           <Box my={3}>
-            {isVideoAvailable && contentData ? (
+            {isVideoAvailable ? (
               <Button
                 color="secondary"
                 variant="contained"
@@ -337,7 +340,7 @@ function VideoDetailPage() {
     } else {
       return (
         <Box my={3}>
-          {isVideoAvailable && contentData ? (
+          {isVideoAvailable ? (
             <Button
               color="secondary"
               variant="contained"
@@ -632,7 +635,25 @@ function VideoDetailPage() {
             }}
           >
             <Box style={{ width: "90%" }}>
-              <Stream controls src={contentData?.contentURL} />
+              {contentData?.purchaseType === "w" ? (
+                <iframe
+                  title="Weekly"
+                  src={contentData.contentURL}
+                  style={{
+                    border: 0,
+                    maxWidth: "90%",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    height: "100%",
+                    width: "90%",
+                  }}
+                  allowFullScreen="true"
+                  allow="encrypted-media"
+                />
+              ) : (
+                <Stream controls src={contentData?.contentURL} />
+              )}
             </Box>
           </Box>
         </Box>

@@ -19,7 +19,7 @@ export const transformGetContents = data => {
       genres: datum.genres || [],
       seriesID: datum.seriesId,
       isAvailable: datum.isAvailable,
-      isExpired: addDays(datum.weeklyStartAt, datum.weeks * 7) < new Date(),
+      isExpired: datum.weeklyStartAt? addDays(datum.weeklyStartAt, datum.weeks * 7) < new Date(): true,
       purchaseType: datum.type,
       price: datum.price,
       weeks: datum.weeks,
@@ -92,7 +92,7 @@ export const transformGetContent = data => ({
   posterUrl:
     data.thumbnail ||
     "https://sutvacha.s3.amazonaws.com/media/public/product/no-image-available.png",
-  purchase_type: data.type,
+  purchaseType: data.type,
   price: data.price,
   genres: data.genre || [],
   cast: data.cast || [],

@@ -67,10 +67,9 @@ function HomePage() {
       <Container maxWidth="lg">
         <Box>
           <AdSense.Google
-            client="ca-pub-7292810486004926"
-            slot="7806394673"
+            client="ca-pub-7785498935820458"
+            slot="5422295337"
             style={{ display: "block" }}
-            layout="in-article"
             format="fluid"
           />
         </Box>

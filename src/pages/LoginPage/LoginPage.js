@@ -22,6 +22,7 @@ import { transformPostLoginResponse } from "../../utils/api-transforms";
 import { useHistory } from "react-router";
 import { APP_ROUTES } from "../../configs/app";
 import AuthContext from "../../contexts/AuthContext";
+import { ENDPOINTS } from "../../configs/api";
 
 function LoginPage() {
   const history = useHistory();
@@ -61,6 +62,10 @@ function LoginPage() {
     }));
   };
 
+  const handleGoogleLoginClick = () => {};
+
+  const handleFacebookLoginClick = () => {};
+
   useEffect(() => {
     if (loginData) {
       setUsername(loginData.username);
@@ -97,7 +102,7 @@ function LoginPage() {
           <LockOutlinedIcon color="primary" />
         </Avatar>
         <Typography component="h1" variant="h5" color="primary">
-          Log in
+          Login
         </Typography>
         <Box className={classes.form}>
           <TextField
@@ -143,20 +148,37 @@ function LoginPage() {
             color="primary"
             onClick={handleFormSubmit}
           >
-            Log In
+            Login
           </Button>
           <Box className={classes.iconsContainer}>
             <Box textAlign="center">
-              <Box className={classes.iconBox}>
-                <Typography color="primary">Log in using</Typography>
+              <Box className={classes.iconBox} onClick={handleGoogleLoginClick}>
+                <Typography
+                  color="primary"
+                  component="a"
+                  style={{ textDecoration: "none" }}
+                  href={`${ENDPOINTS.GET_GOOGLE_LOGIN}`}
+                >
+                  Login using
+                </Typography>
                 <img
                   src={GoogleIcon}
                   alt="google-login"
                   className={classes.googleIcon}
                 />
               </Box>
-              <Box className={classes.iconBox}>
-                <Typography color="primary">Log in using</Typography>
+              <Box
+                className={classes.iconBox}
+                onClick={handleFacebookLoginClick}
+              >
+                <Typography
+                  color="primary"
+                  component="a"
+                  style={{ textDecoration: "none" }}
+                  href={`${ENDPOINTS.GET_FACEBOOK_LOGIN}`}
+                >
+                  Login using
+                </Typography>
                 <FacebookIcon className={classes.facebookIcon} />
               </Box>
             </Box>

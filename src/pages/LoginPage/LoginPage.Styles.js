@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
   iconsContainer: {
     borderTop: `1px solid ${theme.palette.primary.dark}`,
-    padding: "16px",
+    padding: "8px",
   },
   iconBox: {
     display: "flex",

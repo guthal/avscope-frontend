@@ -72,6 +72,7 @@ function ContentUploadPage() {
     "buy-switch": true,
     "rent-switch": false,
     "weekly-switch": false,
+    "free-switch": false,
   });
   const [purchaseTypeFields, setPurchaseTypeFields] = useState({
     "buy-field": "",
@@ -251,12 +252,23 @@ function ContentUploadPage() {
         [event.target.name]: event.target.checked,
         "buy-switch": false,
         "rent-switch": false,
+        "free-switch": false
       }));
+    else if(event.target.name === 'free-switch'){
+      setPurchaseTypeSwitches((prev) => ({
+        ...prev,
+        [event.target.name]: event.target.checked,
+        "buy-switch": false,
+        "rent-switch": false,
+        "weekly-switch": false
+      }));
+    }
     else
       setPurchaseTypeSwitches((prev) => ({
         ...prev,
         [event.target.name]: event.target.checked,
         "weekly-switch": false,
+        "free-switch": false
       }));
   };
 
@@ -285,6 +297,7 @@ function ContentUploadPage() {
       !(
         (purchaseTypeFields["buy-field"] ||
           purchaseTypeFields["rent-field"] ||
+          purchaseTypeSwitches["free-switch"] ||
           purchaseTypeFields["weekly-field"]) &&
         (purchaseTypeSwitches["weekly-switch"]
           ? purchaseTypeFields["weekly-num-field"]
@@ -786,6 +799,24 @@ function ContentUploadPage() {
                         )}
                       </Grid>
                     )}
+
+                    <Grid container spacing={4}>
+                      <Grid item xs={3}> 
+                        <Box>
+                          <Box px={2}>
+                            <Typography color="primary">Free</Typography>
+                          </Box>
+                          <Box>
+                            <Switch
+                              name="free-switch"
+                              checked={purchaseTypeSwitches["free-switch"]}
+                              onChange={handleSwitchChange}
+                              color="primary"
+                            />
+                          </Box>
+                        </Box>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>

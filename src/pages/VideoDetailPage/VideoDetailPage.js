@@ -176,8 +176,8 @@ function VideoDetailPage() {
   const handlePlay = () => setPlayVideo(true);
   // Show Play Button if user has made the video purchase
   useEffect(() => {
-    setIsVideoAvailable(!!userContentPurchaseData?.isTicketValid);
-  }, [userContentPurchaseData]);
+    setIsVideoAvailable(!!userContentPurchaseData?.isTicketValid || contentData?.purchaseType === 'f');
+  }, [userContentPurchaseData, contentData]);
 
   // Set Watch next to first 4 contents from /contents
   useEffect(() => {

@@ -19,7 +19,7 @@ export const transformGetContents = (data) => {
       genres: datum.genres || [],
       seriesID: datum.seriesId,
       isAvailable: datum.isAvailable,
-      isExpired: addDays(datum.weeklyStartAt, datum.weeks * 7) < new Date(),
+      isExpired: datum.weeklyStartAt? addDays(datum.weeklyStartAt, datum.weeks * 7) < new Date(): true,
       purchaseType: datum.type,
       price: datum.price,
       weeks: datum.weeks,

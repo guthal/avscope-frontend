@@ -81,27 +81,25 @@ function HomePage() {
             <Box py={2}>
               <Typography variant="h4">Recommended</Typography>
             </Box>
-            <Box py={4}>
-              <Grid container>
-                {contentsData?.contents
-                  ?.filter(content => content.isAvailable)
-                  .map((contentCard, index) => (
-                    <Grid
-                      lg={3}
-                      md={3}
-                      sm={6}
-                      xs={12}
-                      item
-                      key={`content-card-${index}`}
-                    >
-                      <MovieCard
-                        cardData={contentCard}
-                        onClick={handleCardClick}
-                      />
-                    </Grid>
-                  ))}
-              </Grid>
-            </Box>
+            <Grid container spacing={4}>
+              {contentsData?.contents
+                ?.filter(content => content.isAvailable)
+                .map((contentCard, index) => (
+                  <Grid
+                    lg={3}
+                    md={3}
+                    sm={6}
+                    xs={12}
+                    item
+                    key={`content-card-${index}`}
+                  >
+                    <MovieCard
+                      cardData={contentCard}
+                      onClick={handleCardClick}
+                    />
+                  </Grid>
+                ))}
+            </Grid>
           </Box>
           {seriesSeasonsData?.length > 0 && (
             <Box py={1}>

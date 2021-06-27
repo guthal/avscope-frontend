@@ -48,7 +48,7 @@ function TicketsPage() {
           </Box>
           <Grid item md={12} sm={6} xs={12}>
             {ticketsData
-              ?.filter((ticket) => ticket.purchaseType === "w")
+              ?.filter(ticket => ticket.purchaseType === "w")
               .map(
                 (validTickets, index) =>
                   validTickets.isTicketValid && (
@@ -60,7 +60,10 @@ function TicketsPage() {
                       item
                       key={`content-card-${index}`}
                     >
-                      <HistoryCard historyCard={validTickets} />
+                      <HistoryCard
+                        historyCard={validTickets}
+                        handleRazorpaySuccess={ticketsTriggerApi}
+                      />
                     </Grid>
                   )
               )}
@@ -88,7 +91,10 @@ function TicketsPage() {
                   key={`content-card-${index}`}
                 >
                   <Box px={2}>
-                    <HistoryCard historyCard={historyCard} />
+                    <HistoryCard
+                      historyCard={historyCard}
+                      handleRazorpaySuccess={ticketsTriggerApi}
+                    />
                   </Box>
                 </Grid>
               ))}

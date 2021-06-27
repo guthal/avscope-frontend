@@ -9,7 +9,7 @@ import { loadRazorPay } from "../../utils/pay";
 import AuthContext from "../../contexts/AuthContext";
 import TimerIcon from "@material-ui/icons/Timer";
 
-function HistoryCard({ historyCard }) {
+function HistoryCard({ historyCard, handleRazorpaySuccess }) {
   const classes = useStyles();
   const [cardData, setCardData] = useState(historyCard);
 
@@ -63,7 +63,9 @@ function HistoryCard({ historyCard }) {
                         userId,
                         cardData.purchasePrice,
                         cardData.contentId,
-                        cardData.purchaseType
+                        cardData.contentType,
+                        cardData.purchaseType,
+                        handleRazorpaySuccess
                       );
                     }}
                   >

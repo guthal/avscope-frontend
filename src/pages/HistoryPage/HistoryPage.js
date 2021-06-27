@@ -50,7 +50,10 @@ function HistoryPage() {
               item
               key={`content-card-${index}`}
             >
-              <HistoryCard historyCard={historyCard} />
+              <HistoryCard
+                historyCard={historyCard}
+                handleRazorpaySuccess={historyTriggerApi}
+              />
             </Grid>
           ))}
         </Grid>

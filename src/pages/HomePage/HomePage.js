@@ -33,7 +33,7 @@ function HomePage() {
     triggerApi: seriesSeasonsTriggerApi,
   } = useGetApi(getAllSeries, getAllSeriesParams, transformGetAllSeries);
 
-  const handleCardClick = (contentID) =>
+  const handleCardClick = contentID =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
@@ -55,10 +55,10 @@ function HomePage() {
         <HomeCarousel
           contents={[
             ...contentsData?.contents
-              ?.filter((content) => content.isAvailable)
+              ?.filter(content => content.isAvailable)
               .slice(0, 3),
             ...contentsData?.series
-              ?.filter((content) => content.isAvailable)
+              ?.filter(content => content.isAvailable)
               .slice(0, 3),
           ]}
         />
@@ -81,25 +81,27 @@ function HomePage() {
             <Box py={2}>
               <Typography variant="h4">Recommended</Typography>
             </Box>
-            <Grid container spacing={4}>
-              {contentsData?.contents
-                ?.filter((content) => content.isAvailable)
-                .map((contentCard, index) => (
-                  <Grid
-                    lg={3}
-                    md={3}
-                    sm={6}
-                    xs={12}
-                    item
-                    key={`content-card-${index}`}
-                  >
-                    <MovieCard
-                      cardData={contentCard}
-                      onClick={handleCardClick}
-                    />
-                  </Grid>
-                ))}
-            </Grid>
+            <Box py={4}>
+              <Grid container>
+                {contentsData?.contents
+                  ?.filter(content => content.isAvailable)
+                  .map((contentCard, index) => (
+                    <Grid
+                      lg={3}
+                      md={3}
+                      sm={6}
+                      xs={12}
+                      item
+                      key={`content-card-${index}`}
+                    >
+                      <MovieCard
+                        cardData={contentCard}
+                        onClick={handleCardClick}
+                      />
+                    </Grid>
+                  ))}
+              </Grid>
+            </Box>
           </Box>
           {seriesSeasonsData?.length > 0 && (
             <Box py={1}>
@@ -108,11 +110,11 @@ function HomePage() {
               </Box>
               <Grid container spacing={4}>
                 {seriesSeasonsData
-                  .map((series) => series.seasons)
+                  .map(series => series.seasons)
                   .map((season, i) => (
                     <Fragment key={i}>
                       {season
-                        ?.filter((contentCard) => contentCard.isAvailable)
+                        ?.filter(contentCard => contentCard.isAvailable)
                         .map((contentCard, index) => (
                           <Grid
                             lg={3}

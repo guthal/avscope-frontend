@@ -319,7 +319,7 @@ function Header() {
             </Box>
           )}
           {isUserLoggedIn && (
-            <Box px={2}>
+            <Box pl={2}>
               <ClickAwayListener onClickAway={handleCloseMenu}>
                 <Box className={classes.profileContainer} mt={1}>
                   <Box onClick={handleToggleMenu}>

@@ -35,73 +35,92 @@ function TicketsPage() {
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={8}>
-        <Grid item lg={6} md={12} sm={12} xs={12}>
-          <Box py={2}>
-            <Typography
-              color="secondary"
-              variant="h3"
-              className={classes.heading}
-            >
-              Weekly Valid Tickets
-            </Typography>
-          </Box>
-          <Grid item md={12} sm={6} xs={12}>
-            {ticketsData
-              ?.filter(ticket => ticket.purchaseType === "w")
-              .map(
-                (validTickets, index) =>
-                  validTickets.isTicketValid && (
+      <Box className={classes.root}>
+        <Grid container spacing={4}>
+          <Grid item lg={6} md={12} sm={12} xs={12}>
+            <Box py={2}>
+              <Typography
+                color="secondary"
+                variant="h3"
+                className={classes.heading}
+              >
+                Weekly Valid Tickets
+              </Typography>
+            </Box>
+            {ticketsData?.filter(ticket => ticket.purchaseType === "w").length >
+            0 ? (
+              <Grid item md={12} sm={6} xs={12}>
+                {ticketsData
+                  ?.filter(ticket => ticket.purchaseType === "w")
+                  .map(
+                    (validTickets, index) =>
+                      validTickets.isTicketValid && (
+                        <Grid
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          xs={12}
+                          item
+                          key={`content-card-${index}`}
+                        >
+                          <HistoryCard
+                            historyCard={validTickets}
+                            handleRazorpaySuccess={ticketsTriggerApi}
+                          />
+                        </Grid>
+                      )
+                  )}
+              </Grid>
+            ) : (
+              <Box>
+                <Typography variant="h5">
+                  No valid Weekly tickets found
+                </Typography>
+              </Box>
+            )}
+          </Grid>
+          <Grid item lg={6} md={12} sm={12} xs={12}>
+            <ContentCard>
+              <Box p={2}>
+                <Typography
+                  variant="h4"
+                  className={classes.heading}
+                  color="secondary"
+                >
+                  All Purchased Contents
+                </Typography>
+              </Box>
+              {ticketsData?.length > 0 ? (
+                <Grid container>
+                  {ticketsData?.map((historyCard, index) => (
                     <Grid
                       lg={12}
-                      md={12}
-                      sm={12}
+                      md={6}
+                      sm={6}
                       xs={12}
                       item
                       key={`content-card-${index}`}
                     >
-                      <HistoryCard
-                        historyCard={validTickets}
-                        handleRazorpaySuccess={ticketsTriggerApi}
-                      />
+                      <Box px={2}>
+                        <HistoryCard
+                          historyCard={historyCard}
+                          handleRazorpaySuccess={ticketsTriggerApi}
+                        />
+                      </Box>
                     </Grid>
-                  )
+                  ))}
+                </Grid>
+              ) : (
+                <Box px={2} mb={2}>
+                  <Typography variant="h5">
+                    No Purchase History found
+                  </Typography>
+                </Box>
               )}
+            </ContentCard>
           </Grid>
         </Grid>
-        <Grid item lg={6} md={12} sm={12} xs={12}>
-          <ContentCard>
-            <Box p={2}>
-              <Typography
-                variant="h4"
-                className={classes.heading}
-                color="secondary"
-              >
-                All Purchased Contents
-              </Typography>
-            </Box>
-            <Grid container>
-              {ticketsData?.map((historyCard, index) => (
-                <Grid
-                  lg={12}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  item
-                  key={`content-card-${index}`}
-                >
-                  <Box px={2}>
-                    <HistoryCard
-                      historyCard={historyCard}
-                      handleRazorpaySuccess={ticketsTriggerApi}
-                    />
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </ContentCard>
-        </Grid>
-      </Grid>
+      </Box>
     </Container>
   );
 }

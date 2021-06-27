@@ -34,29 +34,35 @@ function HistoryPage() {
 
   return (
     <Container maxWidth="lg">
-      <Box py={2}>
+      <Box py={2} className={classes.root}>
         <Box p={3}>
           <Typography variant="h3" className={classes.heading}>
             Purchase History
           </Typography>
         </Box>
-        <Grid container spacing={4}>
-          {historyData?.map((historyCard, index) => (
-            <Grid
-              lg={6}
-              md={6}
-              sm={6}
-              xs={12}
-              item
-              key={`content-card-${index}`}
-            >
-              <HistoryCard
-                historyCard={historyCard}
-                handleRazorpaySuccess={historyTriggerApi}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        {historyData?.length > 0 ? (
+          <Grid container spacing={4}>
+            {historyData?.map((historyCard, index) => (
+              <Grid
+                lg={6}
+                md={6}
+                sm={6}
+                xs={12}
+                item
+                key={`content-card-${index}`}
+              >
+                <HistoryCard
+                  historyCard={historyCard}
+                  handleRazorpaySuccess={historyTriggerApi}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Box px={3}>
+            <Typography variant="h5">No History data found</Typography>
+          </Box>
+        )}
       </Box>
     </Container>
   );

@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
     width: "40px",
     height: "40px",
     cursor: "pointer",
+    paddingRight: 0,
     color: theme.palette.secondary.main,
     boxShadow: `0px 0px 2px ${theme.palette.secondary.light}`,
     borderRadius: "50%",

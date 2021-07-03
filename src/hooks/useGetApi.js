@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useContext } from "react";
+import AppStateContext from "../contexts/AppStateContext";
 
 function useGetApi(
   apiCallback,
@@ -9,6 +10,8 @@ function useGetApi(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const [toggle, setToggle] = useState(false);
+
+  const { setPageLoading } = useContext(AppStateContext);
 
   const triggerApi = useCallback(() => setToggle(true), []);
 
@@ -26,7 +29,8 @@ function useGetApi(
 
   useEffect(() => {
     if (!loading) setToggle(false);
-  }, [loading]);
+    setPageLoading(loading);
+  }, [loading, setPageLoading]);
 
   useEffect(() => {
     if (toggle) {

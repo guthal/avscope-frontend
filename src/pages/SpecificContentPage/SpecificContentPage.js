@@ -49,11 +49,13 @@ function SpecificContentPage() {
 
   useEffect(() => {
     if (params.contentType === "all") {
-      setContentType(["br", "b", "r", "w"]);
+      setContentType(["br", "b", "r", "w", "f"]);
     } else if (params.contentType === "br") {
       setContentType(["br", "b", "r"]);
     } else if (params.contentType === "week") {
       setContentType(["w"]);
+    } else if (params.contentType === "f") {
+      setContentType(["f"]);
     }
   }, [params.contentType]);
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Container, Box, Typography, Grid } from "@material-ui/core";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
@@ -6,12 +6,15 @@ import InstagramIcon from "@material-ui/icons/Instagram";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import { useHistory } from "react-router";
 import useStyles from "./Footer.Styles";
+import AppStateContext from "../../contexts/AppStateContext";
 import { APP_ROUTES } from "../../configs/app";
 import Banner from "../../assets/avscopeBanner.png";
 
 function Footer() {
   const classes = useStyles();
   const history = useHistory();
+
+  const { pageLoading } = useContext(AppStateContext);
 
   const Copyright = () => {
     return (
@@ -27,6 +30,10 @@ function Footer() {
 
   const handleStaticPageClick = type =>
     history.push(`${APP_ROUTES.STATIC_PAGE.path}/${type}`);
+
+  if (pageLoading) {
+    return <></>;
+  }
 
   return (
     <Box className={classes.root}>

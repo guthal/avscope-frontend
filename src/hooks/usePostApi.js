@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useContext } from "react";
+import AppStateContext from "../contexts/AppStateContext";
 
 function usePostApi(
   apiCallback,
@@ -10,7 +11,9 @@ function usePostApi(
   const [error, setError] = useState();
   const [postData, setPostData] = useState(undefined);
 
-  const triggerPostApi = useCallback((data) => setPostData(data), []);
+  const { setPageLoading } = useContext(AppStateContext);
+
+  const triggerPostApi = useCallback(data => setPostData(data), []);
 
   useEffect(() => {
     if (data) setError(undefined);
@@ -21,15 +24,19 @@ function usePostApi(
   }, [error]);
 
   useEffect(() => {
+    setPageLoading(loading);
+  }, [loading, setPageLoading]);
+
+  useEffect(() => {
     if (postData) {
       setLoading(true);
 
       apiCallback
         .apply(null, [postData, ...apiCallbackParams])
-        .then((resData) => {
+        .then(resData => {
           setData(apiTransformFn?.(resData) || resData);
         })
-        .catch((err) => {
+        .catch(err => {
           setError(err);
         })
         .finally(() => {

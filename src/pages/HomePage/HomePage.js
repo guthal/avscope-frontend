@@ -76,7 +76,7 @@ function HomePage() {
         </Box>
       </Container>
 
-      <span id="ezoic-pub-video-placeholder-1"></span>
+      <span id="ezoic-pub-video-placeholder-1" />
 
       <Container maxWidth="lg">
         <Box py={4}>

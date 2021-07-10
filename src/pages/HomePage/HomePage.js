@@ -33,7 +33,7 @@ function HomePage() {
     triggerApi: seriesSeasonsTriggerApi,
   } = useGetApi(getAllSeries, getAllSeriesParams, transformGetAllSeries);
 
-  const handleCardClick = contentID =>
+  const handleCardClick = (contentID) =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
@@ -55,10 +55,10 @@ function HomePage() {
         <HomeCarousel
           contents={[
             ...contentsData?.contents
-              ?.filter(content => content.isAvailable)
+              ?.filter((content) => content.isAvailable)
               .slice(0, 3),
             ...contentsData?.series
-              ?.filter(content => content.isAvailable)
+              ?.filter((content) => content.isAvailable)
               .slice(0, 3),
           ]}
         />
@@ -76,6 +76,8 @@ function HomePage() {
         </Box>
       </Container>
 
+      <span id="ezoic-pub-video-placeholder-1"></span>
+
       <Container maxWidth="lg">
         <Box py={4}>
           <Box py={1}>
@@ -84,7 +86,7 @@ function HomePage() {
             </Box>
             <Grid container spacing={4}>
               {contentsData?.contents
-                ?.filter(content => content.isAvailable)
+                ?.filter((content) => content.isAvailable)
                 .map((contentCard, index) => (
                   <Grid
                     lg={3}
@@ -109,11 +111,11 @@ function HomePage() {
               </Box>
               <Grid container spacing={4}>
                 {seriesSeasonsData
-                  .map(series => series.seasons)
+                  .map((series) => series.seasons)
                   .map((season, i) => (
                     <Fragment key={i}>
                       {season
-                        ?.filter(contentCard => contentCard.isAvailable)
+                        ?.filter((contentCard) => contentCard.isAvailable)
                         .map((contentCard, index) => (
                           <Grid
                             lg={3}

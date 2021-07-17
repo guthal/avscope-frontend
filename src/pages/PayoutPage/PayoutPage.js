@@ -63,7 +63,6 @@ function PayoutPage() {
   const {
     data: creatorLastPaidData,
     loading: creatorLastPaidLoading,
-    error: creatorLastPaidError,
     triggerApi: creatorLastPaidTriggerApi,
   } = useGetApi(getLastPayDate, getLastPaidParams);
 

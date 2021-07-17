@@ -4,12 +4,10 @@ import useGetApi from "../../hooks/useGetApi";
 import { getStaticPage } from "../../utils/api";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
-import { useHistory, useRouteMatch } from "react-router";
+import { useRouteMatch } from "react-router";
 import { transformGetStaticPage } from "../../utils/api-transforms";
-import { APP_ROUTES } from "../../configs/app";
 
 function StaticPage() {
-  const history = useHistory();
   const routeMatch = useRouteMatch;
   const { params } = routeMatch();
 

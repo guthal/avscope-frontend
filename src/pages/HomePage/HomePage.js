@@ -13,13 +13,11 @@ import {
   transformGetAllSeries,
 } from "../../utils/api-transforms";
 import { APP_ROUTES } from "../../configs/app";
-import { CAROUSEL_ADS, getRandomAd } from "../../configs/ads";
+import { CAROUSEL_ADS } from "../../configs/ads";
 
 function HomePage() {
   const history = useHistory();
   const getContentsParams = useMemo(() => [], []);
-
-  getRandomAd();
 
   const [carouselCards, setCarouselCards] = useState();
 

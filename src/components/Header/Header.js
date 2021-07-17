@@ -38,9 +38,6 @@ import { getQueryVariable } from "../../utils/generic";
 function Header() {
   const classes = useStyles();
   const history = useHistory();
-  // eslint-disable-next-line no-unused-vars
-  const { pathname } = useLocation();
-
   const {
     isUserLoggedIn,
     userId,
@@ -59,9 +56,7 @@ function Header() {
   const [searchValue, setSearchValue] = useState(searchString);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
 
-  // Done to set logoutData to undefined through getLogoutParams
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const getLogoutParams = useMemo(() => [], [isUserLoggedIn]);
+  const getLogoutParams = useMemo(() => [], []);
 
   const {
     data: logoutData,
@@ -91,7 +86,7 @@ function Header() {
   };
 
   const handleToggleMenu = () => {
-    setOpenProfile(prev => !prev);
+    setOpenProfile((prev) => !prev);
   };
 
   const handleCloseMenu = () => {
@@ -122,14 +117,14 @@ function Header() {
     history.push(`${APP_ROUTES.HOME_PAGE.path}`);
   };
 
-  const handleContentTypeClick = contentType =>
+  const handleContentTypeClick = (contentType) =>
     history.push(`${APP_ROUTES.SPECIFIC_CONTENT_DISPLAY.path}/${contentType}`);
 
-  const handleSetSearchValue = event => {
+  const handleSetSearchValue = (event) => {
     setSearchValue(event.target.value);
   };
 
-  const handleSearchClick = event => {
+  const handleSearchClick = (event) => {
     event.preventDefault();
     handleSearchModalClose();
     history.push(
@@ -138,6 +133,10 @@ function Header() {
       }`
     );
   };
+
+  useEffect(() => {
+    if (!isUserLoggedIn) history.replace(APP_ROUTES.LOGIN_PAGE.path);
+  }, [history, isUserLoggedIn]);
 
   useEffect(() => {
     if (logoutData) {

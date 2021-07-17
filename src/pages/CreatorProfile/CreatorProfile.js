@@ -65,8 +65,6 @@ function CreatorProfile() {
 
   const {
     data: contentRevenueStatData,
-    loading: contentRevenueStatLoading,
-    error: contentRevenueStatError,
     triggerPostApi: contentRevenueStatTriggerApi,
   } = usePostApi(
     postGetContentStatRevenue,

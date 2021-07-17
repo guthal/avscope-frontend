@@ -31,7 +31,6 @@ import { useHistory, useLocation } from "react-router";
 import useGetApi from "../../hooks/useGetApi";
 import { getLogoutUser } from "../../utils/api";
 import AuthContext from "../../contexts/AuthContext";
-import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import { getQueryVariable } from "../../utils/generic";
 
@@ -60,7 +59,6 @@ function Header() {
 
   const {
     data: logoutData,
-    loading: logoutLoading,
     error: logoutError,
     triggerApi: logoutTriggerGetApi,
   } = useGetApi(getLogoutUser, getLogoutParams, undefined);
@@ -135,10 +133,6 @@ function Header() {
   };
 
   useEffect(() => {
-    if (!isUserLoggedIn) history.replace(APP_ROUTES.LOGIN_PAGE.path);
-  }, [history, isUserLoggedIn]);
-
-  useEffect(() => {
     if (logoutData) {
       setUsername("");
       setUserId("");
@@ -147,14 +141,6 @@ function Header() {
       window.location.href = "/login";
     }
   }, [logoutData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
-
-  // useEffect(() => {
-  //   if (!isUserLoggedIn) {
-  //     history.push(APP_ROUTES.LOGIN_PAGE.path);
-  //   }
-  // }, [isUserLoggedIn, history]);
-
-  if (logoutLoading) return <PageLoader />;
 
   if (logoutError)
     return (

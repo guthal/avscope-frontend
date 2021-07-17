@@ -31,9 +31,13 @@ function Pages() {
     <Router>
       <Header />
       <Switch>
-        <Route exact path={APP_ROUTES.HOME_PAGE.path} component={HomePage} />
+        <PrivateRoute
+          exact
+          path={APP_ROUTES.HOME_PAGE.path}
+          component={HomePage}
+        />
 
-        <Route
+        <PrivateRoute
           exact
           path={`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/:contentID`}
           component={VideoDetailPage}

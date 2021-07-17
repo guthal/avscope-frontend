@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container } from "@material-ui/core";
+import { Box, Container, Link } from "@material-ui/core";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -26,7 +26,12 @@ function HomeCarousel({ contents }) {
             className={classes.imageContainer}
             key={`carousel-${index}`}
           >
-            <img src={content.carouselUrl} alt="No Carousel" />
+            <Link
+              href={content.url}
+              target={content?.isExternalUrl ? "_blank" : undefined}
+            >
+              <img src={content.carouselUrl} alt="No Carousel" />
+            </Link>
           </Box>
         ))}
       </Slider>

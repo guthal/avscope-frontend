@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo } from "react";
+import React, { Fragment, useState, useEffect, useMemo } from "react";
 import { Box, Typography, Container, Grid } from "@material-ui/core";
 import AdSense from "react-adsense";
 import HomeCarousel from "../../components/HomeCarousel";
@@ -13,10 +13,15 @@ import {
   transformGetAllSeries,
 } from "../../utils/api-transforms";
 import { APP_ROUTES } from "../../configs/app";
+import { CAROUSEL_ADS, getRandomAd } from "../../configs/ads";
 
 function HomePage() {
   const history = useHistory();
   const getContentsParams = useMemo(() => [], []);
+
+  getRandomAd();
+
+  const [carouselCards, setCarouselCards] = useState();
 
   const {
     data: contentsData,
@@ -40,6 +45,43 @@ function HomePage() {
 
   useEffect(() => seriesSeasonsTriggerApi(), [seriesSeasonsTriggerApi]);
 
+  useEffect(() => {
+    if (contentsData) {
+      const contentArray = [
+        ...contentsData.contents
+          ?.filter((content) => content.isAvailable)
+          .map((content) => ({
+            ...content,
+            url: `${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${content.id}`,
+          }))
+          .slice(0, 3),
+        ...contentsData.series
+          ?.filter((content) => content.isAvailable)
+          .slice(0, 3)
+          .map((content) => ({
+            ...content,
+            url: `${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${content.startContentId}`,
+          })),
+      ];
+
+      let altMergedArray = [];
+
+      const minArrLength = Math.min(contentArray.length, CAROUSEL_ADS.length);
+      for (let index = 0; index < minArrLength; index += 1) {
+        altMergedArray.push(CAROUSEL_ADS[index]);
+        altMergedArray.push(contentArray[index]);
+      }
+
+      altMergedArray = [
+        ...altMergedArray,
+        ...CAROUSEL_ADS.slice(minArrLength),
+        ...contentArray.slice(minArrLength),
+      ];
+
+      setCarouselCards(altMergedArray);
+    }
+  }, [contentsData]);
+
   if (contentsLoading || seriesSeasonsLoading) return <PageLoader />;
 
   if (contentsError || seriesSeasonsError)
@@ -51,21 +93,9 @@ function HomePage() {
 
   return (
     <>
-      <Box>
-        <HomeCarousel
-          contents={[
-            ...contentsData?.contents
-              ?.filter((content) => content.isAvailable)
-              .slice(0, 3),
-            ...contentsData?.series
-              ?.filter((content) => content.isAvailable)
-              .slice(0, 3),
-          ]}
-        />
-      </Box>
+      <Box>{carouselCards && <HomeCarousel contents={carouselCards} />}</Box>
 
       <Container maxWidth="lg">
-        ADS
         <Box>
           <AdSense.Google
             client="ca-pub-7785498935820458"

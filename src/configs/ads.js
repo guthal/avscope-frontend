@@ -43,7 +43,7 @@ export const CUSTOM_ADS = [
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC2EwDv84c_FCpINOtTp1vMc26aofPrFKn4w&usqp=CAU",
     },
     video_id: "",
-    link: "https://www.cadburygifting.in",
+    link: "https://www.kantisweets.com/",
     amount: 300,
     meta: {
       name: "Kanti Sweets",

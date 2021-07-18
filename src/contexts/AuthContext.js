@@ -47,8 +47,6 @@ function AuthContextProvider({ children }) {
     triggerApi: verifyTriggerApi,
   } = useGetApi(getVerifyUser, getVerifyUserParams, transformGetVerifyUser);
 
-  console.log(isUserLoggedIn);
-
   useEffect(() => verifyTriggerApi(), [verifyTriggerApi]);
 
   useEffect(() => {

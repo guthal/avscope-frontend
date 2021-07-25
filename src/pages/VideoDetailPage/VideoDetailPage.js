@@ -66,7 +66,7 @@ function VideoDetailPage() {
   const [playVideo, setPlayVideo] = useState(false);
   const [recommendedContents, setRecommendedContents] = useState();
   const [seriesContents, setSeriesContents] = useState();
-  const [ticketStatus, setTicketStatus] = useState();
+  const [ticketStatus, setTicketStatus] = useState(false);
   const [seasonSelectorOpen, setSeasonSelectorOpen] = useState(false);
   const [ad, setAd] = useState();
 
@@ -122,20 +122,19 @@ function VideoDetailPage() {
     transformGetSeriesContents
   );
 
-  const handleCardClick = (contentID) =>
+  const handleCardClick = contentID =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   const handleSeasonSelectorClickAway = () => {
     setSeasonSelectorOpen(false);
   };
 
-  const handleSeasonSelectorClick = () =>
-    setSeasonSelectorOpen((prev) => !prev);
+  const handleSeasonSelectorClick = () => setSeasonSelectorOpen(prev => !prev);
 
-  const handleSeasonClick = (seasonNo) => {
+  const handleSeasonClick = seasonNo => {
     handleSeasonSelectorClickAway();
     const episodeData = seriesData.find(
-      (episode) =>
+      episode =>
         episode.seriesInfo.seasonNo === seasonNo &&
         episode.seriesInfo.episodeNo === 1
     );
@@ -166,14 +165,14 @@ function VideoDetailPage() {
     postAddWatchList(userId, {
       contentId: contentData.id,
     }).then(() => {
-      setUserWatchlistData((prev) => [...prev, contentData.id]);
+      setUserWatchlistData(prev => [...prev, contentData.id]);
     });
   };
 
   const handleRemovefromWatchlist = () => {
     deleteRemoveFromWatchlist(userId, contentData.id).then(() => {
-      setUserWatchlistData((prev) =>
-        prev.filter((watchlistItem) => watchlistItem !== contentData.id)
+      setUserWatchlistData(prev =>
+        prev.filter(watchlistItem => watchlistItem !== contentData.id)
       );
     });
   };
@@ -210,7 +209,7 @@ function VideoDetailPage() {
     if (contentsData)
       setRecommendedContents(
         contentsData?.contents
-          ?.filter((content) => content.id !== params.contentID)
+          ?.filter(content => content.id !== params.contentID)
           .slice(0, 4)
       );
   }, [contentsData, contentData, params.contentID]);
@@ -219,7 +218,7 @@ function VideoDetailPage() {
   useEffect(() => {
     if (contentData && seriesData) {
       const nextInSeries = seriesData.filter(
-        (episode) =>
+        episode =>
           episode.seriesInfo.seasonNo === contentData.seriesInfo.seasonNo &&
           episode.id !== contentData.id &&
           episode.seriesInfo.episodeNo > contentData.seriesInfo.episodeNo
@@ -248,7 +247,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Buy now @ ₹${contentData?.price["b"]}`}
-          onClick={(event) => {
+          onClick={event => {
             handleRazorPay(
               event,
               userId,
@@ -264,7 +263,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Rent now @ ₹${contentData?.price["r"]}`}
-          onClick={(event) => {
+          onClick={event => {
             handleRazorPay(
               event,
               userId,
@@ -280,7 +279,7 @@ function VideoDetailPage() {
       return (
         <PurchaseButton
           btnText={`Purchase ticket now @ ₹${contentData?.price["w"]}`}
-          onClick={(event) => {
+          onClick={event => {
             handleRazorPay(
               event,
               userId,
@@ -297,7 +296,7 @@ function VideoDetailPage() {
         <>
           <PurchaseButton
             btnText={`Buy now @ ₹${contentData?.price["b"]}`}
-            onClick={(event) => {
+            onClick={event => {
               handleRazorPay(
                 event,
                 userId,
@@ -310,7 +309,7 @@ function VideoDetailPage() {
           />
           <PurchaseButton
             btnText={`Rent now @ ₹${contentData?.price["r"]}`}
-            onClick={(event) => {
+            onClick={event => {
               handleRazorPay(
                 event,
                 userId,
@@ -375,37 +374,51 @@ function VideoDetailPage() {
         );
       }
     } else {
-      return (
-        <Box my={3}>
-          {isVideoAvailable && ticketStatus ? (
-            <Button
-              color="secondary"
-              variant="contained"
-              className={classes.playBtn}
-              onClick={handlePlay}
-            >
-              {`Play `}{" "}
-              <PlayCircleOutlineOutlined className={classes.platBtnIcon} />
-            </Button>
-          ) : (
-            <>
-              <PurchaseTypeElements />
-            </>
-          )}
-          {isVideoAvailable && ticketStatus ? (
-            <Typography variant="subtitle1">
-              {"Your Ticket Expires in "}{" "}
-              <TimerIcon style={{ paddingTop: "5px" }} />
-              <CountdownTimer
-                onComplete={handleComplete}
-                expiryDate={userContentPurchaseData?.expiryDate}
-              />
-            </Typography>
-          ) : (
-            <></>
-          )}
-        </Box>
-      );
+      if (contentData?.purchaseType === "f") {
+        return (
+          <Button
+            color="secondary"
+            variant="contained"
+            className={classes.playBtn}
+            onClick={handlePlay}
+          >
+            {`Play `}{" "}
+            <PlayCircleOutlineOutlined className={classes.platBtnIcon} />
+          </Button>
+        );
+      } else {
+        return (
+          <Box my={3}>
+            {isVideoAvailable && ticketStatus ? (
+              <Button
+                color="secondary"
+                variant="contained"
+                className={classes.playBtn}
+                onClick={handlePlay}
+              >
+                {`Play `}{" "}
+                <PlayCircleOutlineOutlined className={classes.platBtnIcon} />
+              </Button>
+            ) : (
+              <>
+                <PurchaseTypeElements />
+              </>
+            )}
+            {isVideoAvailable && ticketStatus ? (
+              <Typography variant="subtitle1">
+                {"Your Ticket Expires in "}{" "}
+                <TimerIcon style={{ paddingTop: "5px" }} />
+                <CountdownTimer
+                  onComplete={handleComplete}
+                  expiryDate={userContentPurchaseData?.expiryDate}
+                />
+              </Typography>
+            ) : (
+              <></>
+            )}
+          </Box>
+        );
+      }
     }
   };
 
@@ -498,9 +511,7 @@ function VideoDetailPage() {
                             <Box className={classes.seasonSelectorDropdown}>
                               {Array(
                                 Math.max(
-                                  ...seriesData.map(
-                                    (o) => o.seriesInfo.seasonNo
-                                  ),
+                                  ...seriesData.map(o => o.seriesInfo.seasonNo),
                                   0
                                 )
                               )
@@ -600,8 +611,8 @@ function VideoDetailPage() {
           <Grid item xs={12}>
             <Box p={2}>
               <Grid container spacing={4}>
-                {PRIORITIZED_ADS.map((ad) => (
-                  <Grid item xs={6} md={3} lg={2}>
+                {PRIORITIZED_ADS.map((ad, i) => (
+                  <Grid item xs={6} md={3} lg={2} key={i}>
                     <Box className={classes.adContainer}>
                       <Link href={ad.url} target="_blank">
                         <Button

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Link } from "@material-ui/core";
+import { Box, Container, Link, Button } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -18,8 +18,6 @@ const settings = {
 function HomeCarousel({ contents }) {
   const classes = useStyles();
 
-  console.log(contents);
-
   return (
     <Container maxWidth="xl" className={classes.sliderContainer}>
       <Slider {...settings}>
@@ -35,6 +33,15 @@ function HomeCarousel({ contents }) {
               component={content?.isExternalUrl ? undefined : RouterLink}
               target={content?.isExternalUrl ? "_blank" : undefined}
             >
+              {content?.isExternalUrl && (
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  className={classes.adSponsor}
+                >
+                  Sponsored
+                </Button>
+              )}
               <img src={content.carouselUrl} alt="No Carousel" />
             </Link>
           </Box>

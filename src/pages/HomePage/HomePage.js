@@ -13,7 +13,7 @@ import {
   transformGetAllSeries,
 } from "../../utils/api-transforms";
 import { APP_ROUTES } from "../../configs/app";
-import { CAROUSEL_ADS } from "../../configs/ads";
+import { PRIORITIZED_ADS } from "../../configs/ads";
 
 function HomePage() {
   const history = useHistory();
@@ -64,15 +64,18 @@ function HomePage() {
 
       let altMergedArray = [];
 
-      const minArrLength = Math.min(contentArray.length, CAROUSEL_ADS.length);
+      const minArrLength = Math.min(
+        contentArray.length,
+        PRIORITIZED_ADS.length
+      );
       for (let index = 0; index < minArrLength; index += 1) {
-        altMergedArray.push(CAROUSEL_ADS[index]);
+        altMergedArray.push(PRIORITIZED_ADS[index]);
         altMergedArray.push(contentArray[index]);
       }
 
       altMergedArray = [
         ...altMergedArray,
-        ...CAROUSEL_ADS.slice(minArrLength),
+        ...PRIORITIZED_ADS.slice(minArrLength),
         ...contentArray.slice(minArrLength),
       ];
 

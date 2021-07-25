@@ -1,4 +1,4 @@
-export const CUSTOM_ADS = [
+export const AVSCOPE_ADS = [
   {
     name: "Cadbury",
     img_url: {
@@ -51,12 +51,14 @@ export const CUSTOM_ADS = [
   },
 ];
 
-export const CAROUSEL_ADS = CUSTOM_ADS.sort((a, b) => {
+export const PRIORITIZED_ADS = AVSCOPE_ADS.sort((a, b) => {
   if (a.amount < b.amount) return 1;
   else if (a.amount > b.amount) return -1;
   return 0;
 }).map((ad) => ({
+  name: ad.name,
   carouselUrl: ad.img_url.landscape,
+  posterUrl: ad.img_url.portrait,
   url: ad.link,
   isExternalUrl: true,
 }));
@@ -64,12 +66,12 @@ export const CAROUSEL_ADS = CUSTOM_ADS.sort((a, b) => {
 export const getRandomAd = () => {
   var cumulativeAmounts = [];
 
-  for (let i = 0; i < CUSTOM_ADS.length; i++)
+  for (let i = 0; i < AVSCOPE_ADS.length; i++)
     cumulativeAmounts[i] =
-      CUSTOM_ADS[i].amount + (cumulativeAmounts[i - 1] || 0);
+      AVSCOPE_ADS[i].amount + (cumulativeAmounts[i - 1] || 0);
 
   var random = Math.random() * cumulativeAmounts[cumulativeAmounts.length - 1];
 
   for (let i = 0; i < cumulativeAmounts.length; i++)
-    if (cumulativeAmounts[i] > random) return CUSTOM_ADS[i];
+    if (cumulativeAmounts[i] > random) return AVSCOPE_ADS[i];
 };

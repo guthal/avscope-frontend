@@ -4,6 +4,7 @@ import {
   Button,
   Box,
   Grid,
+  Link,
   ClickAwayListener,
 } from "@material-ui/core";
 import { PlayCircleOutlineOutlined, ArrowDropDown } from "@material-ui/icons";
@@ -32,6 +33,7 @@ import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import useStyles from "./VideoDetailPage.Styles";
 import { loadRazorPay } from "../../utils/pay";
+import { getRandomAd, PRIORITIZED_ADS } from "../../configs/ads";
 
 const PurchaseButton = ({ btnText, onClick }) => {
   const classes = useStyles();
@@ -63,6 +65,7 @@ function VideoDetailPage() {
   const [recommendedContents, setRecommendedContents] = useState();
   const [seriesContents, setSeriesContents] = useState();
   const [seasonSelectorOpen, setSeasonSelectorOpen] = useState(false);
+  const [ad, setAd] = useState();
 
   const getContentParams = useMemo(
     () => [params.contentID],
@@ -173,6 +176,14 @@ function VideoDetailPage() {
   };
 
   const handlePlay = () => setPlayVideo(true);
+
+  const handleVideoPause = () => {
+    const randomAd = getRandomAd();
+    setAd(randomAd);
+  };
+
+  const handleVideoUnpause = () => setAd(undefined);
+
   // Show Play Button if user has made the video purchase
   useEffect(() => {
     setIsVideoAvailable(
@@ -549,6 +560,29 @@ function VideoDetailPage() {
             <img src={contentData?.posterUrl} alt="Not available" />
           </Grid>
 
+          <Grid item xs={12}>
+            <Box p={2}>
+              <Grid container spacing={4}>
+                {PRIORITIZED_ADS.map((ad) => (
+                  <Grid item xs={6} md={3} lg={2}>
+                    <Box className={classes.adContainer}>
+                      <Link href={ad.url} target="_blank">
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          className={classes.adSponsor}
+                        >
+                          Ad
+                        </Button>
+                        <img src={ad.posterUrl} alt={ad.name} />
+                      </Link>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          </Grid>
+
           {recommendedContents && (
             <Grid item xs={12}>
               <Box py={1} pl={2} pr={3}>
@@ -655,7 +689,28 @@ function VideoDetailPage() {
                   allow="encrypted-media"
                 />
               ) : (
-                <Stream height="80%" controls src={contentData?.contentURL} />
+                <>
+                  {ad && (
+                    <Box className={classes.adPoster} padding={2}>
+                      <Link href={ad.link} target="_blank">
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          className={classes.adSponsor}
+                        >
+                          Ad
+                        </Button>
+                        <img src={ad.img_url.square} alt={ad.name} />
+                      </Link>
+                    </Box>
+                  )}
+                  <Stream
+                    onPause={handleVideoPause}
+                    onPlay={handleVideoUnpause}
+                    controls
+                    src={contentData?.contentURL}
+                  />
+                </>
               )}
             </Box>
           </Box>

@@ -69,6 +69,12 @@ const useStyles = makeStyles((theme) => ({
       height: "250px",
     },
   },
+  adSponsor: {
+    position: "relative",
+    zIndex: 1,
+    textTransform: "initial",
+    textDecoration: "none",
+  },
 }));
 
 export default useStyles;

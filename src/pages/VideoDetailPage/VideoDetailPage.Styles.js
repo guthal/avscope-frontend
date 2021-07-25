@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 import "../../fonts/fonts.css";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     paddingRight: 0,
   },
@@ -82,6 +82,38 @@ const useStyles = makeStyles(theme => ({
 
   platBtnIcon: {
     fontSize: 40,
+  },
+
+  adContainer: {
+    position: "relative",
+    backgroundColor: "black",
+    height: "100%",
+    "& img": {
+      width: "100%",
+      height: "auto",
+    },
+  },
+
+  adSponsor: {
+    position: "absolute",
+    zIndex: 1,
+    fontSize: "10px",
+    padding: "2px 8px",
+    margin: theme.spacing(1),
+    minHeight: 0,
+    minWidth: 0,
+    fontWeight: "bold",
+    textTransform: "initial",
+  },
+
+  adPoster: {
+    position: "absolute",
+    width: "20vw",
+    zIndex: 1,
+    "& img": {
+      width: "100%",
+      height: "auto",
+    },
   },
 }));
 

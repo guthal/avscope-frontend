@@ -19,14 +19,19 @@ import { postLogin } from "../../utils/api";
 import PageLoader from "../../components/PageLoader";
 import useStyles from "./LoginPage.Styles";
 import { transformPostLoginResponse } from "../../utils/api-transforms";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { APP_ROUTES } from "../../configs/app";
 import AuthContext from "../../contexts/AuthContext";
 import { ENDPOINTS } from "../../configs/api";
 
 function LoginPage() {
   const history = useHistory();
+  const {
+    state: { preLoginPath },
+  } = useLocation();
   const classes = useStyles();
+
+  console.log(preLoginPath);
 
   const [textFields, setTextFields] = useState({
     username: "",
@@ -44,8 +49,8 @@ function LoginPage() {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    if (isUserLoggedIn) history.push(APP_ROUTES.HOME_PAGE.path);
-  }, [history, isUserLoggedIn]);
+    if (isUserLoggedIn) history.push(preLoginPath || APP_ROUTES.HOME_PAGE.path);
+  }, [preLoginPath, history, isUserLoggedIn]);
 
   const {
     data: loginData,
@@ -54,9 +59,9 @@ function LoginPage() {
     triggerPostApi: loginTriggerPostApi,
   } = usePostApi(postLogin, postLoginParams, transformPostLoginResponse);
 
-  const handleTextFieldChange = event => {
+  const handleTextFieldChange = (event) => {
     setLoginErrorFlag(false);
-    setTextFields(prev => ({
+    setTextFields((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
@@ -72,9 +77,17 @@ function LoginPage() {
       setIsUserLoggedIn(true);
       setUserId(loginData.userId);
       setUtype(loginData.utype);
-      history.push(APP_ROUTES.HOME_PAGE.path);
+      history.push(preLoginPath || APP_ROUTES.HOME_PAGE.path);
     }
-  }, [history, loginData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
+  }, [
+    preLoginPath,
+    history,
+    loginData,
+    setUserId,
+    setIsUserLoggedIn,
+    setUsername,
+    setUtype,
+  ]);
 
   const handleForgotPasswordClick = () =>
     history.push(`${APP_ROUTES.FORGOT_PASSWORD_PAGE.path}`);

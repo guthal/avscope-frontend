@@ -8,11 +8,13 @@ import {
   ClickAwayListener,
 } from "@material-ui/core";
 import { PlayCircleOutlineOutlined, ArrowDropDown } from "@material-ui/icons";
+import TimerIcon from "@material-ui/icons/Timer";
 import { Stream } from "@cloudflare/stream-react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import React, { useMemo, useEffect, useState, useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import MovieCard from "../../components/MovieCard";
+import CountdownTimer from "../../components/CountdownTimer";
 import useGetApi from "../../hooks/useGetApi";
 import {
   getContent,
@@ -64,6 +66,7 @@ function VideoDetailPage() {
   const [playVideo, setPlayVideo] = useState(false);
   const [recommendedContents, setRecommendedContents] = useState();
   const [seriesContents, setSeriesContents] = useState();
+  const [ticketStatus, setTicketStatus] = useState();
   const [seasonSelectorOpen, setSeasonSelectorOpen] = useState(false);
   const [ad, setAd] = useState();
 
@@ -183,6 +186,16 @@ function VideoDetailPage() {
   };
 
   const handleVideoUnpause = () => setAd(undefined);
+
+  const handleComplete = () => {
+    setTicketStatus(false);
+  };
+
+  useEffect(() => {
+    if (userContentPurchaseData) {
+      setTicketStatus(userContentPurchaseData?.isTicketValid);
+    }
+  }, [userContentPurchaseData]);
 
   // Show Play Button if user has made the video purchase
   useEffect(() => {
@@ -318,7 +331,7 @@ function VideoDetailPage() {
       if (userAge >= 18) {
         return (
           <Box my={3}>
-            {isVideoAvailable ? (
+            {isVideoAvailable && ticketStatus ? (
               <Button
                 color="secondary"
                 variant="contained"
@@ -332,6 +345,18 @@ function VideoDetailPage() {
               <>
                 <PurchaseTypeElements />
               </>
+            )}
+            {isVideoAvailable ? (
+              <Typography variant="subtitle1">
+                {"Your Ticket Expires in "}
+                <TimerIcon />
+                <CountdownTimer
+                  onComplete={handleComplete}
+                  expiryDate={userContentPurchaseData?.expiryDate}
+                />
+              </Typography>
+            ) : (
+              <></>
             )}
           </Box>
         );
@@ -352,7 +377,7 @@ function VideoDetailPage() {
     } else {
       return (
         <Box my={3}>
-          {isVideoAvailable ? (
+          {isVideoAvailable && ticketStatus ? (
             <Button
               color="secondary"
               variant="contained"
@@ -366,6 +391,18 @@ function VideoDetailPage() {
             <>
               <PurchaseTypeElements />
             </>
+          )}
+          {isVideoAvailable && ticketStatus ? (
+            <Typography variant="subtitle1">
+              {"Your Ticket Expires in "}{" "}
+              <TimerIcon style={{ paddingTop: "5px" }} />
+              <CountdownTimer
+                onComplete={handleComplete}
+                expiryDate={userContentPurchaseData?.expiryDate}
+              />
+            </Typography>
+          ) : (
+            <></>
           )}
         </Box>
       );
@@ -382,7 +419,7 @@ function VideoDetailPage() {
 
   if (contentError)
     return (
-      <PageError message="Opps.. Something went wrong while fetching contents." />
+      <PageError message="Oops.. Something went wrong while fetching contents." />
     );
 
   return (

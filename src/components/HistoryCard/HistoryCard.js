@@ -83,7 +83,8 @@ function HistoryCard({ historyCard, handleRazorpaySuccess }) {
                         cardData.purchasePrice,
                         cardData.contentId,
                         cardData.contentType,
-                        cardData.purchaseType
+                        cardData.purchaseType,
+                        handleRazorpaySuccess
                       );
                     }}
                   >

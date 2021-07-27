@@ -698,7 +698,8 @@ function VideoDetailPage() {
         >
           <Box
             style={{
-              float: "right",
+              position: "absolute",
+              right: 0,
               zIndex: "1",
             }}
           >
@@ -719,7 +720,7 @@ function VideoDetailPage() {
               height: "100vh",
             }}
           >
-            <Box style={{ width: "100vh" }}>
+            <Box style={{ width: "100%" }}>
               {contentData?.purchaseType === "w" ? (
                 <iframe
                   title="Weekly"

@@ -109,6 +109,12 @@ const useStyles = makeStyles((theme) => ({
   adPoster: {
     position: "absolute",
     width: "20vw",
+
+    [theme.breakpoints.down("sm")]: {
+      width: "40vw",
+      top: 0,
+    },
+
     zIndex: 1,
     "& img": {
       width: "100%",

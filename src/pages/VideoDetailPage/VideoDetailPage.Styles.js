@@ -106,13 +106,28 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "initial",
   },
 
+  adClose: {
+    position: "absolute",
+    zIndex: 1,
+    right: "16px",
+    fontSize: "10px",
+    padding: "2px 8px",
+    margin: theme.spacing(1),
+    minHeight: 0,
+    minWidth: 0,
+    fontWeight: "bold",
+  },
+
   adPoster: {
     position: "absolute",
     width: "20vw",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
 
     [theme.breakpoints.down("sm")]: {
       width: "40vw",
-      top: 0,
+      transform: "translate(-50%, -65%)",
     },
 
     zIndex: 1,
@@ -120,6 +135,26 @@ const useStyles = makeStyles((theme) => ({
       width: "100%",
       height: "auto",
     },
+  },
+
+  videoAdOverlay: {
+    position: "absolute",
+    zIndex: 1,
+    top: "10vh",
+    height: "100vh",
+    width: "90vw",
+  },
+
+  videoAdDummyBox: {
+    height: "100%",
+    width: "90%",
+  },
+
+  videoAdSkip: {
+    position: "absolute",
+    zIndex: 1,
+    bottom: "100px",
+    right: "50px",
   },
 }));
 

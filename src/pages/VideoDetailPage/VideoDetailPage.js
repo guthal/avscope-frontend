@@ -6,6 +6,7 @@ import {
   Grid,
   Link,
   ClickAwayListener,
+  Hidden,
 } from "@material-ui/core";
 import { PlayCircleOutlineOutlined, ArrowDropDown } from "@material-ui/icons";
 import TimerIcon from "@material-ui/icons/Timer";
@@ -35,7 +36,8 @@ import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
 import useStyles from "./VideoDetailPage.Styles";
 import { loadRazorPay } from "../../utils/pay";
-import { getRandomAd, PRIORITIZED_ADS } from "../../configs/ads";
+import { getRandomAd } from "../../configs/ads";
+import AppStateContext from "../../contexts/AppStateContext";
 
 const PurchaseButton = ({ btnText, onClick }) => {
   const classes = useStyles();
@@ -61,7 +63,7 @@ function VideoDetailPage() {
   const { params } = routeMatch;
   const { userId, userAge, userWatchlistData, setUserWatchlistData } =
     useContext(AuthContext);
-
+  const { setPageLoading } = useContext(AppStateContext);
   const [isVideoAvailable, setIsVideoAvailable] = useState(false);
   const [playVideo, setPlayVideo] = useState(false);
   const [recommendedContents, setRecommendedContents] = useState();
@@ -69,6 +71,10 @@ function VideoDetailPage() {
   const [ticketStatus, setTicketStatus] = useState(false);
   const [seasonSelectorOpen, setSeasonSelectorOpen] = useState(false);
   const [ad, setAd] = useState();
+  const [videoAd, setVideoAd] = useState(getRandomAd());
+  const [isAdSkippable, setIsAdSkippable] = useState(false);
+  const [hasVideoLoaded, setHasVideoLoaded] = useState(false);
+  const randomAds = [getRandomAd(), getRandomAd(), getRandomAd()];
 
   const getContentParams = useMemo(
     () => [params.contentID],
@@ -185,11 +191,23 @@ function VideoDetailPage() {
     setAd(randomAd);
   };
 
+  const handleCanPlay = () => setHasVideoLoaded(true);
+
   const handleVideoUnpause = () => setAd(undefined);
 
-  const handleComplete = () => {
-    setTicketStatus(false);
-  };
+  const handleComplete = () => setTicketStatus(false);
+
+  const handleAdComplete = () => setVideoAd(undefined);
+
+  useEffect(() => {
+    setPageLoading(playVideo);
+  }, [playVideo, setPageLoading]);
+
+  useEffect(() => {
+    if (videoAd && hasVideoLoaded)
+      setTimeout(() => setIsAdSkippable(true), videoAd.ad_skip_timer);
+    else setIsAdSkippable(false);
+  }, [videoAd, hasVideoLoaded]);
 
   useEffect(() => {
     if (userContentPurchaseData) {
@@ -614,10 +632,10 @@ function VideoDetailPage() {
           <Grid item xs={12}>
             <Box p={2}>
               <Grid container spacing={4}>
-                {PRIORITIZED_ADS.map((ad, i) => (
-                  <Grid item xs={6} md={3} lg={2} key={i}>
+                <Hidden smDown>
+                  <Grid item md={2}>
                     <Box className={classes.adContainer}>
-                      <Link href={ad.url} target="_blank">
+                      <Link href={randomAds[0].link} target="_blank">
                         <Button
                           color="secondary"
                           variant="contained"
@@ -625,11 +643,52 @@ function VideoDetailPage() {
                         >
                           Ad
                         </Button>
-                        <img src={ad.posterUrl} alt={ad.name} />
+                        <img
+                          src={randomAds[0].img_url.square}
+                          alt={randomAds[0].name}
+                        />
                       </Link>
                     </Box>
                   </Grid>
-                ))}
+                </Hidden>
+
+                <Grid item xs={12} md={8}>
+                  <Box className={classes.adContainer}>
+                    <Link href={randomAds[1].link} target="_blank">
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        className={classes.adSponsor}
+                      >
+                        Ad
+                      </Button>
+                      <img
+                        src={randomAds[1].img_url.strip}
+                        alt={randomAds[1].name}
+                      />
+                    </Link>
+                  </Box>
+                </Grid>
+
+                <Hidden smDown>
+                  <Grid item md={2}>
+                    <Box className={classes.adContainer}>
+                      <Link href={randomAds[2].link} target="_blank">
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          className={classes.adSponsor}
+                        >
+                          Ad
+                        </Button>
+                        <img
+                          src={randomAds[2].img_url.square}
+                          alt={randomAds[2].name}
+                        />
+                      </Link>
+                    </Box>
+                  </Grid>
+                </Hidden>
               </Grid>
             </Box>
           </Grid>
@@ -752,15 +811,47 @@ function VideoDetailPage() {
                         >
                           Ad
                         </Button>
+
                         <img src={ad.img_url.square} alt={ad.name} />
                       </Link>
+
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        className={classes.adClose}
+                        onClick={handleVideoUnpause}
+                      >
+                        X
+                      </Button>
                     </Box>
+                  )}
+                  {videoAd && (
+                    <>
+                      <Box className={classes.videoAdOverlay}>
+                        <Link href={videoAd.link} target="_blank">
+                          <Box className={classes.videoAdDummyBox} />
+                        </Link>
+                      </Box>
+                      <Box className={classes.videoAdSkip}>
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          onClick={handleAdComplete}
+                          disabled={!isAdSkippable}
+                        >
+                          Skip
+                        </Button>
+                      </Box>
+                    </>
                   )}
                   <Stream
                     onPause={handleVideoPause}
                     onPlay={handleVideoUnpause}
-                    controls
-                    src={contentData?.contentURL}
+                    controls={!videoAd}
+                    autoplay={!!videoAd}
+                    src={videoAd?.video_id || contentData?.contentURL}
+                    onEnded={videoAd ? handleAdComplete : undefined}
+                    onCanPlay={handleCanPlay}
                   />
                 </>
               )}

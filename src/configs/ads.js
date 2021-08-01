@@ -7,12 +7,15 @@ export const AVSCOPE_ADS = [
         "https://www.cadbury.com.au/media/wysiwyg/MONDOM3674_CaramilkMarble_MobileBanner_640x700.png",
       square:
         "https://pbs.twimg.com/profile_images/1381550902587326467/vb1EW6Sh.png",
+      strip:
+        "https://mikewalterz.com/wp-content/uploads/2019/10/Mikewalterz-Cadburys-Dairly-Milk-Wordless-Bar-Loneliness-Campaign-Age-UK-Milk.jpg",
     },
-    video_id: "",
+    video_id: "838d01a23a0d2c53257e1962596bf00a",
+    ad_skip_timer: 5000,
     link: "https://www.cadburygifting.in",
     amount: 600,
     meta: {
-      mame: "Cadbury",
+      name: "Cadbury",
     },
   },
   {
@@ -24,12 +27,15 @@ export const AVSCOPE_ADS = [
         "https://i.pinimg.com/236x/35/6c/65/356c6536455a03b9b8049a68accdfd0e--nike-running-motivation-nike-running-quotes.jpg",
       square:
         "https://www.marketing91.com/wp-content/uploads/2020/06/Nike-Advertising-Introduction.jpg",
+      strip:
+        "https://blog.logomyway.com/wp-content/uploads/2020/11/nike-logo.jpg",
     },
-    video_id: "",
+    video_id: "838d01a23a0d2c53257e1962596bf00a",
+    ad_skip_timer: 5000,
     link: "https://www.nike.com/in/",
     amount: 800,
     meta: {
-      mame: "Nike",
+      name: "Nike",
     },
   },
   {
@@ -41,8 +47,11 @@ export const AVSCOPE_ADS = [
         "https://cdn.urbanpiper.com/media/gallery_images/2018/08/29/A3_poster-19-06-2018_COMPRESSED.jpg",
       square:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC2EwDv84c_FCpINOtTp1vMc26aofPrFKn4w&usqp=CAU",
+      strip:
+        "https://play-lh.googleusercontent.com/X2q_KPLa2bwAqZGGd71GfJnm5NCxbPJa8Nf3f_Q9FQzqTaKEDC_O4nbfWGA74V6Q3p0",
     },
-    video_id: "",
+    video_id: "838d01a23a0d2c53257e1962596bf00a",
+    ad_skip_timer: 5000,
     link: "https://www.kantisweets.com/",
     amount: 300,
     meta: {

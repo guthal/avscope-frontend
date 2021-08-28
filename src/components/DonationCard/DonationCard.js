@@ -57,7 +57,7 @@ const DonationCard = () => {
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.secondary.light,
       maxWidth: "250px",
-      border: "1px solid #dadde9",
+      border: `1px solid ${theme.palette.secondary.dark}`,
     },
   }))(Tooltip);
 

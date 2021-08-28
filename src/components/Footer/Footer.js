@@ -9,6 +9,7 @@ import useStyles from "./Footer.Styles";
 import AppStateContext from "../../contexts/AppStateContext";
 import { APP_ROUTES } from "../../configs/app";
 import Banner from "../../assets/avscopeBanner.png";
+import DonationCard from "../DonationCard";
 
 function Footer() {
   const classes = useStyles();
@@ -37,7 +38,7 @@ function Footer() {
 
   return (
     <Box className={classes.root}>
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         <Box>
           <Grid container>
             <Grid item xs={12}>
@@ -152,17 +153,22 @@ function Footer() {
                     </Grid>
                   </Box>
                 </Grid>
+                <Grid item xs={12}>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{ width: "100%" }}
+                  >
+                    <DonationCard />
+                  </Box>
+                </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={10}>
-              <Grid container>
-                <Grid item md={7} sm={false} xs={false}>
-                  {""}
-                </Grid>
-                <Grid item md={5} sm={12} xs={12}>
-                  <Box px={2}>
-                    <Copyright />
-                  </Box>
+            <Grid item xs={12}>
+              <Grid container justify="center">
+                <Grid item>
+                  <Copyright />
                 </Grid>
               </Grid>
             </Grid>

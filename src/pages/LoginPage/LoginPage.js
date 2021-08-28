@@ -59,9 +59,9 @@ function LoginPage() {
     triggerPostApi: loginTriggerPostApi,
   } = usePostApi(postLogin, postLoginParams, transformPostLoginResponse);
 
-  const handleTextFieldChange = (event) => {
+  const handleTextFieldChange = event => {
     setLoginErrorFlag(false);
-    setTextFields((prev) => ({
+    setTextFields(prev => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));

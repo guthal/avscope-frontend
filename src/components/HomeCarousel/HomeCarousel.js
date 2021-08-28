@@ -19,7 +19,7 @@ function HomeCarousel({ contents }) {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="xl" className={classes.sliderContainer}>
+    <Container maxWidth="lg" className={classes.sliderContainer}>
       <Slider {...settings}>
         {contents.map((content, index) => (
           <Box

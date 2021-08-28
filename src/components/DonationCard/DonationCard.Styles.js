@@ -1,0 +1,65 @@
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "fit-content",
+  },
+  donateBtn: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icon: {
+    fontSize: "30px",
+    color: theme.palette.text.primary,
+  },
+  infoIcon: {
+    fontSize: "15px",
+    marginTop: "5px",
+  },
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  bannerImgContainer: {
+    backgroundColor: theme.palette.primary.main,
+    width: "100%",
+    textAlign: "center",
+  },
+  bannerImg: {
+    width: "150px",
+    padding: "18px 0px",
+
+    "& img": {
+      height: "100%",
+    },
+  },
+  modalContainer: {
+    marginTop: "-200px",
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.secondary,
+    borderRadius: "12px",
+    padding: "0rem 5rem 2rem 5rem",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    [theme.breakpoints.down("sm")]: {
+      padding: "1rem",
+    },
+  },
+  textField: {
+    "& input": {
+      color: theme.palette.primary.main,
+    },
+    "& input:hover": {
+      border: "none !important",
+    },
+  },
+  btn: {
+    width: "100%",
+  },
+}));
+
+export default useStyles;

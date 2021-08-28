@@ -4,4 +4,5 @@ export const COLORS = {
   BACKGROUND_DEFAULT: "#313131",
   BACKGROUND_PAPER: "#dbd295",
   TEXT_PRIMARY: "#cecece",
+  TEXT_SECONDARY: "#000000",
 };

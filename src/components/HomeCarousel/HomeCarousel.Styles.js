@@ -1,8 +1,8 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   sliderContainer: {
-    padding: "8px 0",
+    padding: "16px",
 
     "& .slick-slider": {
       position: "relative",
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
   imageContainer: {
     border: `2px solid ${theme.palette.primary.main}`,
-    height: "800px",
+    height: "702px",
     backgroundColor: theme.palette.primary.main,
     position: "relative",
 

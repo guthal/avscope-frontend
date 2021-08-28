@@ -1,6 +1,9 @@
 import React from "react";
 import { CssBaseline } from "@material-ui/core";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import {
+  unstable_createMuiStrictModeTheme as createMuiTheme,
+  ThemeProvider,
+} from "@material-ui/core/styles";
 import { COLORS } from "../configs/theme";
 
 function AppThemeProvider({ children }) {
@@ -18,6 +21,7 @@ function AppThemeProvider({ children }) {
       },
       text: {
         primary: COLORS.TEXT_PRIMARY,
+        secondary: COLORS.TEXT_SECONDARY,
       },
     },
   });

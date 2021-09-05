@@ -9,7 +9,6 @@ import useStyles from "./Footer.Styles";
 import AppStateContext from "../../contexts/AppStateContext";
 import { APP_ROUTES } from "../../configs/app";
 import Banner from "../../assets/avscopeBanner.png";
-import DonationCard from "../DonationCard";
 
 function Footer() {
   const classes = useStyles();
@@ -151,16 +150,6 @@ function Footer() {
                         </Grid>
                       </Grid>
                     </Grid>
-                  </Box>
-                </Grid>
-                <Grid item xs={12}>
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={{ width: "100%" }}
-                  >
-                    <DonationCard />
                   </Box>
                 </Grid>
               </Grid>

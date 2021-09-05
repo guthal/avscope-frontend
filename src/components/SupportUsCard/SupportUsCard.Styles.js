@@ -2,20 +2,38 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "fit-content",
+    position: "sticky",
+    bottom: "16px",
   },
-  donateBtn: {
+  donateBtnContainer: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
+    paddingRight: "16px",
+  },
+  donateBtn: {
+    padding: "0",
+  },
+  toolTipHeading: {
+    fontSize: "14px",
+    fontWeight: 600,
+  },
+  toolTipDesc: {
+    fontSize: "12px",
+  },
+  iconContainer: {
+    backgroundColor: theme.palette.secondary.dark,
   },
   icon: {
-    fontSize: "30px",
+    fontSize: "40px",
+    width: "100%",
     color: theme.palette.text.primary,
+    "&:hover": {
+      color: theme.palette.text.primary,
+    },
   },
   infoIcon: {
     fontSize: "15px",
-    marginTop: "5px",
   },
   modal: {
     display: "flex",

@@ -329,7 +329,7 @@ function Header() {
                           <Typography>{HEADER_LABELS.ADMIN}</Typography>
                         </Button>
                       )}
-                      {utype < 2 && (
+                      {utype === 1 && (
                         <Button
                           color="secondary"
                           variant="outlined"

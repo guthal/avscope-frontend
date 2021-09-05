@@ -25,6 +25,7 @@ import StaticPage from "./StaticPage";
 import SpecificContentPage from "./SpecificContentPage";
 import ForgotPasswordPage from "./ForgotPasswordPage";
 import ResetPasswordPage from "./ResetPasswordPage";
+import SupportUsCard from "../components/SupportUsCard";
 
 function Pages() {
   return (
@@ -140,6 +141,7 @@ function Pages() {
 
         <Route path="/*" component={PageNotFound} />
       </Switch>
+      <SupportUsCard />
       <Footer />
     </Router>
   );

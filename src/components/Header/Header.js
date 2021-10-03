@@ -1,10 +1,4 @@
-import React, {
-  Fragment,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { Fragment, useContext, useState } from "react";
 import {
   Box,
   AppBar,
@@ -28,26 +22,17 @@ import { APP_ROUTES, HEADER_LABELS } from "../../configs/app";
 import Banner from "../../assets/avscopeBanner.png";
 import useStyles from "./Header.Styles";
 import { useHistory, useLocation } from "react-router";
-import useGetApi from "../../hooks/useGetApi";
-import { getLogoutUser } from "../../utils/api";
 import AuthContext from "../../contexts/AuthContext";
-import PageError from "../../components/PageError";
 import { getQueryVariable } from "../../utils/generic";
+import UserProfileModal from "../UserProfileModal";
 
 function Header() {
   const classes = useStyles();
   const history = useHistory();
-  const {
-    isUserLoggedIn,
-    userId,
-    utype,
-    userWatchlistData,
-    setUsername,
-    setIsUserLoggedIn,
-    setUserId,
-    setUtype,
-  } = useContext(AuthContext);
+  const { isUserLoggedIn, userId, utype, userWatchlistData } =
+    useContext(AuthContext);
   const [openProfile, setOpenProfile] = useState(false);
+  const [openUserAccountModal, setOpenUserAccountModal] = useState(false);
 
   const { search: searchQuery } = useLocation();
   const searchString = getQueryVariable(searchQuery.slice(1), "search");
@@ -55,20 +40,16 @@ function Header() {
   const [searchValue, setSearchValue] = useState(searchString);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
 
-  const getLogoutParams = useMemo(() => [], []);
-
-  const {
-    data: logoutData,
-    error: logoutError,
-    triggerApi: logoutTriggerGetApi,
-  } = useGetApi(getLogoutUser, getLogoutParams, undefined);
-
   const handleLogoClick = () => {
     history.push(APP_ROUTES.HOME_PAGE.path);
   };
 
   const handleAdminClick = () => {
     history.push(APP_ROUTES.ADMIN_DASHBOARD.path);
+  };
+
+  const handleOpenUserAccountModal = () => {
+    setOpenUserAccountModal(true);
   };
 
   const handleCreatorProfileClick = () => {
@@ -80,10 +61,6 @@ function Header() {
       pathname: APP_ROUTES.LOGIN_PAGE.path,
       state: { preLoginPath: APP_ROUTES.HOME_PAGE.path },
     });
-  };
-
-  const handleLogoutClick = () => {
-    logoutTriggerGetApi();
   };
 
   const handleToggleMenu = () => {
@@ -103,6 +80,7 @@ function Header() {
   };
 
   const handleHistoryClick = () => {
+    setOpenUserAccountModal(false);
     history.push(`${APP_ROUTES.HISTORY_PAGE.path}/${userId}`);
   };
 
@@ -134,21 +112,6 @@ function Header() {
       }`
     );
   };
-
-  useEffect(() => {
-    if (logoutData) {
-      setUsername("");
-      setUserId("");
-      setUtype("");
-      setIsUserLoggedIn(false);
-      window.location.href = "/login";
-    }
-  }, [logoutData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
-
-  if (logoutError)
-    return (
-      <PageError message="Oops.. Something went wrong while fetching contents." />
-    );
 
   return (
     <Box mb={2}>
@@ -372,50 +335,123 @@ function Header() {
                       >
                         <Typography>TICKETS</Typography>
                       </Button>
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        className={classes.profileMenuItem}
-                        onClick={handleLogoutClick}
-                        disableElevation
-                      >
-                        {HEADER_LABELS.LOGOUT}
-                      </Button>
+                      <Box>
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          className={classes.profileMenuItem}
+                          onClick={handleOpenUserAccountModal}
+                        >
+                          {HEADER_LABELS.USER_ACCOUNT}
+                        </Button>
+                      </Box>
                     </Box>
                   )}
                 </Box>
               </ClickAwayListener>
             </Box>
           )}
-        </Toolbar>
-      </AppBar>
-      {/* {["/", "/sp-content/all", "/sp-content/br", "/sp-content/week"].includes(
-        pathname
-      ) && (
-        <AppBar position="static" style={{ borderTop: "1px solid white" }}>
-          <Toolbar>
-            <Box pr={2} className={classes.dflex}>
-              <Box className={classes.contentTypeLinksContainer}>
-                <Box pr={2} onClick={() => handleContentTypeClick("all")}>
-                  <Typography className={classes.contentTypeLink}>
-                    All Contents
-                  </Typography>
-                </Box>
-                <Box pr={2} onClick={() => handleContentTypeClick("br")}>
-                  <Typography className={classes.contentTypeLink}>
-                    Buy/Rent
-                  </Typography>
-                </Box>
-                <Box pr={2} onClick={() => handleContentTypeClick("week")}>
-                  <Typography className={classes.contentTypeLink}>
-                    Weekly
-                  </Typography>
+          <UserProfileModal
+            openUserAccountModal={openUserAccountModal}
+            setOpenUserAccountModal={setOpenUserAccountModal}
+          />
+          {/* <Modal
+            open={openUserAccountModal}
+            onClose={handleCloseUserAccountModal}
+          >
+            <Fade in={openUserAccountModal}>
+              <Box className={classes.userProfileModalContainer}>
+                <Box p={2} className={classes.userProfileModalBox}>
+                  <Box
+                    className={classes.closeIconContainer}
+                    onClick={handleCloseUserAccountModal}
+                  >
+                    <CancelIcon className={classes.closeIcon} />
+                  </Box>
+                  <Box
+                    p={1}
+                    className={classes.profileUserName}
+                    textAlign="center"
+                  >
+                    <Typography color="textSecondary" variant="h5">
+                      Hello, {name}
+                    </Typography>
+                  </Box>
+                  <Accordion className={classes.accountSettingsAccordion}>
+                    <AccordionSummary
+                      expandIcon={
+                        <ExpandMoreIcon className={classes.expandIcon} />
+                      }
+                      className={classes.accordionSummary}
+                    >
+                      <Typography color="primary" variant="button">
+                        Account Settings
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails className={classes.accordionDetails}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                          <Box my={3} ml={2}>
+                            <Typography color="primary">
+                              Date of Birth:
+                            </Typography>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <KeyboardDatePicker
+                              format="MM/dd/yyyy"
+                              margin="normal"
+                              className={classes.dateOfBirthUtil}
+                              value={userDateOfBirth}
+                              InputProps={{ readOnly: true }}
+                              KeyboardButtonProps={{
+                                "aria-label": "date of birth",
+                              }}
+                            />
+                          </MuiPickersUtilsProvider>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Box my={2}>
+                          <Button
+                            color="primary"
+                            variant="outlined"
+                            className={classes.fullWidth}
+                          >
+                            Reset My Password
+                          </Button>
+                        </Box>
+                      </Grid>
+                    </AccordionDetails>
+                  </Accordion>
+                  <Box my={1}>
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      onClick={handleHistoryClick}
+                      className={classes.fullWidth}
+                    >
+                      {HEADER_LABELS.USER_TRANSACTION_HISTORY}
+                    </Button>
+                  </Box>
+                  <Box mt={3} textAlign="center">
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      className={classes.userProfileItem}
+                      onClick={handleLogoutClick}
+                      disableElevation
+                    >
+                      {HEADER_LABELS.LOGOUT}
+                    </Button>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          </Toolbar>
-        </AppBar>
-      )} */}
+            </Fade>
+          </Modal> */}
+        </Toolbar>
+      </AppBar>
     </Box>
   );
 }

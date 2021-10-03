@@ -1,5 +1,10 @@
 import logo from "../assets/logo.png";
-import { postCreateOrder, postOrderSuccess } from "./api";
+import {
+  postCreateOrder,
+  postOrderSuccess,
+  postSupportUsOrderCreate,
+  postSupportUsPaymentSuccess,
+} from "./api";
 import { COLORS } from "../configs/theme";
 
 export const loadRazorPay = async (
@@ -86,7 +91,12 @@ export const loadRazorPay = async (
   razorPayInstance.open();
 };
 
-export const loadDonationRazorPay = async (event, donationAmount, callback) => {
+export const loadDonationRazorPay = async (
+  event,
+  userId,
+  donationAmount,
+  callback
+) => {
   const loadScript = src => {
     return new Promise(resolve => {
       const script = document.createElement("script");
@@ -108,11 +118,13 @@ export const loadDonationRazorPay = async (event, donationAmount, callback) => {
     return;
   }
 
-  const result = await postCreateOrder({
+  const result = await postSupportUsOrderCreate({
     amount: donationAmount * 100, // parses as paise, cent
     currency: "INR",
     receipt: "receipt_order_74394",
   });
+
+  console.log("Received and Paid Successfully!!".red);
 
   if (!result) {
     alert("Server error. Are you online?");
@@ -133,19 +145,17 @@ export const loadDonationRazorPay = async (event, donationAmount, callback) => {
     image: { logo },
     order_id: order_id,
     handler: async function (response) {
-      // await postOrderSuccess({
-      //   userId: userId,
-      //   productId,
-      //   amount: amount,
-      //   contentType: contentType,
-      //   purchaseType: purchaseType,
-      //   orderCreationId: order_id,
-      //   razorpayPaymentId: response.razorpay_payment_id,
-      //   razorpayOrderId: response.razorpay_order_id,
-      //   razorpaySignature: response.razorpay_signature,
-      // });
+      console.log("Received and Paid Successfully!!".green);
+      await postSupportUsPaymentSuccess({
+        orderCreationId: order_id,
+        razorpayPaymentId: response.razorpay_payment_id,
+        razorpayOrderId: response.razorpay_order_id,
+        razorpaySignature: response.razorpay_signature,
+        userId: userId,
+        amount: amount,
+      });
 
-      await callback();
+      callback();
     },
     prefill: {
       name: "Average Joe",

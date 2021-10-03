@@ -135,6 +135,8 @@ export const HEADER_LABELS = {
   LOGOUT: "Logout",
   ADMIN: "Admin",
   PROFILE: "Profile",
+  USER_ACCOUNT: "Your Account",
+  USER_TRANSACTION_HISTORY: "Your Transaction History",
 };
 
 export const EXPIRY_TIMING = {

@@ -87,7 +87,7 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     zIndex: 1,
     right: "-24px",
-    width: "150px",
+    width: "180px",
     padding: "8px",
     backgroundColor: theme.palette.primary.main,
   },

@@ -168,6 +168,22 @@ export const postOrderSuccess = data => {
     .then(res => res.data);
 };
 
+export const postSupportUsOrderCreate = data => {
+  return axios
+    .post(ENDPOINTS.POST_CREATE_SUPPORT_US_RAZORPAY, data, {
+      withCredentials: true,
+    })
+    .then(res => res.data);
+};
+
+export const postSupportUsPaymentSuccess = data => {
+  return axios
+    .post(ENDPOINTS.POST_SUPPORT_US_PAYMENT_SUCCESS, data, {
+      withCredentials: true,
+    })
+    .then(res => res.data);
+};
+
 export const postGetContentsRevenue = data => {
   return axios
     .post(ENDPOINTS.POST_FETCH_CONTENT_REVENUE, data, {

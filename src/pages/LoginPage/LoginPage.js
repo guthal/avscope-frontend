@@ -26,9 +26,9 @@ import { ENDPOINTS } from "../../configs/api";
 
 function LoginPage() {
   const history = useHistory();
-  const {
-    state: { preLoginPath },
-  } = useLocation();
+  const location = useLocation();
+
+  const preLoginPath = location?.state?.preLoginPath;
   const classes = useStyles();
 
   console.log(preLoginPath);
@@ -77,7 +77,7 @@ function LoginPage() {
       setIsUserLoggedIn(true);
       setUserId(loginData.userId);
       setUtype(loginData.utype);
-      history.push(preLoginPath || APP_ROUTES.HOME_PAGE.path);
+      window.open(preLoginPath || APP_ROUTES.HOME_PAGE.path, "_self");
     }
   }, [
     preLoginPath,

@@ -4,6 +4,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     position: "sticky",
     bottom: "16px",
+    zIndex: "1",
   },
   donateBtnContainer: {
     display: "flex",

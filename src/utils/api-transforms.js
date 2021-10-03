@@ -261,6 +261,7 @@ export const transformGetVerifyUser = data => {
     userWatchlist: data.watchlist,
     userVerified: data.verified,
     userAge: userAge,
+    userDoB: data.dateOfBirth,
   };
 };
 

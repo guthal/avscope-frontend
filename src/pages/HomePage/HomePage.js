@@ -1,7 +1,14 @@
-import React, { Fragment, useState, useEffect, useMemo } from "react";
+import React, {
+  Fragment,
+  useState,
+  useEffect,
+  useMemo,
+  useContext,
+} from "react";
 import { Box, Typography, Container, Grid } from "@material-ui/core";
 import AdSense from "react-adsense";
 import HomeCarousel from "../../components/HomeCarousel";
+import UserProfileModal from "../../components/UserProfileModal";
 import MovieCard from "../../components/MovieCard";
 import useGetApi from "../../hooks/useGetApi";
 import { getContents, getAllSeries } from "../../utils/api";
@@ -12,6 +19,7 @@ import {
   transformGetContents,
   transformGetAllSeries,
 } from "../../utils/api-transforms";
+import AuthContext from "../../contexts/AuthContext";
 import { APP_ROUTES } from "../../configs/app";
 import { PRIORITIZED_ADS } from "../../configs/ads";
 
@@ -20,6 +28,18 @@ function HomePage() {
   const getContentsParams = useMemo(() => [], []);
 
   const [carouselCards, setCarouselCards] = useState();
+  const [
+    userProfileModalOnUnverifiedDoBOrGender,
+    setUserProfileModalOnUnverifiedDoBOrGender,
+  ] = useState(false);
+
+  const { userDateOfBirth, userGender } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (userDateOfBirth === undefined || userGender === undefined) {
+      setUserProfileModalOnUnverifiedDoBOrGender(true);
+    }
+  }, [userDateOfBirth, userGender]);
 
   const {
     data: contentsData,
@@ -36,7 +56,7 @@ function HomePage() {
     triggerApi: seriesSeasonsTriggerApi,
   } = useGetApi(getAllSeries, getAllSeriesParams, transformGetAllSeries);
 
-  const handleCardClick = (contentID) =>
+  const handleCardClick = contentID =>
     history.push(`${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${contentID}`);
 
   useEffect(() => contentsTriggerApi(), [contentsTriggerApi]);
@@ -47,16 +67,16 @@ function HomePage() {
     if (contentsData) {
       const contentArray = [
         ...contentsData.contents
-          ?.filter((content) => content.isAvailable)
-          .map((content) => ({
+          ?.filter(content => content.isAvailable)
+          .map(content => ({
             ...content,
             url: `${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${content.id}`,
           }))
           .slice(0, 3),
         ...contentsData.series
-          ?.filter((content) => content.isAvailable)
+          ?.filter(content => content.isAvailable)
           .slice(0, 3)
-          .map((content) => ({
+          .map(content => ({
             ...content,
             url: `${APP_ROUTES.VIDEO_DETAIL_PAGE.path}/${content.startContentId}`,
           })),
@@ -117,7 +137,7 @@ function HomePage() {
             </Box>
             <Grid container spacing={4}>
               {contentsData?.contents
-                ?.filter((content) => content.isAvailable)
+                ?.filter(content => content.isAvailable)
                 .map((contentCard, index) => (
                   <Grid
                     lg={3}
@@ -142,11 +162,11 @@ function HomePage() {
               </Box>
               <Grid container spacing={4}>
                 {seriesSeasonsData
-                  .map((series) => series.seasons)
+                  .map(series => series.seasons)
                   .map((season, i) => (
                     <Fragment key={i}>
                       {season
-                        ?.filter((contentCard) => contentCard.isAvailable)
+                        ?.filter(contentCard => contentCard.isAvailable)
                         .map((contentCard, index) => (
                           <Grid
                             lg={3}
@@ -169,6 +189,12 @@ function HomePage() {
           )}
         </Box>
       </Container>
+      {userProfileModalOnUnverifiedDoBOrGender && (
+        <UserProfileModal
+          openUserAccountModal={true}
+          dOBAndGenderVerified={false}
+        />
+      )}
     </>
   );
 }

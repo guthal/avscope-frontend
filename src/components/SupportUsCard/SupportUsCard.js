@@ -10,7 +10,6 @@ import {
   Tooltip,
   TextField,
 } from "@material-ui/core";
-import LocalAtmIcon from "@material-ui/icons/LocalAtm";
 import InfoIcon from "@material-ui/icons/Info";
 import useStyles from "./SupportUsCard.Styles";
 import Banner from "../../assets/avscopeBanner.png";
@@ -20,7 +19,7 @@ import { loadDonationRazorPay } from "../../utils/pay";
 const SupportUsCard = () => {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState(false);
-  const [donationAmount, setDonationAmount] = useState(0);
+  const [donationAmount, setDonationAmount] = useState(1);
   const [donationSuccess, setDonationSuccess] = useState(false);
   const { isUserLoggedIn, userId } = useContext(AuthContext);
 
@@ -103,7 +102,7 @@ const SupportUsCard = () => {
           >
             <Box pt={1}>
               <RenderToolTip>
-                <LocalAtmIcon className={classes.icon} />
+                <Typography className={classes.attachMoneyIcon}>₹</Typography>
               </RenderToolTip>
             </Box>
           </Button>

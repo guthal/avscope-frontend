@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
-import { Container, Box, Typography, Grid } from "@material-ui/core";
+import { Container, Box, Typography, Grid, Link } from "@material-ui/core";
 import FacebookIcon from "@material-ui/icons/Facebook";
-import TwitterIcon from "@material-ui/icons/Twitter";
+import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import InstagramIcon from "@material-ui/icons/Instagram";
-import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import { useHistory } from "react-router";
 import useStyles from "./Footer.Styles";
 import AppStateContext from "../../contexts/AppStateContext";
 import { APP_ROUTES } from "../../configs/app";
 import Banner from "../../assets/avscopeBanner.png";
+import { SOCIAL_MEDIA } from "../../configs/app";
 
 function Footer() {
   const classes = useStyles();
@@ -56,14 +56,8 @@ function Footer() {
                         </Grid>
                         <Grid item xs={8}>
                           <Typography variant="subtitle2" align="left">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Aliquam mattis cursus ornare. Fusce consequat
-                            est id pharetra tempor.
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Typography variant="body1" align="left">
-                            Call us: 9876543210
+                            Opposite Promed Hospital, Under Lakshmi Sagar Hotel,
+                            BSK 2nd Stage, Bengaluru - 560028.
                           </Typography>
                         </Grid>
                       </Grid>
@@ -128,25 +122,40 @@ function Footer() {
                             </Typography>
                           </Grid>
                           <Grid item md={2} xs={3}>
-                            <FacebookIcon
-                              className={`${classes.footerIcons} ${classes.facebook}`}
-                            />
+                            <Link
+                              href={SOCIAL_MEDIA.FACEBOOK}
+                              color="textPrimary"
+                            >
+                              <FacebookIcon
+                                className={`${classes.footerIcons} ${classes.facebook}`}
+                              />
+                            </Link>
                           </Grid>
                           <Grid item md={2} xs={3}>
-                            <TwitterIcon
-                              className={`${classes.footerIcons} ${classes.twitter}`}
-                            />
+                            <Link
+                              href={SOCIAL_MEDIA.LINKEDIN}
+                              color="textPrimary"
+                            >
+                              <LinkedInIcon
+                                className={`${classes.footerIcons} ${classes.linkedin}`}
+                              />
+                            </Link>
                           </Grid>
                           <Grid item md={2} xs={3}>
-                            <InstagramIcon
-                              className={`${classes.footerIcons} ${classes.instagram}`}
-                            />
+                            <Link
+                              href={SOCIAL_MEDIA.INSTAGRAM}
+                              color="textPrimary"
+                            >
+                              <InstagramIcon
+                                className={`${classes.footerIcons} ${classes.instagram}`}
+                              />
+                            </Link>
                           </Grid>
-                          <Grid item md={2} xs={3}>
+                          {/* <Grid item md={2} xs={3}>
                             <WhatsAppIcon
                               className={`${classes.footerIcons} ${classes.whatsapp}`}
                             />
-                          </Grid>
+                          </Grid> */}
                         </Grid>
                       </Grid>
                     </Grid>

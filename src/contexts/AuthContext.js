@@ -10,6 +10,7 @@ const AuthContext = createContext({
   userId: "",
   userAge: -1,
   userDateOfBirth: "",
+  userGender: "",
   username: "",
   utype: 2,
   name: "",
@@ -17,6 +18,7 @@ const AuthContext = createContext({
   setUsername: () => {},
   setUserId: () => {},
   setUserDateOfBirth: () => {},
+  setUserGender: () => {},
   setUserAge: () => {},
   setIsUserLoggedIn: () => {},
   setIsUserEmailVerified: () => {},
@@ -30,6 +32,7 @@ function AuthContextProvider({ children }) {
   const [isUserEmailVerified, setIsUserEmailVerified] = useState(false);
   const [userAge, setUserAge] = useState(-1);
   const [userDateOfBirth, setUserDateOfBirth] = useState("");
+  const [userGender, setUserGender] = useState("");
   const [userId, setUserId] = useState();
   const [username, setUsername] = useState();
   const [utype, setUtype] = useState(2);
@@ -59,6 +62,7 @@ function AuthContextProvider({ children }) {
       setIsUserEmailVerified(verifyUserData.userVerified);
       setUserId(verifyUserData.userId);
       setUserDateOfBirth(verifyUserData.userDoB);
+      setUserGender(verifyUserData.userGender);
       setUserAge(verifyUserData.userAge);
       setUtype(verifyUserData.utype);
       setName(verifyUserData.name);
@@ -72,6 +76,7 @@ function AuthContextProvider({ children }) {
       setIsUserLoggedIn(false);
       setUserId("");
       setUserDateOfBirth("");
+      setUserGender("");
       setUserAge(-1);
       setUtype(2);
       setName("");
@@ -90,6 +95,7 @@ function AuthContextProvider({ children }) {
         isUserEmailVerified,
         userId,
         userDateOfBirth,
+        userGender,
         userAge,
         username,
         utype,
@@ -100,6 +106,7 @@ function AuthContextProvider({ children }) {
         setIsUserEmailVerified,
         setUserId,
         setUserDateOfBirth,
+        setUserGender,
         setUserAge,
         setUtype,
         setName,

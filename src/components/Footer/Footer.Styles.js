@@ -43,9 +43,9 @@ const useStyles = makeStyles(theme => ({
       color: "#4267B2",
     },
   },
-  twitter: {
+  linkedin: {
     "&:hover": {
-      color: "#1DA1F2",
+      color: "#0E76A8",
     },
   },
   instagram: {

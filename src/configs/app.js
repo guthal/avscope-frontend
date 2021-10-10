@@ -151,3 +151,9 @@ export const HOME_PAGE = {
     "https://cdna.artstation.com/p/assets/images/images/020/539/304/large/tyr-s-studio-joker2.jpg?1568171432",
   ],
 };
+
+export const SOCIAL_MEDIA = {
+  FACEBOOK: "https://www.facebook.com/masuviproduction/",
+  INSTAGRAM: "https://www.instagram.com/masuviproductions/",
+  LINKEDIN: "https://www.linkedin.com/company/masuvi-production-pvt-ltd/",
+};

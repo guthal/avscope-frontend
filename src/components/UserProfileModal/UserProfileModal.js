@@ -1,4 +1,4 @@
-import React, { useMemo, useContext, useEffect } from "react";
+import React, { useMemo, useContext, useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -17,8 +17,15 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import useStyles from "./UserProfileModal.Styles";
 import AuthContext from "../../contexts/AuthContext";
 import useGetApi from "../../hooks/useGetApi";
+import usePostApi from "../../hooks/usePostApi";
 import PageError from "../../components/PageError";
-import { getLogoutUser } from "../../utils/api";
+import PageLoader from "../PageLoader";
+import {
+  getLogoutUser,
+  postDoBGenderEntry,
+  postForgotPassword,
+} from "../../utils/api";
+import { transformPostForgotPasswordResponse } from "../../utils/api-transforms";
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
@@ -29,16 +36,22 @@ import { APP_ROUTES, HEADER_LABELS } from "../../configs/app";
 
 const UserProfileModal = ({
   openUserAccountModal,
-  setOpenUserAccountModal,
+  setOpenUserAccountModal = () => {},
   dOBAndGenderVerified = true,
 }) => {
   const classes = useStyles();
   const history = useHistory();
 
+  const [openResetPasswordMsg, setOpenResetPasswordMsg] = useState(false);
+  const [userLocalDoB, setUserLocalDoB] = useState();
+  const [userLocalGender, setUserLocalGender] = useState("");
+
   const {
     userId,
+    username,
     name,
     userDateOfBirth,
+    userGender,
     setUsername,
     setIsUserLoggedIn,
     setUserId,
@@ -52,6 +65,28 @@ const UserProfileModal = ({
     error: logoutError,
     triggerApi: logoutTriggerGetApi,
   } = useGetApi(getLogoutUser, getLogoutParams, undefined);
+
+  const postDoBGenderParams = useMemo(() => [userId], [userId]);
+
+  const {
+    data: doBGenderData,
+    loading: dobGenderLoading,
+    error: doBGenderError,
+    triggerPostApi: dobGenderTriggerPostApi,
+  } = usePostApi(postDoBGenderEntry, postDoBGenderParams, undefined);
+
+  const postForgotPasswordParams = useMemo(() => [], []);
+
+  const {
+    data: forgotPasswordData,
+    loading: forgotPasswordLoading,
+    error: forgotPasswordError,
+    triggerPostApi: forgotPasswordTriggerPostApi,
+  } = usePostApi(
+    postForgotPassword,
+    postForgotPasswordParams,
+    transformPostForgotPasswordResponse
+  );
 
   const handleCloseUserAccountModal = () => {
     setOpenUserAccountModal(false);
@@ -67,7 +102,45 @@ const UserProfileModal = ({
     logoutTriggerGetApi();
   };
 
-  const handleDoBChange = () => {};
+  const handleCloseResetPassswordMsg = () => {
+    setOpenResetPasswordMsg(false);
+  };
+
+  const handleResetPasswordClick = event => {
+    event.preventDefault();
+    setOpenResetPasswordMsg(true);
+    forgotPasswordTriggerPostApi({ username: username });
+  };
+
+  const handleDoBChange = event => {
+    setUserLocalDoB(event);
+  };
+
+  const handleGenderChange = event => {
+    setUserLocalGender(event.target.value);
+  };
+
+  const handleSubmitDoBGender = () => {
+    dobGenderTriggerPostApi({
+      userId: userId,
+      dateOfBirth: userLocalDoB,
+      gender: userLocalGender,
+    });
+  };
+
+  useEffect(() => {
+    if (forgotPasswordData) {
+      setTimeout(() => {
+        handleCloseResetPassswordMsg();
+      }, 5000);
+    }
+  }, [forgotPasswordData]);
+
+  useEffect(() => {
+    if (doBGenderData) {
+      window.open(APP_ROUTES.HOME_PAGE.path, "_self");
+    }
+  }, [doBGenderData]);
 
   useEffect(() => {
     if (logoutData) {
@@ -79,7 +152,9 @@ const UserProfileModal = ({
     }
   }, [logoutData, setUserId, setIsUserLoggedIn, setUsername, setUtype]);
 
-  if (logoutError)
+  if (dobGenderLoading || forgotPasswordLoading) return <PageLoader />;
+
+  if (logoutError || doBGenderError || forgotPasswordError)
     return (
       <PageError message="Oops.. Something went wrong while fetching contents." />
     );
@@ -105,8 +180,9 @@ const UserProfileModal = ({
             {!dOBAndGenderVerified && (
               <Box textAlign="center">
                 <Typography className={classes.dOBAgeUnverifiedBanner}>
-                  Your Date of Birth and Gender is required for browsing through
-                  certain content. Kindly Select from options below and Submit.
+                  Your Date of Birth and Gender is required for functionality
+                  purposes. Kindly Select from options below and Submit to
+                  Continue.
                 </Typography>
               </Box>
             )}
@@ -135,7 +211,7 @@ const UserProfileModal = ({
                         format="MM/dd/yyyy"
                         margin="normal"
                         className={classes.dateOfBirthUtil}
-                        value={userDateOfBirth}
+                        value={userDateOfBirth || userLocalDoB}
                         InputProps={{ readOnly: true }}
                         KeyboardButtonProps={{
                           "aria-label": "date of birth",
@@ -153,12 +229,16 @@ const UserProfileModal = ({
                     </Box>
                   </Grid>
                   <Grid item xs={6}>
-                    <Box ml={2}>
+                    <Box mb={1}>
                       <Select
-                        value="male"
+                        value={userGender || userLocalGender || "default"}
                         style={{ color: "black" }}
                         disabled={dOBAndGenderVerified}
+                        onChange={handleGenderChange}
                       >
+                        <MenuItem value="default" color="primary">
+                          Select from below
+                        </MenuItem>
                         <MenuItem value="male" color="primary">
                           Male
                         </MenuItem>
@@ -172,17 +252,56 @@ const UserProfileModal = ({
                     </Box>
                   </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  <Box my={2}>
-                    <Button
-                      color="primary"
-                      variant="outlined"
-                      className={classes.fullWidth}
-                    >
-                      Reset My Password
-                    </Button>
-                  </Box>
-                </Grid>
+                {!dOBAndGenderVerified &&
+                  userLocalDoB !== undefined &&
+                  userLocalGender !== "" &&
+                  userLocalGender !== "default" && (
+                    <Grid container>
+                      <Grid item xs={12}>
+                        <Box my={1}>
+                          <Typography color="error">
+                            Note: Kindly make sure you have given proper
+                            information. Your information is safe with us.
+                            Information once submitted can only be changed by
+                            requesting a ticket.
+                          </Typography>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Box my={2}>
+                          <Button
+                            color="primary"
+                            variant="outlined"
+                            className={classes.fullWidth}
+                            onClick={handleSubmitDoBGender}
+                          >
+                            Submit Info
+                          </Button>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  )}
+                {dOBAndGenderVerified && (
+                  <Grid item xs={12}>
+                    {openResetPasswordMsg && (
+                      <Box>
+                        <Typography color="textPrimary" variant="body1">
+                          Kindly Check your Email for Reset Password Link
+                        </Typography>
+                      </Box>
+                    )}
+                    <Box my={2}>
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        className={classes.fullWidth}
+                        onClick={handleResetPasswordClick}
+                      >
+                        Reset My Password
+                      </Button>
+                    </Box>
+                  </Grid>
+                )}
               </AccordionDetails>
             </Accordion>
             {dOBAndGenderVerified && (

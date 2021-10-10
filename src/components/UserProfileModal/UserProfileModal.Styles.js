@@ -1,5 +1,4 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { fade } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   userProfileModalContainer: {
@@ -64,8 +63,6 @@ const useStyles = makeStyles(theme => ({
   },
   dOBAgeUnverifiedBanner: {
     color: "red",
-    fontWeight: "600",
-    backgroundColor: fade(`${theme.palette.primary.light}, 0.1`),
   },
 }));
 

@@ -262,6 +262,7 @@ export const transformGetVerifyUser = data => {
     userVerified: data.verified,
     userAge: userAge,
     userDoB: data.dateOfBirth,
+    userGender: data.gender,
   };
 };
 

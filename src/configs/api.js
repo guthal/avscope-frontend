@@ -14,6 +14,7 @@ const ENDPOINTS = {
   POST_CONTENT_UPLOAD: `${DOMAIN}/content-upload`,
   POST_LOGIN: `${DOMAIN}/login`,
   GET_GOOGLE_LOGIN: `${DOMAIN}/auth/google`,
+  POST_DoB_GENDER_ENTRY: `${DOMAIN}/google-login/doB-gender`,
   GET_FACEBOOK_LOGIN: `${DOMAIN}/auth/facebook`,
   GET_VERIFY_LOGIN: `${DOMAIN}/login/verify`,
   POST_SIGNUP: `${DOMAIN}/register`,

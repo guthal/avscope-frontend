@@ -4,7 +4,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     position: "sticky",
     bottom: "16px",
-    zIndex: "1",
+    zIndex: "0",
   },
   donateBtnContainer: {
     display: "flex",
@@ -14,6 +14,12 @@ const useStyles = makeStyles(theme => ({
   },
   donateBtn: {
     padding: "0",
+    borderRadius: "50%",
+  },
+  attachMoneyIcon: {
+    color: theme.palette.secondary.main,
+    fontSize: "30px",
+    padding: "5px 0px",
   },
   toolTipHeading: {
     fontSize: "14px",

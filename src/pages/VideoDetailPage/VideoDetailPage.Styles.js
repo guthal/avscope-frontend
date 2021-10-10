@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 import "../../fonts/fonts.css";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     paddingRight: 0,
   },
@@ -65,9 +65,11 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   playBtn: {
+    position: "relative",
     textTransform: "initial",
     fontWeight: "bold",
     fontSize: "20px",
+    zIndex: 1,
   },
   ageRestrictedBtn: {
     color: theme.palette.warning.dark,

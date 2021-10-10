@@ -27,6 +27,7 @@ function ForgotPasswordPage() {
   const postForgotPasswordParams = useMemo(() => [], []);
 
   const {
+    // eslint-disable-next-line no-unused-vars
     data: forgotPasswordData,
     loading: forgotPasswordLoading,
     error: forgotPasswordError,
@@ -40,8 +41,6 @@ function ForgotPasswordPage() {
   const handleTextFieldChange = event => {
     setUsername(event.target.value);
   };
-
-  console.log("forgotPasswordData: ", forgotPasswordData);
 
   const handleLoginInClick = () =>
     history.push(`${APP_ROUTES.LOGIN_PAGE.path}`);

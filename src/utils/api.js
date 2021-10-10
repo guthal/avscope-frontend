@@ -89,6 +89,14 @@ export const getGoogleLogin = () => {
     .then(res => res.data);
 };
 
+export const postDoBGenderEntry = data => {
+  return axios
+    .post(ENDPOINTS.POST_DoB_GENDER_ENTRY, data, {
+      withCredentials: true,
+    })
+    .then(res => res.data);
+};
+
 export const getFacebookLogin = () => {
   return axios
     .get(ENDPOINTS.GET_FACEBOOK_LOGIN, {

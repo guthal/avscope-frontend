@@ -31,8 +31,6 @@ function LoginPage() {
   const preLoginPath = location?.state?.preLoginPath;
   const classes = useStyles();
 
-  console.log(preLoginPath);
-
   const [textFields, setTextFields] = useState({
     username: "",
     password: "",
